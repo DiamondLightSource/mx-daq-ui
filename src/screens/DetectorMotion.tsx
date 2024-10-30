@@ -6,7 +6,7 @@ export function DetectorMotionTabPanel() {
   const _theme = useTheme();
   return (
     <div>
-      <Stack spacing={2}>
+      <Stack spacing={0}>
         <PollingRoPvBox label="Detector" pv="ME14E-MO-IOC-01:GP101" dType={PvDTypes.String} />
         <PollingRoPvBox label="Detector stage position" pv="BL24I-EA-DET-01:Y" />
         <Button>Move stage!</Button>

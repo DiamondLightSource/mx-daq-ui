@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   GET_PV_QUERY,
@@ -32,11 +31,11 @@ export function PollingRoPvBox(props: ReadPvProps) {
   return PvComponent({
     ...props,
     render: (props: PvItem) => (
-      <Stack direction="row" spacing={2}>
-        <Box sx={{ padding: 2 }}>
+      <Stack direction="row" spacing={3}>
+        <Box sx={{ padding: 0 }}>
           <p>{props.label}:</p>
         </Box>
-        <Box sx={{ padding: 2 }}>
+        <Box sx={{ padding: 0 }}>
           <p>{props.value}</p>
         </Box>
       </Stack>
