@@ -33,6 +33,7 @@ export type ReadPvProps = {
   pollInterval?: number;
   sigFigs?: number;
   dType?: PvDTypes;
+  preTransformValue?: (value: string) => string;
 };
 
 export type SetPvProps = {
@@ -42,10 +43,18 @@ export type SetPvProps = {
 } & ReadPvProps;
 
 export type PvItem = { label: string; value: PvDTypeUnion };
-export type ReadPvComponentProps = ReadPvProps & { render: PvItemComponent };
 export type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
+export type ReadPvComponentProps = ReadPvProps & { render: PvItemComponent };
 
-export function parseResult(value: string, dType: PvDTypes, sigFigs?: number) {
+export function parseResult(
+  value: string,
+  dType: PvDTypes,
+  sigFigs?: number,
+  preTransformValue?: (value: string) => string
+) {
+  if (preTransformValue) {
+    value = preTransformValue(value);
+  }
   switch (dType) {
     case PvDTypes.Float: {
       return sigFigs ? parseFloat(value).toFixed(sigFigs) : parseFloat(value);
@@ -57,4 +66,14 @@ export function parseResult(value: string, dType: PvDTypes, sigFigs?: number) {
       return value;
     }
   }
+}
+
+type StringMapping = Record<string, string>;
+export function makeStringTransform(map: StringMapping) {
+  return (value: string) => {
+    if (value in map) {
+      return map[value];
+    }
+    return "Unknown";
+  };
 }

@@ -21,7 +21,10 @@ function PvComponent(props: ReadPvComponentProps) {
   const result = () => {
     if (loading) return "Loading...";
     if (error) return `Error! ${error.message}`;
-    const rawResult: string = data.getChannel.value.string;
+    let rawResult: string = data.getChannel.value.string;
+    if (props.preTransformValue) {
+      rawResult = props.preTransformValue(rawResult);
+    }
     return props.dType ? parseResult(rawResult, props.dType, props.sigFigs) : rawResult;
   };
   return props.render({ label: props.label, value: result() });
