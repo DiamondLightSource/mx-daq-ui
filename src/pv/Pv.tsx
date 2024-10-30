@@ -32,7 +32,7 @@ export function PollingRoPvBox(props: ReadPvProps) {
   return PvComponent({
     ...props,
     render: (props: PvItem) => (
-      <Stack spacing={2}>
+      <Stack direction="row" spacing={2}>
         <Box sx={{ padding: 2 }}>
           <p>{props.label}:</p>
         </Box>
@@ -51,7 +51,7 @@ export function OnOffPvButton(
   return PvComponent({
     ...props,
     render: (props: PvItem) => (
-      <Stack spacing={2}>
+      <Stack direction="row" spacing={2}>
         <Box sx={{ padding: 2 }}>
           <p>{props.label}:</p>
         </Box>
