@@ -2,6 +2,7 @@ import React from "react";
 import { Tabs, Tab, useTheme, Box } from "@mui/material";
 import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
 import { TestBoxesTabPanel } from "./screens/TestBoxes";
+import { OavMover } from "./screens/OavMover";
 import "./App.css";
 
 interface TabPanelProps {
@@ -57,7 +58,7 @@ function App() {
         <DetectorMotionTabPanel />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <TestBoxesTabPanel />
+        <OavMover />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <TestBoxesTabPanel />
