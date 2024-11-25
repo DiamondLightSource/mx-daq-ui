@@ -1,8 +1,11 @@
-import { useConnection, DType } from "@diamondlightsource/cs-web-lib";
+import { useConnection } from "@diamondlightsource/cs-web-lib";
 import { Box } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
-type RawValue = DType | "not connected" | undefined;
-export type PvItem = { label: string; value: RawValue };
+import { RawValue } from "./util";
+
+export type PvDisplayTypes = string | number;
+
+export type PvItem = { label: string; value: RawValue | PvDisplayTypes };
 export type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
 export type PvDescription = {
   label: string;
@@ -10,6 +13,7 @@ export type PvDescription = {
 };
 export type PvComponentProps = PvDescription & {
   render: PvItemComponent;
+  transformValue?: (value: RawValue) => string | number;
 };
 
 function WsPvComponent(props: PvComponentProps) {
@@ -17,23 +21,11 @@ function WsPvComponent(props: PvComponentProps) {
     props.label,
     props.pv
   );
-  const returnValue = connected ? latestValue : "not connected";
+  const rawValue: RawValue = connected ? latestValue : "not connected";
+  const returnValue = props.transformValue ? props.transformValue(rawValue) : rawValue;
   return <Box>{props.render({ label: props.label, value: returnValue })}</Box>;
 }
 
 export function PvComponent(props: PvComponentProps) {
   return <ErrorBoundary fallback={<p>Error Connecting!</p>}>{WsPvComponent(props)}</ErrorBoundary>;
-}
-
-export function forceString(value: RawValue): string {
-  let displayValue: string;
-  if (value != "not connected" && value != undefined) {
-    const stringVal = value.getStringValue();
-    displayValue = stringVal ? stringVal : "undefined";
-  } else if (value === "not connected") {
-    displayValue = "not connected";
-  } else {
-    displayValue = "undefined";
-  }
-  return displayValue;
 }

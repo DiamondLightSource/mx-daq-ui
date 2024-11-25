@@ -50,8 +50,8 @@ function App() {
           textColor="primary"
         >
           <Tab label="Detector position" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="OAV view" {...a11yProps(1)} />
+          <Tab label="Beamline stats" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
