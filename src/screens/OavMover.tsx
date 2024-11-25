@@ -119,8 +119,8 @@ export function BeamCentre({
 }
 
 export function OavMover() {
-  const [crosshairX, setCrosshairX] = useState<number>(0);
-  const [crosshairY, setCrosshairY] = useState<number>(0);
+  const [crosshairX, setCrosshairX] = useState<number>(200);
+  const [crosshairY, setCrosshairY] = useState<number>(200);
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
