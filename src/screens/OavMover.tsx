@@ -1,4 +1,4 @@
-import { Box, Button, Grid2, Stack, useTheme } from "@mui/material";
+import { Box, Button, Grid2, Stack, TextField, useTheme } from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
   ArrowBackRounded,
@@ -14,6 +14,8 @@ import {
 } from "@mui/base/Unstable_NumberInput";
 import { styled } from "@mui/system";
 import React from "react";
+
+//TODO: This file should definitely be split up
 
 const CoordNumberInput = React.forwardRef(function CustomNumberInput(
   props: NumberInputProps,
@@ -118,9 +120,36 @@ export function BeamCentre({
   );
 }
 
+export function PixelsToMicrons({
+  setPixelsPerMicron,
+}: {
+  setPixelsPerMicron: React.Dispatch<React.SetStateAction<number>>;
+}) {
+  const theme = useTheme();
+  return (
+    <Box bgcolor={theme.palette.background.paper} borderRadius={5} paddingTop={1} paddingBottom={1}>
+      <Grid2 container spacing={0} columns={3}>
+        <Grid2 size={3}>
+          <Stack direction="row" spacing={2} padding={2}>
+            <TextField
+              label="Pixels per micron"
+              onChange={(e) =>
+                setPixelsPerMicron(Number(e.target.value) ? Number(e.target.value) : 0)
+              }
+              defaultValue={1.25}
+              aria-label="Pixels per micron"
+            />
+          </Stack>
+        </Grid2>
+      </Grid2>
+    </Box>
+  );
+}
+
 export function OavMover() {
   const [crosshairX, setCrosshairX] = useState<number>(200);
   const [crosshairY, setCrosshairY] = useState<number>(200);
+  const [pixelsPerMicron, setPixelsPerMicron] = useState<number>(1.25);
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
@@ -129,10 +158,18 @@ export function OavMover() {
         <Grid2 size={9} sx={{ bgcolor: bgColor }}>
           <Box width={"100%"}>
             <OavVideoStream
-              pv="ca://BL24I-DI-OAV-01:MJPG:MJPG_URL_RBV"
+              pv="ca://BL24I-DI-OAV-01:"
               label="I24 OAV image stream"
               crosshairX={crosshairX}
               crosshairY={crosshairY}
+              onCoordClick={(x: number, y: number) => {
+                console.log(
+                  `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream`
+                );
+                console.log(
+                  `Relative position in um (${x / pixelsPerMicron}, ${y / pixelsPerMicron})`
+                );
+              }}
             />
           </Box>
         </Grid2>
@@ -140,11 +177,14 @@ export function OavMover() {
           <MoveArrows />
           <Grid2 size={3} padding={1} />
           <BeamCentre setCrosshairX={setCrosshairX} setCrosshairY={setCrosshairY} />
+          <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
         </Grid2>
       </Grid2>
     </div>
   );
 }
+
+//TODO: This is all just copied from the NumberInput example, the bits we need should be integrated into generic styling for the project
 
 const blue = {
   100: "#DAECFF",

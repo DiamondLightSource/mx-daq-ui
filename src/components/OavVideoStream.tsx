@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { PvComponent, PvItem, PvDescription } from "../pv/PvComponent";
-import { pvIntArrayToString } from "../pv/util";
+import { PvComponent, PvItem, PvDescription, useParsedPvConnection } from "../pv/PvComponent";
+import { parseNumericPv, pvIntArrayToString } from "../pv/util";
 import React from "react";
 
 export const useContainerDimensions = (ref: React.MutableRefObject<HTMLHeadingElement | null>) => {
@@ -25,10 +25,40 @@ export const useContainerDimensions = (ref: React.MutableRefObject<HTMLHeadingEl
   return dimensions;
 };
 
-export function OavVideoStream(props: PvDescription & { crosshairX: number; crosshairY: number }) {
+/*
+ * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)
+ * Takes OAV PV prefix eg "ca://BL24I-DI-OAV-01:" because it fetches multiple bits of info from the OAV IOC
+ */
+export function OavVideoStream(
+  props: PvDescription & {
+    crosshairX: number;
+    crosshairY: number;
+    onCoordClick: (x: number, y: number) => void; // handler for clicking on the OAV: x and y are the pixels on the original OAV stream
+  }
+) {
   const [crosshairX, crosshairY] = [props.crosshairX, props.crosshairY];
+  const onCoordClick = props.onCoordClick;
+  const streamPv = props.pv + "MJPG:MJPG_URL_RBV";
+
+  const xDim = Number(
+    useParsedPvConnection({
+      pv: props.pv + "MJPG:ArraySize1_RBV",
+      label: "OAV MJPG stream x size",
+      transformValue: parseNumericPv,
+    })
+  );
+  const yDim = Number(
+    useParsedPvConnection({
+      pv: props.pv + "MJPG:ArraySize2_RBV",
+      label: "OAV MJPG stream x size",
+      transformValue: parseNumericPv,
+    })
+  );
+  console.log(`original stream size ${[xDim, yDim]}`);
+
   return PvComponent({
-    ...props,
+    pv: streamPv,
+    label: props.label,
     render: (props: PvItem) => {
       const value = props.value ? props.value : "undefined";
       return (
@@ -37,6 +67,8 @@ export function OavVideoStream(props: PvDescription & { crosshairX: number; cros
             videoStreamUrl={value.toString()}
             crosshairX={crosshairX}
             crosshairY={crosshairY}
+            onCoordClick={onCoordClick}
+            originalDims={{ width: xDim, height: yDim }}
           ></VideoBoxWithOverlay>
           {value.toString()}
         </Box>
@@ -51,7 +83,6 @@ function drawCanvas(
   crosshairX: number,
   crosshairY: number
 ) {
-  //TODO: make this a function, draw on useEffect and on update
   const context = canvasRef.current?.getContext("2d");
   if (context) {
     context.clearRect(
@@ -67,11 +98,20 @@ function drawCanvas(
   }
 }
 
+/*
+ * Draws an MJPG stream with an overlaid crosshair, optionally takes a handler for when a certain x,y coord is clicked
+ * optionally you can give it the original dimensions of the stream to have the handler called with the
+ * click position in original pixel values
+ */
 function VideoBoxWithOverlay(props: {
   videoStreamUrl: string;
   crosshairX: number;
   crosshairY: number;
+  onCoordClick?: (x: number, y: number) => void;
+  originalDims?: { width: number; height: number };
 }) {
+  // TODO: wait until the video URL is correct once then stop updating it
+  // may need a new kind of PV component for that
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const videoBoxRef = React.useRef<HTMLHeadingElement | null>(null);
   const { width, height } = useContainerDimensions(videoBoxRef);
@@ -85,7 +125,7 @@ function VideoBoxWithOverlay(props: {
         style={{ position: "relative", zIndex: 0 }}
       />
       <canvas
-        width={width} //TODO get these from the containing Box
+        width={width}
         height={height}
         ref={canvasRef}
         style={{
@@ -93,6 +133,22 @@ function VideoBoxWithOverlay(props: {
           left: 0,
           position: "absolute",
           zIndex: 1,
+        }}
+        onMouseDown={(e) => {
+          if (props.onCoordClick) {
+            const canvas = canvasRef.current;
+            if (canvas) {
+              const rect = canvas.getBoundingClientRect();
+              // x and y relative to the canvas
+              const [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
+              // x and y relative to the crosshair
+              const [relX, relY] = [x - props.crosshairX, y - props.crosshairY];
+              // fraction of the image in x/y * original dimension in pixels
+              const scaledX = props.originalDims ? (relX / width) * props.originalDims.width : x;
+              const scaledY = props.originalDims ? (relY / height) * props.originalDims.height : y;
+              props.onCoordClick(scaledX, scaledY);
+            }
+          }
         }}
       />
     </Box>
