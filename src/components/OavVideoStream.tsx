@@ -55,16 +55,20 @@ export function OavVideoStream(
     })
   );
   console.log(`original stream size ${[xDim, yDim]}`);
+  const [streamUrl, setStreamUrl] = React.useState<string>("not connected");
 
   return PvComponent({
     pv: streamPv,
     label: props.label,
     render: (props: PvItem) => {
       const value = props.value ? props.value : "undefined";
+      if (!streamUrl.startsWith("http") && value.toString().startsWith("http")) {
+        setStreamUrl(value.toString());
+      }
       return (
         <Box sx={{ padding: 0 }}>
           <VideoBoxWithOverlay
-            videoStreamUrl={value.toString()}
+            videoStreamUrl={streamUrl}
             crosshairX={crosshairX}
             crosshairY={crosshairY}
             onCoordClick={onCoordClick}
