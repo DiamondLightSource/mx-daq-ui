@@ -1,11 +1,9 @@
 import React from "react";
-import { Tabs, Tab, useTheme, Box, Stack } from "@mui/material";
+import { Tabs, Tab, useTheme, Box } from "@mui/material";
 import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
 import { TestBoxesTabPanel } from "./screens/TestBoxes";
 import { OavMover } from "./screens/OavMover";
 import "./App.css";
-import { WorkerStatus } from "./components/WorkerStatus";
-import { SleepButton } from "./components/SleepButton";
 import { BlueApiInfo } from "./screens/BlueApiInfo";
 
 interface TabPanelProps {

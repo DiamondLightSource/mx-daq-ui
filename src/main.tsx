@@ -6,6 +6,10 @@ import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "@diamondlightsource/cs-web-lib";
 
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
+
 const theme = createTheme({ palette: { mode: "dark" } });
 
 const container = document.getElementById("root");
@@ -15,7 +19,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </Provider>
     </ThemeProvider>
   </StrictMode>
