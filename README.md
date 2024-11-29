@@ -18,3 +18,5 @@ then here run `npm install` and also run it again on the tarball of cs-web-lib. 
 ## Gotchas
 
 To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk` the environment variables `VITE_PVWS_SOCKET` and `VITE_PVWS_SSL` must be set to the URL and `"true"` respectively. This is in the file `.env`. Note that the value must be the string "true"
+
+Settings for connecting to BlueAPI should also be in the .env file

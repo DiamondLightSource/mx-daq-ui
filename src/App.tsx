@@ -1,9 +1,12 @@
 import React from "react";
-import { Tabs, Tab, useTheme, Box } from "@mui/material";
+import { Tabs, Tab, useTheme, Box, Stack } from "@mui/material";
 import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
 import { TestBoxesTabPanel } from "./screens/TestBoxes";
 import { OavMover } from "./screens/OavMover";
 import "./App.css";
+import { WorkerStatus } from "./components/WorkerStatus";
+import { SleepButton } from "./components/SleepButton";
+import { BlueApiInfo } from "./screens/BlueApiInfo";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,18 +52,22 @@ function App() {
           aria-label="basic tabs example"
           textColor="primary"
         >
-          <Tab label="Detector position" {...a11yProps(0)} />
-          <Tab label="OAV view" {...a11yProps(1)} />
-          <Tab label="Beamline stats" {...a11yProps(2)} />
+          <Tab label="BlueAPI info" {...a11yProps(0)} />
+          <Tab label="Detector position" {...a11yProps(1)} />
+          <Tab label="OAV view" {...a11yProps(2)} />
+          <Tab label="Beamline stats" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <DetectorMotionTabPanel />
+        <BlueApiInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <OavMover />
+        <DetectorMotionTabPanel />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
+        <OavMover />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
         <TestBoxesTabPanel />
       </CustomTabPanel>
     </Box>
