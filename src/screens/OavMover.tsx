@@ -15,7 +15,12 @@ import { CoordNumberInput } from "../components/CoordNumberInput";
 export function MoveArrows() {
   const theme = useTheme();
   return (
-    <Box bgcolor={theme.palette.background.paper} borderRadius={5} paddingTop={1} paddingBottom={1}>
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
       <Grid2 container spacing={0} columns={3}>
         <Grid2 size={3}>
           <b>Nudge sample:</b>
@@ -59,7 +64,12 @@ export function BeamCentre({
 }) {
   const theme = useTheme();
   return (
-    <Box bgcolor={theme.palette.background.paper} borderRadius={5} paddingTop={1} paddingBottom={1}>
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
       <Grid2 container spacing={0} columns={3}>
         <Grid2 size={3} padding={1}>
           <b>Beam center:</b>
@@ -96,14 +106,21 @@ export function PixelsToMicrons({
 }) {
   const theme = useTheme();
   return (
-    <Box bgcolor={theme.palette.background.paper} borderRadius={5} paddingTop={1} paddingBottom={1}>
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
       <Grid2 container spacing={0} columns={3}>
         <Grid2 size={3}>
           <Stack direction="row" spacing={2} padding={2}>
             <TextField
               label="Pixels per micron"
               onChange={(e) =>
-                setPixelsPerMicron(Number(e.target.value) ? Number(e.target.value) : 0)
+                setPixelsPerMicron(
+                  Number(e.target.value) ? Number(e.target.value) : 0
+                )
               }
               defaultValue={1.25}
               aria-label="Pixels per micron"
@@ -136,12 +153,14 @@ export function OavMover() {
                 console.log(
                   `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`
                 );
+                const [x_int, y_int] = [Math.round(x), Math.round(y)];
                 if (Number.isNaN(x_um) || Number.isNaN(y_um)) {
-                  console.log("Not submitting plan while disconnected from PVs!");
+                  console.log(
+                    "Not submitting plan while disconnected from PVs!"
+                  );
                 } else {
-                  submitAndRunPlanImmediately("virtual_relative_move_um", {
-                    x_um: x_um,
-                    y_um: y_um,
+                  submitAndRunPlanImmediately("gui_gonio_move_on_click", {
+                    position_px: [x_int, y_int],
                   });
                 }
               }}
@@ -151,7 +170,10 @@ export function OavMover() {
         <Grid2 size={3} height={3}>
           <MoveArrows />
           <Grid2 size={3} padding={1} />
-          <BeamCentre setCrosshairX={setCrosshairX} setCrosshairY={setCrosshairY} />
+          <BeamCentre
+            setCrosshairX={setCrosshairX}
+            setCrosshairY={setCrosshairY}
+          />
           <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
         </Grid2>
       </Grid2>
