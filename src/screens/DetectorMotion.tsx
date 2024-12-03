@@ -1,4 +1,4 @@
-import { Box, Button, Stack, TextField, useTheme } from "@mui/material";
+import { Box, Button, Stack, useTheme } from "@mui/material";
 import { PvComponent, PvDescription, PvItem } from "../pv/PvComponent";
 import { forceString } from "../pv/util";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
@@ -27,9 +27,7 @@ export function DetectorMotionTabPanel() {
         <RoPvBox label="Detector stage position" pv="ca://BL24I-EA-DET-01:Y" />
         <Stack direction={"row"}>
           <Button
-            onClick={() =>
-              submitAndRunPlanImmediately("gui_move_detector", { det: "eiger" })
-            }
+            onClick={() => submitAndRunPlanImmediately("gui_move_detector", { det: "eiger" })}
           >
             Move to Eiger!
           </Button>
