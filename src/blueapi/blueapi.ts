@@ -29,11 +29,16 @@ export function useBlueApiCall(
   endpoint: string,
   method?: string,
   body?: object,
-  pollRateMillis?: number
+  pollRateMillis?: number,
+  queryKey?: string
 ) {
-  return useQuery("BlueApiCall", async () => await blueApiCall(endpoint, method, body), {
-    refetchInterval: pollRateMillis ?? 500,
-  });
+  return useQuery(
+    queryKey ?? "BlueApiCall",
+    async () => await blueApiCall(endpoint, method, body),
+    {
+      refetchInterval: pollRateMillis ?? 500,
+    }
+  );
 }
 
 export function processUseBlueApiCall(
