@@ -17,7 +17,13 @@ export function SleepButton() {
         onChange={(e) => setSeconds(Number(e.target.value))}
         style={{ width: 100 }}
       />
-      <Button onClick={() => submitAndRunPlanImmediately("sleep", { sec: seconds })}>Sleep!</Button>
+      <Button
+        onClick={() =>
+          submitAndRunPlanImmediately("gui_sleep", { sec: seconds })
+        }
+      >
+        Sleep!
+      </Button>
     </Stack>
   );
 }

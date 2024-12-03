@@ -60,15 +60,22 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
   return blueApiCall("/worker/state").then((res) => res.json());
 }
 
-export function submitPlan(planName: string, planParams: object): Promise<string> {
+export function submitPlan(
+  planName: string,
+  planParams: object
+): Promise<string> {
   return blueApiCall("/tasks", "POST", {
     name: planName,
     params: planParams,
   }).then((res) => res.json().then((res) => res["task_id"]));
 }
 
-export function submitAndRunPlanImmediately(planName: string, planParams: object): Promise<string> {
+export function submitAndRunPlanImmediately(
+  planName: string,
+  planParams: object
+): Promise<string> {
   return submitPlan(planName, planParams).then((res) =>
+    // TODO make sure submitPlan was succesful before then putting it to the worker
     blueApiCall("/worker/task", "PUT", { task_id: res }).then((res) =>
       res.json().then((res) => res["task_id"])
     )
