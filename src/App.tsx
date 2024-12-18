@@ -76,7 +76,7 @@ function App() {
       <CustomTabPanel value={value} index={3}>
         <TestBoxesTabPanel />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
+      <CustomTabPanel value={value} index={4}>
         <ParamsPanel />
       </CustomTabPanel>
     </Box>
