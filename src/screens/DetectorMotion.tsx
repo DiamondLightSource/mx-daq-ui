@@ -50,6 +50,11 @@ export function DetectorMotionTabPanel() {
             Move to Pilatus!
           </Button>
         </Stack>
+        <Button
+          onClick={() => submitAndRunPlanImmediately("gui_set_jungfrau", [])}
+        >
+          Use Jungfrau!
+        </Button>
       </Stack>
     </div>
   );

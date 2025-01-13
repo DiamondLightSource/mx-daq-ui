@@ -70,6 +70,8 @@ export function submitPlan(
   }).then((res) => res.json().then((res) => res["task_id"]));
 }
 
+// TODO see if possible to have planParams as optional
+// Not all plans need input args
 export function submitAndRunPlanImmediately(
   planName: string,
   planParams: object
