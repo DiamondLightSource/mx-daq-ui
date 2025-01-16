@@ -2,6 +2,10 @@ import {
   Box,
   Button,
   Checkbox,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   Grid2,
@@ -19,7 +23,6 @@ import React from "react";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
-import { Check, CheckBox } from "@mui/icons-material";
 
 const pumpProbeMode = [
   "None",
@@ -35,11 +38,92 @@ const pumpProbeMode = [
 
 const chipTypes = ["Oxford", "Custom", "MISP"];
 
-// TODO Split in smaller functions
+function CalculateEAVA(
+  laserDwell: number,
+  expTime: number,
+  factor: number
+): number {
+  const movetime: number = 0.008;
+  const res = factor * 20 * (movetime + (laserDwell + expTime) / 2);
+  return Number(res.toFixed(4));
+}
+
+type EavaRequest = {
+  laserDwell: number;
+  expTime: number;
+};
+
+function PumpProbeDialog(props: EavaRequest) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <React.Fragment>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        EAVA calculator
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Excite And Visit Again</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Calculate the laser delay for each EAVA setting from laser dwell
+            time and exposure time.
+          </DialogContentText>
+          <Stack direction={"column"} spacing={1} alignItems={"center"}>
+            <p>
+              <b>Repeat1: </b>
+              {CalculateEAVA(props.laserDwell, props.expTime, 2)}s
+            </p>
+            <p>
+              <b>Repeat2: </b>
+              {CalculateEAVA(props.laserDwell, props.expTime, 4)}s
+            </p>
+            <p>
+              <b>Repeat3: </b>
+              {CalculateEAVA(props.laserDwell, props.expTime, 6)}s
+            </p>
+            <p>
+              <b>Repeat5: </b>
+              {CalculateEAVA(props.laserDwell, props.expTime, 10)}s
+            </p>
+            <p>
+              <b>Repeat10: </b>
+              {CalculateEAVA(props.laserDwell, props.expTime, 20)}s
+            </p>
+          </Stack>
+          <DialogContentText>
+            <b>Notes</b>
+            <ul>
+              <li>
+                The repeat is the number of pairs of lines illuminated before
+                probe.
+              </li>
+              <li>
+                Because the lines in a block are 20, repeat3 will miss some
+                lines
+              </li>
+              <li>
+                ONLY use with Mapping lite, do not run a full Oxford Chip in
+                this mode.
+              </li>
+            </ul>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    </React.Fragment>
+  );
+}
 
 export function CollectionInput() {
-  const theme = useTheme();
-  const bgColor = theme.palette.background.paper;
+  // const theme = useTheme();
+  // const bgColor = theme.palette.background.paper;
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
   const [expTime, setExpTime] = React.useState<number>(0.01);
@@ -51,15 +135,6 @@ export function CollectionInput() {
   const [laserDelay, setLaserDelay] = React.useState<number>(0.0);
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
-
-  // For the map
-  // const [view, setView] = React.useState("list");
-  // const handleChange = (
-  //   event: React.MouseEvent<HTMLElement>,
-  //   nextView: string
-  // ) => {
-  //   setView(nextView);
-  // };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -92,7 +167,7 @@ export function CollectionInput() {
             }}
           />
         </Grid2>
-        <Grid2 size={3} justifyContent={"center"}>
+        <Grid2 size={4}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <TextField
               size="small"
@@ -138,8 +213,43 @@ export function CollectionInput() {
             />
           </Stack>
         </Grid2>
+        <Grid2 size={5}>
+          <Stack direction={"column"} alignItems={"center"}>
+            <FormControl size="small" style={{ width: 150 }}>
+              <InputLabel id="chip-label">chipType</InputLabel>
+              <Select
+                labelId="chip-label"
+                id="chip"
+                value={chipType}
+                label="chipType"
+                onChange={(e) => setChipType(String(e.target.value))}
+              >
+                {chipTypes.map((chipType) => (
+                  <MenuItem key={chipType} value={chipType}>
+                    {chipType}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <p> map space ? </p>
+          </Stack>
+          {
+            // TODO This doesn't work. And would need separate function anyway
+            /* <ToggleButtonGroup
+            orientation="vertical"
+            value={view}
+            onChange={handleChange}
+            sx={{ bgcolor: bgColor }}
+          >
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+          </ToggleButtonGroup> */
+          }
+        </Grid2>
         <Grid2 size={3}>
-          <Stack spacing={1} direction={"column"} alignItems={"center"}>
+          <Stack spacing={1} direction={"column"}>
             <FormControl size="small" style={{ width: 150 }}>
               <InputLabel id="pp-label">pumpProbe</InputLabel>
               <Select
@@ -188,69 +298,36 @@ export function CollectionInput() {
                 }
               />
             </FormControl>
-            <Button> CALCULATE! </Button>
+            <PumpProbeDialog laserDwell={laserDwell} expTime={expTime} />
           </Stack>
-        </Grid2>
-        <Grid2 size={6} sx={{ bgcolor: bgColor }}>
-          <Stack direction={"column"} alignItems={"center"}>
-            <FormControl size="small" style={{ width: 150 }}>
-              <InputLabel id="chip-label">chipType</InputLabel>
-              <Select
-                labelId="chip-label"
-                id="chip"
-                value={chipType}
-                label="chipType"
-                onChange={(e) => setChipType(String(e.target.value))}
-              >
-                {chipTypes.map((chipType) => (
-                  <MenuItem key={chipType} value={chipType}>
-                    {chipType}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <p> map space ? </p>
-          </Stack>
-          {
-            // TODO This doesn't work. And would need separate function anyway
-            /* <ToggleButtonGroup
-            orientation="vertical"
-            value={view}
-            onChange={handleChange}
-            sx={{ bgcolor: bgColor }}
-          >
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-          </ToggleButtonGroup> */
-          }
         </Grid2>
       </Grid2>
-      <Stack direction={"row"} spacing={"3"} justifyContent="center">
-        <Button
-          onClick={() =>
-            submitAndRunPlanImmediately("gui_set_parameters", {
-              sub_dir: subDir,
-              chip_name: chipName,
-              exp_time: expTime,
-              det_dist: detDist,
-              transmission: trans,
-              n_shots: shots,
-              chip_type: chipType,
-              pump_settings: [
-                pumpProbe,
-                laserDwell,
-                laserDelay,
-                checkerPattern,
-              ],
-            })
-          }
-        >
-          Run (for now just set)!
-        </Button>
-        <Button>Abort! (does nothing)</Button>
-      </Stack>
+      <Grid2 size={12}>
+        <Stack direction={"row"} spacing={"3"} justifyContent="center">
+          <Button
+            onClick={() =>
+              submitAndRunPlanImmediately("gui_set_parameters", {
+                sub_dir: subDir,
+                chip_name: chipName,
+                exp_time: expTime,
+                det_dist: detDist,
+                transmission: trans,
+                n_shots: shots,
+                chip_type: chipType,
+                pump_settings: [
+                  pumpProbe,
+                  laserDwell,
+                  laserDelay,
+                  checkerPattern,
+                ],
+              })
+            }
+          >
+            Run (for now just set)!
+          </Button>
+          <Button>Abort! (does nothing)</Button>
+        </Stack>
+      </Grid2>
     </Box>
     // NOTE Also need abort button
   );
