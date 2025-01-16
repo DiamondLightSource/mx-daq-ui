@@ -38,6 +38,16 @@ const pumpProbeMode = [
 
 const chipTypes = ["Oxford", "Custom", "MISP"];
 
+type EavaRequest = {
+  laserDwell: number;
+  expTime: number;
+};
+
+type MapProps = {
+  label: string;
+  chipType: typeof chipTypes;
+};
+
 function CalculateEAVA(
   laserDwell: number,
   expTime: number,
@@ -47,11 +57,6 @@ function CalculateEAVA(
   const res = factor * 20 * (movetime + (laserDwell + expTime) / 2);
   return Number(res.toFixed(4));
 }
-
-type EavaRequest = {
-  laserDwell: number;
-  expTime: number;
-};
 
 function PumpProbeDialog(props: EavaRequest) {
   const [open, setOpen] = React.useState(false);
@@ -121,6 +126,8 @@ function PumpProbeDialog(props: EavaRequest) {
   );
 }
 
+// function MapDialog(props:)
+
 export function CollectionInput() {
   // const theme = useTheme();
   // const bgColor = theme.palette.background.paper;
@@ -135,6 +142,7 @@ export function CollectionInput() {
   const [laserDelay, setLaserDelay] = React.useState<number>(0.0);
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
+  const [useMapLite, setUseMap] = React.useState(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -167,7 +175,7 @@ export function CollectionInput() {
             }}
           />
         </Grid2>
-        <Grid2 size={4}>
+        <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <TextField
               size="small"
@@ -213,8 +221,11 @@ export function CollectionInput() {
             />
           </Stack>
         </Grid2>
-        <Grid2 size={5}>
-          <Stack direction={"column"} alignItems={"center"}>
+        <Grid2 size={4.5}>
+          <Stack direction={"column"}>
+            <p>
+              <b>Chip & Map options</b>
+            </p>
             <FormControl size="small" style={{ width: 150 }}>
               <InputLabel id="chip-label">chipType</InputLabel>
               <Select
@@ -231,7 +242,18 @@ export function CollectionInput() {
                 ))}
               </Select>
             </FormControl>
-            <p> map space ? </p>
+            {/* // NOTE may put this in MapDialog for Oxford */}
+            <FormControl>
+              <FormControlLabel
+                label="Use Mapping Lite"
+                control={
+                  <Checkbox
+                    checked={useMapLite}
+                    onChange={(e) => setUseMap(Boolean(e.target.checked))} // NOPE!
+                  />
+                }
+              />
+            </FormControl>
           </Stack>
           {
             // TODO This doesn't work. And would need separate function anyway
