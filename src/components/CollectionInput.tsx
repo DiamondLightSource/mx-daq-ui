@@ -45,8 +45,26 @@ type EavaRequest = {
 
 type MapProps = {
   label: string;
-  chipType: typeof chipTypes;
+  chipType: string;
 };
+
+// function MapView(props: MapProps) {
+//   const [oxford, setOxford] = React.useState(false);
+//   const [custom, setCustom] = React.useState(false);
+
+//   const hideComponent = (props.chipType) => {
+//     switch (varname) {
+//       case "Oxford":
+//         setOxford(!oxford);
+//         break;
+//       case "Custom":
+//         setCustom(!custom);
+//         break;
+//       default:
+//         break;
+//     }
+//   }
+// }
 
 function CalculateEAVA(
   laserDwell: number,
@@ -125,8 +143,6 @@ function PumpProbeDialog(props: EavaRequest) {
     </React.Fragment>
   );
 }
-
-// function MapDialog(props:)
 
 export function CollectionInput() {
   // const theme = useTheme();
@@ -221,55 +237,6 @@ export function CollectionInput() {
             />
           </Stack>
         </Grid2>
-        <Grid2 size={4.5}>
-          <Stack direction={"column"}>
-            <p>
-              <b>Chip & Map options</b>
-            </p>
-            <FormControl size="small" style={{ width: 150 }}>
-              <InputLabel id="chip-label">chipType</InputLabel>
-              <Select
-                labelId="chip-label"
-                id="chip"
-                value={chipType}
-                label="chipType"
-                onChange={(e) => setChipType(String(e.target.value))}
-              >
-                {chipTypes.map((chipType) => (
-                  <MenuItem key={chipType} value={chipType}>
-                    {chipType}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {/* // NOTE may put this in MapDialog for Oxford */}
-            <FormControl>
-              <FormControlLabel
-                label="Use Mapping Lite"
-                control={
-                  <Checkbox
-                    checked={useMapLite}
-                    onChange={(e) => setUseMap(Boolean(e.target.checked))} // NOPE!
-                  />
-                }
-              />
-            </FormControl>
-          </Stack>
-          {
-            // TODO This doesn't work. And would need separate function anyway
-            /* <ToggleButtonGroup
-            orientation="vertical"
-            value={view}
-            onChange={handleChange}
-            sx={{ bgcolor: bgColor }}
-          >
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
-          </ToggleButtonGroup> */
-          }
-        </Grid2>
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
             <FormControl size="small" style={{ width: 150 }}>
@@ -322,6 +289,55 @@ export function CollectionInput() {
             </FormControl>
             <PumpProbeDialog laserDwell={laserDwell} expTime={expTime} />
           </Stack>
+        </Grid2>
+        <Grid2 size={4.5}>
+          <Stack direction={"column"}>
+            <p>
+              <b>Chip & Map options</b>
+            </p>
+            <FormControl size="small" style={{ width: 150 }}>
+              <InputLabel id="chip-label">chipType</InputLabel>
+              <Select
+                labelId="chip-label"
+                id="chip"
+                value={chipType}
+                label="chipType"
+                onChange={(e) => setChipType(String(e.target.value))}
+              >
+                {chipTypes.map((chipType) => (
+                  <MenuItem key={chipType} value={chipType}>
+                    {chipType}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/* // NOTE may put this in MapDialog for Oxford */}
+            <FormControl>
+              <FormControlLabel
+                label="Use Mapping Lite"
+                control={
+                  <Checkbox
+                    checked={useMapLite}
+                    onChange={(e) => setUseMap(Boolean(e.target.checked))} // NOPE!
+                  />
+                }
+              />
+            </FormControl>
+          </Stack>
+          {
+            // TODO This doesn't work. And would need separate function anyway
+            /* <ToggleButtonGroup
+            orientation="vertical"
+            value={view}
+            onChange={handleChange}
+            sx={{ bgcolor: bgColor }}
+          >
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+            <ToggleButtonGroup value="01">01</ToggleButtonGroup>
+          </ToggleButtonGroup> */
+          }
         </Grid2>
       </Grid2>
       <Grid2 size={12}>
