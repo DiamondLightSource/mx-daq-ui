@@ -1,4 +1,4 @@
-import { StringifyOptions } from "querystring";
+// import { StringifyOptions } from "querystring";
 import { useQuery, UseQueryResult } from "react-query";
 
 const BLUEAPI_SOCKET = import.meta.env.VITE_BLUEAPI_SOCKET;

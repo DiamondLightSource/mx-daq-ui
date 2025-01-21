@@ -352,12 +352,13 @@ export function CollectionInput() {
                 transmission: trans,
                 n_shots: shots,
                 chip_type: chipType,
-                pump_settings: [
-                  pumpProbe,
-                  laserDwell,
-                  laserDelay,
-                  checkerPattern,
-                ],
+                checker_pattern: checkerPattern.valueOf(),
+                // pump_settings: [
+                //   pumpProbe,
+                //   laserDwell,
+                //   laserDelay,
+                //   checkerPattern,
+                // ],
               })
             }
           >

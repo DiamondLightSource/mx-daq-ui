@@ -51,7 +51,7 @@ export function DetectorMotionTabPanel() {
           </Button>
         </Stack>
         <Button
-          onClick={() => submitAndRunPlanImmediately("gui_set_jungfrau", [])}
+          onClick={() => submitAndRunPlanImmediately("gui_set_jungfrau", {})}
         >
           Use Jungfrau!
         </Button>
