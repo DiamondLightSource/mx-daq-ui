@@ -84,16 +84,3 @@ export function submitAndRunPlanImmediately(
     )
   );
 }
-
-// TODO Need some way to get things from devices!
-// This won't work but gotts atart from somewhere
-export function submitPlanAndGetresults(
-  planName: string,
-  planParams: object
-): Promise<string> {
-  return submitPlan(planName, planParams).then((res) =>
-    blueApiCall("/worker/task", "GET", { task_id: res }).then((res) =>
-      res.json().then((res) => res["task_id"])
-    )
-  );
-}
