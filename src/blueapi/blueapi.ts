@@ -84,3 +84,10 @@ export function submitAndRunPlanImmediately(
     )
   );
 }
+
+export function abortCurrentPlan(): Promise<BlueApiWorkerState> {
+  return blueApiCall("/worker/state", "PUT", {
+    new_state: "ABORTING",
+    reason: "Abort button pressed",
+  }).then((res) => res.json());
+}

@@ -22,7 +22,10 @@ import {
 import React from "react";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 
-import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
+import {
+  abortCurrentPlan,
+  submitAndRunPlanImmediately,
+} from "../blueapi/blueapi";
 
 const pumpProbeMode = [
   "None",
@@ -364,7 +367,7 @@ export function CollectionInput() {
           >
             Run (for now just set)!
           </Button>
-          <Button>Abort! (does nothing)</Button>
+          <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
         </Stack>
       </Grid2>
     </Box>
