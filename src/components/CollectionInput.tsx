@@ -16,7 +16,6 @@ import {
   Stack,
   TextField,
   ToggleButtonGroup,
-  useTheme,
 } from "@mui/material";
 
 import React from "react";
@@ -148,8 +147,6 @@ function PumpProbeDialog(props: EavaRequest) {
 }
 
 export function CollectionInput() {
-  // const theme = useTheme();
-  // const bgColor = theme.palette.background.paper;
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
   const [expTime, setExpTime] = React.useState<number>(0.01);
