@@ -162,6 +162,7 @@ export function OavMover() {
                   submitAndRunPlanImmediately("gui_gonio_move_on_click", {
                     position_px: [x_int, y_int],
                   });
+                  // This should use gui_stage_move_on_click
                 }
               }}
             />
