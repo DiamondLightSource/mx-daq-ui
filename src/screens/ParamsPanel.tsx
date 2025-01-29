@@ -17,7 +17,7 @@ import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
 } from "../blueapi/blueapi";
-import { PumpProbeDialog } from "../components/CollectionInput";
+import { MapView, PumpProbeDialog } from "../components/CollectionInput";
 
 const pumpProbeMode = [
   "None",
@@ -45,7 +45,7 @@ function CollectionInput() {
   const [laserDelay, setLaserDelay] = React.useState<number>(0.0);
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
-  const [useMapLite, setUseMap] = React.useState(false);
+  // const [useMapLite, setUseMap] = React.useState(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -178,7 +178,7 @@ function CollectionInput() {
           </Stack>
         </Grid2>
         <Grid2 size={4.5}>
-          <Stack direction={"column"}>
+          <Stack direction={"column"} alignItems={"center"} spacing={4}>
             <p>
               <b>Chip & Map options</b>
             </p>
@@ -199,7 +199,8 @@ function CollectionInput() {
               </Select>
             </FormControl>
             {/* // NOTE may put this in MapDialog for Oxford */}
-            <FormControl>
+            <MapView label="Oxford" chipType={chipType} />
+            {/* <FormControl>
               <FormControlLabel
                 label="Use Mapping Lite"
                 control={
@@ -209,7 +210,7 @@ function CollectionInput() {
                   />
                 }
               />
-            </FormControl>
+            </FormControl> */}
           </Stack>
           {
             // TODO This doesn't work. And would need separate function anyway

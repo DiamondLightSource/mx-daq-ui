@@ -1,9 +1,13 @@
 import {
+  Box,
   Button,
+  Checkbox,
   Dialog,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
+  FormControlLabel,
   Stack,
 } from "@mui/material";
 
@@ -97,20 +101,59 @@ type MapProps = {
   chipType: string;
 };
 
-// function MapView(props: MapProps) {
-//   const [oxford, setOxford] = React.useState(false);
-//   const [custom, setCustom] = React.useState(false);
+function OxfordMapComponent() {
+  const [useMapLite, setUseMap] = React.useState(false);
 
-//   const hideComponent = (props.chipType) => {
-//     switch (varname) {
-//       case "Oxford":
-//         setOxford(!oxford);
-//         break;
-//       case "Custom":
-//         setCustom(!custom);
-//         break;
-//       default:
-//         break;
-//     }
-//   }
-// }
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
+  return (
+    <Box>
+      <Stack direction={"column"}>
+        <FormControl>
+          <FormControlLabel
+            label="Use Mapping Lite"
+            control={
+              <Checkbox
+                checked={useMapLite}
+                onChange={(e) => setUseMap(Boolean(e.target.checked))} // NOPE!
+              />
+            }
+          />
+        </FormControl>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Choose Map
+        </Button>
+        <Dialog open={dialogOpen} onClose={handleClose}>
+          <DialogTitle>Choose blocks on Oxford chip</DialogTitle>
+          <DialogContent>
+            <Box>Buttons here</Box>
+          </DialogContent>
+        </Dialog>
+      </Stack>
+    </Box>
+  );
+}
+
+export function MapView(props: MapProps) {
+  // const [oxford, setOxford] = React.useState(false);
+  // const [custom, setCustom] = React.useState(false);
+
+  // const hideComponent = (props.chipType) => () {
+  switch (props.chipType) {
+    case "Oxford":
+      return <OxfordMapComponent />;
+    // case "Custom":
+    //   setCustom(!custom);
+    //   break;
+    default:
+      return <></>;
+  }
+}
