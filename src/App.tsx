@@ -61,7 +61,7 @@ function App() {
           <Tab label="Detector position" {...a11yProps(1)} />
           <Tab label="OAV view" {...a11yProps(2)} />
           <Tab label="Beamline stats" {...a11yProps(3)} />
-          <Tab label="Collection" {...a11yProps(4)} />
+          <Tab label="FT Collection" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

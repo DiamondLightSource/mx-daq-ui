@@ -178,10 +178,7 @@ function CollectionInput() {
           </Stack>
         </Grid2>
         <Grid2 size={4.5}>
-          <Stack direction={"column"} alignItems={"center"} spacing={4}>
-            <p>
-              <b>Chip & Map options</b>
-            </p>
+          <Stack direction={"column"} alignItems={"center"} spacing={1}>
             <FormControl size="small" style={{ width: 150 }}>
               <InputLabel id="chip-label">chipType</InputLabel>
               <Select

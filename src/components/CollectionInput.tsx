@@ -9,6 +9,7 @@ import {
   FormControl,
   FormControlLabel,
   Stack,
+  TextField,
 } from "@mui/material";
 
 import React from "react";
@@ -101,9 +102,7 @@ type MapProps = {
   chipType: string;
 };
 
-function OxfordMapComponent() {
-  const [useMapLite, setUseMap] = React.useState(false);
-
+function OxfordMapSelection() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -115,45 +114,93 @@ function OxfordMapComponent() {
   };
 
   return (
+    <div>
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Choose Map
+      </Button>
+      <Dialog open={dialogOpen} onClose={handleClose}>
+        <DialogTitle>Choose blocks on Oxford chip</DialogTitle>
+        <DialogContent>
+          <Box>Buttons here</Box>
+        </DialogContent>
+      </Dialog>
+    </div>
+    // TODO Need a box here showing selected blocks
+  );
+}
+
+function OxfordMapComponent() {
+  const [isFullChip, setFullChip] = React.useState(false);
+
+  return (
     <Box>
       <Stack direction={"column"}>
         <FormControl>
           <FormControlLabel
-            label="Use Mapping Lite"
+            label="Collect full chip"
             control={
               <Checkbox
-                checked={useMapLite}
-                onChange={(e) => setUseMap(Boolean(e.target.checked))} // NOPE!
+                checked={isFullChip}
+                onChange={(e) => setFullChip(Boolean(e.target.checked))} // NOPE!
               />
             }
           />
         </FormControl>
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Choose Map
-        </Button>
-        <Dialog open={dialogOpen} onClose={handleClose}>
-          <DialogTitle>Choose blocks on Oxford chip</DialogTitle>
-          <DialogContent>
-            <Box>Buttons here</Box>
-          </DialogContent>
-        </Dialog>
+        {isFullChip ? null : <OxfordMapSelection />}
+      </Stack>
+    </Box>
+  );
+}
+
+function CustomMapComponent() {
+  const [numWindowsX, setWinX] = React.useState<number>(0);
+  const [numWindowsY, setWinY] = React.useState<number>(0);
+  const [stepSizeX, setStepX] = React.useState<number>(0);
+  const [stepSizeY, setStepY] = React.useState<number>(0);
+
+  return (
+    <Box>
+      <Stack direction={"column"} alignItems={"center"} spacing={1}>
+        <TextField
+          size="small"
+          label="numWindowsX"
+          defaultValue={numWindowsX}
+          onChange={(e) => setWinX(Number(e.target.value))}
+          style={{ width: 150 }}
+        />
+        <TextField
+          size="small"
+          label="numWindowsy"
+          defaultValue={numWindowsY}
+          onChange={(e) => setWinY(Number(e.target.value))}
+          style={{ width: 150 }}
+        />
+        <TextField
+          size="small"
+          label="stepSizeX"
+          defaultValue={stepSizeX}
+          onChange={(e) => setStepX(Number(e.target.value))}
+          style={{ width: 150 }}
+        />
+        <TextField
+          size="small"
+          label="stepSizeY"
+          defaultValue={stepSizeY}
+          onChange={(e) => setStepY(Number(e.target.value))}
+          style={{ width: 150 }}
+        />
       </Stack>
     </Box>
   );
 }
 
 export function MapView(props: MapProps) {
-  // const [oxford, setOxford] = React.useState(false);
-  // const [custom, setCustom] = React.useState(false);
-
-  // const hideComponent = (props.chipType) => () {
   switch (props.chipType) {
     case "Oxford":
       return <OxfordMapComponent />;
-    // case "Custom":
-    //   setCustom(!custom);
-    //   break;
+    case "Custom":
+      return <CustomMapComponent />;
     default:
-      return <></>;
+      return null;
   }
 }
