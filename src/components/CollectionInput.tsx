@@ -8,8 +8,11 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
+  Input,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 
 import React from "react";
@@ -113,19 +116,45 @@ function OxfordMapSelection() {
     setDialogOpen(false);
   };
 
+  const [select, setSelected] = React.useState(false);
+
+  const handleSelection = (
+    event: React.MouseEvent<HTMLElement>,
+    newSelect: string | null
+  ) => {
+    if (newSelect !== null) {
+      setSelected(newSelect);
+    }
+  };
+
   return (
-    <div>
+    <Stack direction={"column"} alignItems={"center"} spacing={2}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Choose Map
       </Button>
       <Dialog open={dialogOpen} onClose={handleClose}>
         <DialogTitle>Choose blocks on Oxford chip</DialogTitle>
         <DialogContent>
-          <Box>Buttons here</Box>
+          {/* <Box>Buttons here</Box> */}
+          <ToggleButton
+            value={select}
+            onChange={handleSelection}
+            aria-label="block1"
+          >
+            01
+          </ToggleButton>
         </DialogContent>
       </Dialog>
-    </div>
-    // TODO Need a box here showing selected blocks
+      <TextField
+        size="small"
+        label="selectedBlocks"
+        defaultValue={"Nothing here yet"}
+        slotProps={{
+          input: { readOnly: true },
+        }}
+        style={{ width: 150 }}
+      />
+    </Stack>
   );
 }
 
@@ -134,7 +163,7 @@ function OxfordMapComponent() {
 
   return (
     <Box>
-      <Stack direction={"column"}>
+      <Stack direction={"column"} spacing={2}>
         <FormControl>
           <FormControlLabel
             label="Collect full chip"
