@@ -27,7 +27,9 @@ export function DetectorMotionTabPanel() {
         <RoPvBox label="Detector stage position" pv="ca://BL24I-EA-DET-01:Y" />
         <Stack direction={"row"}>
           <Button
-            onClick={() => submitAndRunPlanImmediately("gui_move_detector", { det: "eiger" })}
+            onClick={() =>
+              submitAndRunPlanImmediately("gui_move_detector", { det: "eiger" })
+            }
           >
             Move to Eiger!
           </Button>
@@ -40,8 +42,6 @@ export function DetectorMotionTabPanel() {
           >
             Move to Pilatus!
           </Button>
-          {/* <TextField label="New position" />
-          <Button>Move stage!</Button> */}
         </Stack>
       </Stack>
     </div>
