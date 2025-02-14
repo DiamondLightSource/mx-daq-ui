@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -13,6 +14,10 @@ import {
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
 import { PumpProbeDialog } from "../components/CollectionComponents";
+import {
+  abortCurrentPlan,
+  submitAndRunPlanImmediately,
+} from "../blueapi/blueapi";
 
 const pumpProbeMode = [
   "None",
@@ -38,6 +43,7 @@ function CollectionInput() {
   const [pumpProbe, setPumpProbe] = React.useState<string>(pumpProbeMode[0]);
   const [laserDwell, setLaserDwell] = React.useState<number>(0.0);
   const [laserDelay, setLaserDelay] = React.useState<number>(0.0);
+  const [prePump, setPerPumpExp] = React.useState<number>(0.0);
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
 
@@ -154,8 +160,8 @@ function CollectionInput() {
             <TextField
               size="small"
               label="prePumpExposure (s)"
-              defaultValue={0.0}
-              // onChange={(e) => setLaserDelay(Number(e.target.value))}
+              defaultValue={prePump}
+              onChange={(e) => setPerPumpExp(Number(e.target.value))}
               style={{ width: 150 }}
             />
             <FormControl>
@@ -194,6 +200,33 @@ function CollectionInput() {
             <p>Chip-dependent Map settings TBD.</p>
           </Stack>
         </Grid2>
+      </Grid2>
+      <Grid2 size={12}>
+        <Stack direction={"row"} spacing={"5"} justifyContent={"center"}>
+          {/* See
+          https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
+          <Button
+            onClick={() =>
+              submitAndRunPlanImmediately("gui_set_parameters", {
+                sub_dir: subDir,
+                chip_name: chipName,
+                exp_time: expTime,
+                det_dist: detDist,
+                transmission: trans,
+                n_shots: shots,
+                chip_type: chipType,
+                checker_pattern: checkerPattern.valueOf(),
+                pumpProbe,
+                laserDwell,
+                laserDelay,
+                prePump,
+              })
+            }
+          >
+            Run (for now just set)!
+          </Button>
+          <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
+        </Stack>
       </Grid2>
     </Box>
   );
