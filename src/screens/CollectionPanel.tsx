@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
-import { PumpProbeDialog } from "../components/CollectionComponents";
+import { MapView, PumpProbeDialog } from "../components/CollectionComponents";
 import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
@@ -197,7 +197,7 @@ function CollectionInput() {
               </Select>
             </FormControl>
             {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C5 */}
-            <p>Chip-dependent Map settings TBD.</p>
+            <MapView label="map" chipType={chipType} />
           </Stack>
         </Grid2>
       </Grid2>
