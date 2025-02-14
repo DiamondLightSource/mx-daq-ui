@@ -22,10 +22,17 @@ export function DetectorMotionTabPanel() {
   const _theme = useTheme();
   return (
     <div>
-      <Stack spacing={0}>
+      <Stack spacing={1}>
         <RoPvBox label="Selected detector" pv="ca://ME14E-MO-IOC-01:GP101" />
-        <RoPvBox label="Detector stage position" pv="ca://BL24I-EA-DET-01:Y" />
-        <Stack direction={"row"}>
+        <RoPvBox
+          label="Detector stage y position"
+          pv="ca://BL24I-EA-DET-01:Y"
+        />
+        <RoPvBox
+          label="Detector stage z position"
+          pv="ca://BL24I-EA-DET-01:Z"
+        />
+        <Stack direction={"row"} spacing={5} justifyContent={"center"}>
           <Button
             onClick={() =>
               submitAndRunPlanImmediately("gui_move_detector", { det: "eiger" })
