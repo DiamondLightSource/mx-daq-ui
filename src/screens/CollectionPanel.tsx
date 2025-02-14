@@ -216,10 +216,10 @@ function CollectionInput() {
                 n_shots: shots,
                 chip_type: chipType,
                 checker_pattern: checkerPattern.valueOf(),
-                pumpProbe,
-                laserDwell,
-                laserDelay,
-                prePump,
+                pump_probe: pumpProbe,
+                laser_dwell: laserDwell,
+                laser_delay: laserDelay,
+                pre_pump: prePump,
               })
             }
           >
