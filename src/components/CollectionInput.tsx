@@ -120,7 +120,7 @@ function OxfordMapSelection() {
 
   const handleSelection = (
     event: React.MouseEvent<HTMLElement>,
-    newSelect: string | null
+    newSelect: boolean | null
   ) => {
     if (newSelect !== null) {
       setSelected(newSelect);
@@ -137,8 +137,9 @@ function OxfordMapSelection() {
         <DialogContent>
           {/* <Box>Buttons here</Box> */}
           <ToggleButton
-            value={select}
-            onChange={handleSelection}
+            value="01"
+            selected={select}
+            onClick={(e) => handleSelection(e, true)}
             aria-label="block1"
           >
             01
