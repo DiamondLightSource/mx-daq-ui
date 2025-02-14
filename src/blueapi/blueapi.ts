@@ -76,6 +76,7 @@ export function submitAndRunPlanImmediately(
 ): Promise<string> {
   return submitPlan(planName, planParams).then((res) =>
     // TODO make sure submitPlan was succesful before then putting it to the worker
+    // See https://github.com/DiamondLightSource/mx-daq-ui/issues/17
     blueApiCall("/worker/task", "PUT", { task_id: res }).then((res) =>
       res.json().then((res) => res["task_id"])
     )
