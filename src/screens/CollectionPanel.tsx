@@ -20,7 +20,7 @@ import {
 } from "../blueapi/blueapi";
 
 const pumpProbeMode = [
-  "None",
+  "NoPP",
   "Short1",
   "Short2",
   "Repeat1",
