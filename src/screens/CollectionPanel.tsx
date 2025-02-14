@@ -1,6 +1,30 @@
-import { Box, Grid2, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Grid2,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
+import { PumpProbeDialog } from "../components/CollectionComponents";
+
+const pumpProbeMode = [
+  "None",
+  "Short1",
+  "Short2",
+  "Repeat1",
+  "Repeat2",
+  "Repeat3",
+  "Repeat5",
+  "Repeat10",
+  "Medium1",
+];
 
 function CollectionInput() {
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
@@ -9,6 +33,11 @@ function CollectionInput() {
   const [shots, setShots] = React.useState<number>(1);
   const [trans, setTrans] = React.useState<number>(0.3);
   const [detDist, setDetDist] = React.useState<number>(1350);
+  const [pumpProbe, setPumpProbe] = React.useState<string>(pumpProbeMode[0]);
+  const [laserDwell, setLaserDwell] = React.useState<number>(0.0);
+  const [laserDelay, setLaserDelay] = React.useState<number>(0.0);
+  const [checkerPattern, setChecked] = React.useState(false);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2}>
@@ -85,6 +114,63 @@ function CollectionInput() {
               style={{ width: 180 }}
             />
           </Stack>
+        </Grid2>
+        <Grid2 size={3}>
+          <Stack spacing={1} direction={"column"}>
+            <FormControl size="small" style={{ width: 150 }}>
+              <InputLabel id="pp-label">pumpProbe</InputLabel>
+              <Select
+                labelId="pp-label"
+                id="pp"
+                value={pumpProbe}
+                label="pumpProbe"
+                onChange={(e) => setPumpProbe(String(e.target.value))}
+              >
+                {pumpProbeMode.map((pumpProbe) => (
+                  <MenuItem key={pumpProbe} value={pumpProbe}>
+                    {pumpProbe}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/*TODO See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C16 */}
+            <TextField
+              size="small"
+              label="laserDwell (s)"
+              defaultValue={laserDwell}
+              onChange={(e) => setLaserDwell(Number(e.target.value))}
+              style={{ width: 150 }}
+            />
+            <TextField
+              size="small"
+              label="laserDelay (s)"
+              defaultValue={laserDelay}
+              onChange={(e) => setLaserDelay(Number(e.target.value))}
+              style={{ width: 150 }}
+            />
+            <TextField
+              size="small"
+              label="prePumpExposure (s)"
+              defaultValue={0.0}
+              // onChange={(e) => setLaserDelay(Number(e.target.value))}
+              style={{ width: 150 }}
+            />
+            <FormControl>
+              <FormControlLabel
+                label="Checker Pattern"
+                control={
+                  <Checkbox
+                    checked={checkerPattern}
+                    onChange={(e) => setChecked(Boolean(e.target.checked))} // NOPE!
+                  />
+                }
+              />
+            </FormControl>
+            <PumpProbeDialog laserDwell={laserDwell} expTime={expTime} />
+          </Stack>
+        </Grid2>
+        <Grid2 size={4.5}>
+          <p>Chip and Map choice. TBD.</p>
         </Grid2>
       </Grid2>
     </Box>
