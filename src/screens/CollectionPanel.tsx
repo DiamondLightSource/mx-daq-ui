@@ -26,6 +26,8 @@ const pumpProbeMode = [
   "Medium1",
 ];
 
+const chipTypes = ["Oxford", "OxfordInner", "Custom", "MISP"];
+
 function CollectionInput() {
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
@@ -37,6 +39,7 @@ function CollectionInput() {
   const [laserDwell, setLaserDwell] = React.useState<number>(0.0);
   const [laserDelay, setLaserDelay] = React.useState<number>(0.0);
   const [checkerPattern, setChecked] = React.useState(false);
+  const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -170,7 +173,26 @@ function CollectionInput() {
           </Stack>
         </Grid2>
         <Grid2 size={4.5}>
-          <p>Chip and Map choice. TBD.</p>
+          <Stack direction={"column"} alignItems={"center"} spacing={1}>
+            <FormControl size="small" style={{ width: 150 }}>
+              <InputLabel id="chip-label">chipType</InputLabel>
+              <Select
+                labelId="chip-label"
+                id="chip"
+                value={chipType}
+                label="chipType"
+                onChange={(e) => setChipType(String(e.target.value))}
+              >
+                {chipTypes.map((chipType) => (
+                  <MenuItem key={chipType} value={chipType}>
+                    {chipType}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C5 */}
+            <p>Chip-dependent Map settings TBD.</p>
+          </Stack>
         </Grid2>
       </Grid2>
     </Box>
