@@ -105,7 +105,7 @@ type MapProps = {
   chipType: string;
 };
 
-function OxfordMapSelection() {
+function OxfordMapSelection(blockList) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -149,7 +149,7 @@ function OxfordMapSelection() {
       <TextField
         size="small"
         label="selectedBlocks"
-        defaultValue={"Nothing here yet"}
+        defaultValue={select.valueOf()}
         slotProps={{
           input: { readOnly: true },
         }}
@@ -163,6 +163,12 @@ const MapTypes = ["Full Chip", "Lite"];
 
 function OxfordMapComponent() {
   const [mapType, setMapType] = React.useState<string>(MapTypes[0]);
+
+  const [chipMap, setChipMap] = React.useState<number[]>([]);
+
+  const fromInputMap = (blockList: number[]) => {
+    setChipMap(blockList);
+  };
 
   return (
     <Box>
@@ -183,7 +189,9 @@ function OxfordMapComponent() {
             ))}
           </Select>
         </FormControl>
-        {mapType === MapTypes[0] ? null : <OxfordMapSelection />}
+        {mapType === MapTypes[0] ? null : (
+          <OxfordMapSelection blockList={fromInputMap} />
+        )}
       </Stack>
     </Box>
   );
@@ -231,6 +239,7 @@ function CustomMapComponent() {
   );
 }
 
+// TODO Actually return values from components
 export function MapView(props: MapProps) {
   switch (props.chipType) {
     case "Oxford":
