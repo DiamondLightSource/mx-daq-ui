@@ -1,4 +1,15 @@
-import { Box, Button, Grid2, Stack, TextField, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid2,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
   ArrowBackRounded,
@@ -51,6 +62,40 @@ export function MoveArrows() {
         </Grid2>{" "}
         <Grid2 size={1} />
       </Grid2>
+    </Box>
+  );
+}
+
+const ZoomValues = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 11.0];
+
+export function ZoomControl() {
+  const theme = useTheme();
+  const [zoomVal, setZoom] = React.useState<number>(ZoomValues[0]);
+  return (
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
+      <FormControl size="small" style={{ width: 150 }}>
+        <InputLabel id="zoom-label">zoomControl</InputLabel>
+        <Select
+          labelId="zoom-label"
+          id="zoom"
+          value={zoomVal}
+          label="zoomControl"
+          onChange={(e) =>
+            submitAndRunPlanImmediately("", setZoom(Number(e.target.value)))
+          }
+        >
+          {ZoomValues.map((zoomVal) => (
+            <MenuItem key={zoomVal} value={zoomVal}>
+              {zoomVal}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </Box>
   );
 }
@@ -170,11 +215,12 @@ export function OavMover() {
         <Grid2 size={3} height={3}>
           <MoveArrows />
           <Grid2 size={3} padding={1} />
-          <BeamCentre
+          {/* <BeamCentre
             setCrosshairX={setCrosshairX}
             setCrosshairY={setCrosshairY}
           />
-          <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
+          <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} /> */}
+          <ZoomControl />
         </Grid2>
       </Grid2>
     </div>
