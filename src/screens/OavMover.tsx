@@ -85,8 +85,13 @@ export function ZoomControl() {
           id="zoom"
           value={zoomVal}
           label="zoomControl"
+          // This will change value on dropdown but nothing else because setZoom does not return number
+          // mmmh ...
           onChange={(e) =>
-            submitAndRunPlanImmediately("", setZoom(Number(e.target.value)))
+            submitAndRunPlanImmediately(
+              "gui_set_zoom",
+              setZoom(Number(e.target.value))
+            )
           }
         >
           {ZoomValues.map((zoomVal) => (
