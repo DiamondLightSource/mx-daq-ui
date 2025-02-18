@@ -167,7 +167,7 @@ function OxfordMapComponent() {
   const [chipMap, setChipMap] = React.useState<number[]>([]);
 
   const fromInputMap = (blockList: number[]) => {
-    setChipMap(blockList);
+    setChipMap({ chipMap: blockList });
   };
 
   return (
