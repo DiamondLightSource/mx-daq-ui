@@ -100,11 +100,6 @@ export function PumpProbeDialog(props: EavaRequest) {
   );
 }
 
-type MapProps = {
-  label: string;
-  chipType: string;
-};
-
 function OxfordMapSelection(blockList) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
@@ -197,11 +192,17 @@ function OxfordMapComponent() {
   );
 }
 
-function CustomMapComponent() {
+function CustomMapComponent(dataFromComponent) {
   const [numWindowsX, setWinX] = React.useState<number>(0);
   const [numWindowsY, setWinY] = React.useState<number>(0);
   const [stepSizeX, setStepX] = React.useState<number>(0);
   const [stepSizeY, setStepY] = React.useState<number>(0);
+
+  const [chipFormat, setChipFormat] = React.useState<number[]>([]);
+
+  const sendChipFormat = () => {
+    dataFromComponent(chipFormat);
+  };
 
   return (
     <Box>
@@ -234,20 +235,37 @@ function CustomMapComponent() {
           onChange={(e) => setStepY(Number(e.target.value))}
           style={{ width: 150 }}
         />
+        <Button
+          onClick={() =>
+            setChipFormat([
+              numWindowsX,
+              numWindowsY,
+              stepSizeX,
+              stepSizeY,
+            ]).then(() => sendChipFormat())
+          }
+        >
+          Set
+        </Button>
       </Stack>
     </Box>
   );
 }
 
 // TODO Actually return values from components
-export function MapView(props: MapProps) {
-  switch (props.chipType) {
+export function MapView(chipType: string) {
+  const [chipInfo, setChipInfo] = React.useState<number[]>([]);
+
+  const getInfoFromComponent = (data: number[]) => {
+    setChipInfo(data);
+  };
+  switch (chipType) {
     case "Oxford":
       return <OxfordMapComponent />;
     case "OxfordInner":
       return <OxfordMapComponent />;
     case "Custom":
-      return <CustomMapComponent />;
+      return <CustomMapComponent dataFromComponent={getInfoFromComponent} />;
     default:
       return null;
   }

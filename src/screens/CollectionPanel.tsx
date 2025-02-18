@@ -197,7 +197,7 @@ function CollectionInput() {
               </Select>
             </FormControl>
             {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C5 */}
-            <MapView label="map" chipType={chipType} />
+            <MapView chipType={chipType} />
           </Stack>
         </Grid2>
       </Grid2>
