@@ -45,7 +45,7 @@ export function PumpProbeDialog(props: EavaRequest) {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button size="small" variant="outlined" onClick={handleClickOpen}>
         EAVA calculator
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -156,14 +156,18 @@ function OxfordMapSelection(blockList) {
 
 const MapTypes = ["Full Chip", "Lite"];
 
-function OxfordMapComponent() {
+function OxfordMapComponent({
+  setChipMap,
+}: {
+  setChipMap: React.Dispatch<React.SetStateAction<number[]>>;
+}) {
   const [mapType, setMapType] = React.useState<string>(MapTypes[0]);
 
-  const [chipMap, setChipMap] = React.useState<number[]>([]);
+  // const [chipMap, setChipMap] = React.useState<number[]>([]);
 
-  const fromInputMap = (blockList: number[]) => {
-    setChipMap({ chipMap: blockList });
-  };
+  // const fromInputMap = (blockList: number[]) => {
+  //   setChipMap({ chipMap: blockList });
+  // };
 
   return (
     <Box>
@@ -192,80 +196,91 @@ function OxfordMapComponent() {
   );
 }
 
-function CustomMapComponent(dataFromComponent) {
-  const [numWindowsX, setWinX] = React.useState<number>(0);
-  const [numWindowsY, setWinY] = React.useState<number>(0);
-  const [stepSizeX, setStepX] = React.useState<number>(0);
-  const [stepSizeY, setStepY] = React.useState<number>(0);
-
-  const [chipFormat, setChipFormat] = React.useState<number[]>([]);
-
-  const sendChipFormat = () => {
-    dataFromComponent(chipFormat);
-  };
-
+function CustomMapComponent({
+  setWinX,
+  setWinY,
+  setStepX,
+  setStepY,
+}: {
+  setWinX: React.Dispatch<React.SetStateAction<number>>;
+  setWinY: React.Dispatch<React.SetStateAction<number>>;
+  setStepX: React.Dispatch<React.SetStateAction<number>>;
+  setStepY: React.Dispatch<React.SetStateAction<number>>;
+}) {
   return (
     <Box>
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
         <TextField
           size="small"
           label="numWindowsX"
-          defaultValue={numWindowsX}
+          defaultValue={0.0}
           onChange={(e) => setWinX(Number(e.target.value))}
           style={{ width: 150 }}
         />
         <TextField
           size="small"
           label="numWindowsy"
-          defaultValue={numWindowsY}
+          defaultValue={0.0}
           onChange={(e) => setWinY(Number(e.target.value))}
           style={{ width: 150 }}
         />
         <TextField
           size="small"
           label="stepSizeX"
-          defaultValue={stepSizeX}
+          defaultValue={0.0}
           onChange={(e) => setStepX(Number(e.target.value))}
           style={{ width: 150 }}
         />
         <TextField
           size="small"
           label="stepSizeY"
-          defaultValue={stepSizeY}
+          defaultValue={0.0}
           onChange={(e) => setStepY(Number(e.target.value))}
           style={{ width: 150 }}
         />
-        <Button
-          onClick={() =>
-            setChipFormat([
-              numWindowsX,
-              numWindowsY,
-              stepSizeX,
-              stepSizeY,
-            ]).then(() => sendChipFormat())
-          }
-        >
-          Set
-        </Button>
       </Stack>
     </Box>
   );
 }
 
 // TODO Actually return values from components
-export function MapView(chipType: string) {
-  const [chipInfo, setChipInfo] = React.useState<number[]>([]);
+export function MapView({
+  chipType,
+}: {
+  chipType: string;
+}): JSX.Element | null {
+  let chipInfo: number[];
+  // const [chipInfo, setChipInfo] = React.useState<number[]>([]);
 
-  const getInfoFromComponent = (data: number[]) => {
-    setChipInfo(data);
-  };
+  const [chipMap, setChipMap] = React.useState<number[]>([]);
+
+  const [numWindowsX, setWinX] = React.useState<number>(0);
+  const [numWindowsY, setWinY] = React.useState<number>(0);
+  const [stepSizeX, setStepX] = React.useState<number>(0);
+  const [stepSizeY, setStepY] = React.useState<number>(0);
+
+  let component: JSX.Element;
+
   switch (chipType) {
     case "Oxford":
-      return <OxfordMapComponent />;
+      component = <OxfordMapComponent setChipMap={setChipMap} />;
+      chipInfo = chipMap;
+      return component;
     case "OxfordInner":
-      return <OxfordMapComponent />;
+      component = <OxfordMapComponent setChipMap={setChipMap} />;
+      return component;
     case "Custom":
-      return <CustomMapComponent dataFromComponent={getInfoFromComponent} />;
+      component = (
+        <CustomMapComponent
+          setWinX={setWinX}
+          setWinY={setWinY}
+          setStepX={setStepX}
+          setStepY={setStepY}
+        />
+      );
+      chipInfo = [numWindowsX, numWindowsY, stepSizeX, stepSizeY];
+      console.log(chipInfo);
+      return component;
     default:
       return null;
   }

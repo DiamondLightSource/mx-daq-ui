@@ -82,7 +82,7 @@ type ParametersProp = {
 function RunButtons(props: ParametersProp) {
   return (
     <Grid2 size={12}>
-      <Stack direction={"row"} spacing={10} justifyContent={"center"}>
+      <Stack direction={"row"} spacing={8} justifyContent={"center"}>
         {/* See
           https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
         <Button
