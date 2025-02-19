@@ -33,6 +33,84 @@ const pumpProbeMode = [
 
 const chipTypes = ["Oxford", "OxfordInner", "Custom", "MISP"];
 
+function FixedInputs() {
+  return (
+    <Grid2 size={12}>
+      <PvComponent
+        label="Visit"
+        pv="ca://ME14E-MO-IOC-01:GP100"
+        render={({ label, value }: PvItem) => {
+          return (
+            <Box>
+              <p>
+                <b>{label}:</b> {value?.toString().slice(7)}
+              </p>
+            </Box>
+          );
+        }}
+      />
+      <PvComponent
+        label="Detector in use"
+        pv="ca://ME14E-MO-IOC-01:GP101"
+        render={({ label, value }: PvItem) => {
+          return (
+            <Box>
+              <p>
+                <b>{label}:</b> {value?.toString().slice(7)}
+              </p>
+            </Box>
+          );
+        }}
+      />
+    </Grid2>
+  );
+}
+
+type ParametersProp = {
+  subDir: string;
+  chipName: string;
+  expTime: number;
+  detDist: number;
+  transFract: number;
+  nShots: number;
+  chipType: string;
+  checkerPattern: boolean;
+  pumpProbe: string;
+  pumpInputs: number[];
+};
+
+function RunButtons(props: ParametersProp) {
+  return (
+    <Grid2 size={12}>
+      <Stack direction={"row"} spacing={8} justifyContent={"center"}>
+        {/* See
+          https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
+        <Button
+          onClick={() =>
+            submitAndRunPlanImmediately("gui_set_parameters", {
+              sub_dir: props.subDir,
+              chip_name: props.chipName,
+              exp_time: props.expTime,
+              det_dist: props.detDist,
+              transmission: props.transFract,
+              n_shots: props.nShots,
+              chip_type: props.chipType,
+              checker_pattern: props.checkerPattern,
+              pump_probe: props.pumpProbe,
+              laser_dwell: props.pumpInputs[0],
+              laser_delay: props.pumpInputs[1],
+              pre_pump: props.pumpInputs[2],
+            })
+          }
+        >
+          Run (for now just set)!
+        </Button>
+        <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
+      </Stack>
+    </Grid2>
+  );
+}
+
 function CollectionInput() {
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
