@@ -12,8 +12,11 @@ import {
   MenuItem,
   Select,
   Stack,
+  styled,
   TextField,
   ToggleButton,
+  ToggleButtonGroup,
+  toggleButtonGroupClasses,
 } from "@mui/material";
 import React from "react";
 
@@ -100,7 +103,11 @@ export function PumpProbeDialog(props: EavaRequest) {
   );
 }
 
-function OxfordMapSelection(blockList) {
+function OxfordMapSelection({
+  setChipMap,
+}: {
+  setChipMap: React.Dispatch<React.SetStateAction<number[]>>;
+}) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -110,41 +117,17 @@ function OxfordMapSelection(blockList) {
   const handleClose = () => {
     setDialogOpen(false);
   };
-
-  const [select, setSelected] = React.useState(false);
-
-  const handleSelection = (
-    event: React.MouseEvent<HTMLElement>,
-    newSelect: boolean | null
-  ) => {
-    if (newSelect !== null) {
-      setSelected(newSelect);
-    }
-  };
-
   return (
     <Stack direction={"column"} alignItems={"center"} spacing={2}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Choose Map
       </Button>
-      <Dialog open={dialogOpen} onClose={handleClose}>
-        <DialogTitle>Choose blocks on Oxford chip</DialogTitle>
-        <DialogContent>
-          {/* <Box>Buttons here</Box> */}
-          <ToggleButton
-            value="01"
-            selected={select}
-            onClick={(e) => handleSelection(e, true)}
-            aria-label="block1"
-          >
-            01
-          </ToggleButton>
-        </DialogContent>
-      </Dialog>
+      <Dialog open={dialogOpen} onClose={handleClose}></Dialog>
       <TextField
         size="small"
         label="selectedBlocks"
-        defaultValue={select.valueOf()}
+        defaultValue={[]}
+        // defaultValue={select.valueOf()}
         slotProps={{
           input: { readOnly: true },
         }}
@@ -189,7 +172,7 @@ function OxfordMapComponent({
           </Select>
         </FormControl>
         {mapType === MapTypes[0] ? null : (
-          <OxfordMapSelection blockList={fromInputMap} />
+          <OxfordMapSelection setChipMap={setChipMap} />
         )}
       </Stack>
     </Box>
@@ -250,7 +233,6 @@ export function MapView({
   chipType: string;
 }): JSX.Element | null {
   let chipInfo: number[];
-  // const [chipInfo, setChipInfo] = React.useState<number[]>([]);
 
   const [chipMap, setChipMap] = React.useState<number[]>([]);
 

@@ -95,11 +95,11 @@ function RunButtons(props: ParametersProp) {
               transmission: props.transFract,
               n_shots: props.nShots,
               chip_type: props.chipType,
-              checker_pattern: props.checkerPattern, // .valueOf(),
+              checker_pattern: props.checkerPattern,
               pump_probe: props.pumpProbe,
-              laser_dwell: props.pumpInputs[0], //laserDwell,
-              laser_delay: props.pumpInputs[1], //laserDelay,
-              pre_pump: props.pumpInputs[2], //prePump,
+              laser_dwell: props.pumpInputs[0],
+              laser_delay: props.pumpInputs[1],
+              pre_pump: props.pumpInputs[2],
             })
           }
         >
