@@ -1,4 +1,15 @@
-import { Box, Button, Grid2, Stack, TextField, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid2,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
   ArrowBackRounded,
@@ -11,6 +22,63 @@ import { useState } from "react";
 import React from "react";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
+import { useParsedPvConnection, PvDescription } from "../pv/PvComponent";
+
+const BacklightPositions = [
+  "Out",
+  "In",
+  "LoadCheck",
+  "OAV2",
+  "Diode",
+  "White In",
+];
+
+export function BacklightControl(props: PvDescription) {
+  const theme = useTheme();
+  const currentPos = String(
+    useParsedPvConnection({
+      pv: props.pv,
+      label: props.label,
+    })
+  );
+  // This thing actually returns `DType: In` instead of just the string, which is why it isn't rendered
+  // Maybe need something like for visit. Mmmh TBC
+  console.log(`Backlight position: ${currentPos}`);
+  const [blPos, moveBl] = React.useState<string>();
+
+  const handleChange = (newValue: string) => {
+    moveBl(newValue);
+    submitAndRunPlanImmediately("gui_move_backlight", { position: newValue });
+  };
+
+  return (
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
+      <FormControl size="small" style={{ width: 150 }}>
+        <InputLabel id="bl-label">backlight</InputLabel>
+        <Select
+          labelId="bl-label"
+          id="backlight"
+          value={blPos}
+          label="blControl"
+          // renderValue={currentPos}
+          defaultValue={currentPos.toString().slice(7)}
+          onChange={(e) => handleChange(String(e.target.value))}
+        >
+          {BacklightPositions.map((blPos) => (
+            <MenuItem key={blPos} value={blPos}>
+              {blPos}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
+  );
+}
 
 export function MoveArrows() {
   const theme = useTheme();
@@ -175,6 +243,10 @@ export function OavMover() {
             setCrosshairY={setCrosshairY}
           />
           <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
+          <BacklightControl
+            label="backlight-pos"
+            pv="ca://BL24I-MO-BL-01:MP:SELECT"
+          />
         </Grid2>
       </Grid2>
     </div>
