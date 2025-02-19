@@ -33,6 +33,84 @@ const pumpProbeMode = [
 
 const chipTypes = ["Oxford", "OxfordInner", "Custom", "MISP"];
 
+function FixedInputs() {
+  return (
+    <Grid2 size={12}>
+      <PvComponent
+        label="Visit"
+        pv="ca://ME14E-MO-IOC-01:GP100"
+        render={({ label, value }: PvItem) => {
+          return (
+            <Box>
+              <p>
+                <b>{label}:</b> {value?.toString().slice(7)}
+              </p>
+            </Box>
+          );
+        }}
+      />
+      <PvComponent
+        label="Detector in use"
+        pv="ca://ME14E-MO-IOC-01:GP101"
+        render={({ label, value }: PvItem) => {
+          return (
+            <Box>
+              <p>
+                <b>{label}:</b> {value?.toString().slice(7)}
+              </p>
+            </Box>
+          );
+        }}
+      />
+    </Grid2>
+  );
+}
+
+type ParametersProp = {
+  subDir: string;
+  chipName: string;
+  expTime: number;
+  detDist: number;
+  transFract: number;
+  nShots: number;
+  chipType: string;
+  checkerPattern: boolean;
+  pumpProbe: string;
+  pumpInputs: number[];
+};
+
+function RunButtons(props: ParametersProp) {
+  return (
+    <Grid2 size={12}>
+      <Stack direction={"row"} spacing={10} justifyContent={"center"}>
+        {/* See
+          https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
+        <Button
+          onClick={() =>
+            submitAndRunPlanImmediately("gui_set_parameters", {
+              sub_dir: props.subDir,
+              chip_name: props.chipName,
+              exp_time: props.expTime,
+              det_dist: props.detDist,
+              transmission: props.transFract,
+              n_shots: props.nShots,
+              chip_type: props.chipType,
+              checker_pattern: props.checkerPattern, // .valueOf(),
+              pump_probe: props.pumpProbe,
+              laser_dwell: props.pumpInputs[0], //laserDwell,
+              laser_delay: props.pumpInputs[1], //laserDelay,
+              pre_pump: props.pumpInputs[2], //prePump,
+            })
+          }
+        >
+          Run (for now just set)!
+        </Button>
+        <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
+      </Stack>
+    </Grid2>
+  );
+}
+
 function CollectionInput() {
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
@@ -50,34 +128,7 @@ function CollectionInput() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2}>
-        <Grid2 size={12}>
-          <PvComponent
-            label="Visit"
-            pv="ca://ME14E-MO-IOC-01:GP100"
-            render={({ label, value }: PvItem) => {
-              return (
-                <Box>
-                  <p>
-                    <b>{label}:</b> {value?.toString().slice(7)}
-                  </p>
-                </Box>
-              );
-            }}
-          />
-          <PvComponent
-            label="Detector in use"
-            pv="ca://ME14E-MO-IOC-01:GP101"
-            render={({ label, value }: PvItem) => {
-              return (
-                <Box>
-                  <p>
-                    <b>{label}:</b> {value?.toString().slice(7)}
-                  </p>
-                </Box>
-              );
-            }}
-          />
-        </Grid2>
+        <FixedInputs />
         <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <TextField
@@ -170,7 +221,7 @@ function CollectionInput() {
                 control={
                   <Checkbox
                     checked={checkerPattern}
-                    onChange={(e) => setChecked(Boolean(e.target.checked))} // NOPE!
+                    onChange={(e) => setChecked(Boolean(e.target.checked))}
                   />
                 }
               />
@@ -201,33 +252,18 @@ function CollectionInput() {
           </Stack>
         </Grid2>
       </Grid2>
-      <Grid2 size={12}>
-        <Stack direction={"row"} spacing={"5"} justifyContent={"center"}>
-          {/* See
-          https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
-          <Button
-            onClick={() =>
-              submitAndRunPlanImmediately("gui_set_parameters", {
-                sub_dir: subDir,
-                chip_name: chipName,
-                exp_time: expTime,
-                det_dist: detDist,
-                transmission: trans,
-                n_shots: shots,
-                chip_type: chipType,
-                checker_pattern: checkerPattern.valueOf(),
-                pump_probe: pumpProbe,
-                laser_dwell: laserDwell,
-                laser_delay: laserDelay,
-                pre_pump: prePump,
-              })
-            }
-          >
-            Run (for now just set)!
-          </Button>
-          <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
-        </Stack>
-      </Grid2>
+      <RunButtons
+        subDir={subDir}
+        chipName={chipName}
+        expTime={expTime}
+        detDist={detDist}
+        transFract={trans}
+        nShots={shots}
+        chipType={chipType}
+        checkerPattern={checkerPattern.valueOf()}
+        pumpProbe={pumpProbe}
+        pumpInputs={[laserDwell, laserDelay, prePump]}
+      />
     </Box>
   );
 }
