@@ -23,6 +23,7 @@ import React from "react";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
 import { useParsedPvConnection, PvDescription } from "../pv/PvComponent";
+import { forceString } from "../pv/util";
 
 const BacklightPositions = [
   "Out",
@@ -39,12 +40,14 @@ export function BacklightControl(props: PvDescription) {
     useParsedPvConnection({
       pv: props.pv,
       label: props.label,
+      transformValue: forceString,
     })
   );
-  // This thing actually returns `DType: In` instead of just the string, which is why it isn't rendered
-  // Maybe need something like for visit. Mmmh TBC
   console.log(`Backlight position: ${currentPos}`);
-  const [blPos, moveBl] = React.useState<string>();
+  const [blPos, moveBl] = React.useState<string>("");
+  console.log(blPos);
+  // Like this it now works (updates from epics etc) but it's iffy?
+  // Will need to improve on it
 
   const handleChange = (newValue: string) => {
     moveBl(newValue);
@@ -63,10 +66,9 @@ export function BacklightControl(props: PvDescription) {
         <Select
           labelId="bl-label"
           id="backlight"
-          value={blPos}
+          value={currentPos}
           label="blControl"
-          // renderValue={currentPos}
-          defaultValue={currentPos.toString().slice(7)}
+          // defaultValue={blPos}
           onChange={(e) => handleChange(String(e.target.value))}
         >
           {BacklightPositions.map((blPos) => (
