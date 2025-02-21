@@ -5,14 +5,11 @@ import {
   DialogContentText,
   DialogTitle,
   Stack,
-<<<<<<< HEAD
-=======
   styled,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
   toggleButtonGroupClasses,
->>>>>>> d19850b (Try to tidy up to be able to figure this out)
 } from "@mui/material";
 import React from "react";
 
