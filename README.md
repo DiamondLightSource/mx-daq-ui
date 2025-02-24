@@ -59,6 +59,11 @@ plus `from fastapi.middleware.cors import CORSMiddleware`
 
 until https://github.com/DiamondLightSource/blueapi/issues/738 is resolved
 
+### Dark mode
+
+At the moment, the color scheme defaults to dark mode, making things difficult to read in a browser set light mode.
+Until https://github.com/DiamondLightSource/mx-daq-ui/issues/13 is fixed, the browser needs to be temporarily set to dark mode to run the gui.
+
 ## Run
 
 Once all the above steps are done, start a blueapi server. The gui can be started by running:
