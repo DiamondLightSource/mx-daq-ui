@@ -5,6 +5,7 @@ import {
   DialogContentText,
   DialogTitle,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import React from "react";
 
@@ -48,9 +49,11 @@ export function PumpProbeDialog(props: EavaRequest) {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        EAVA calculator
-      </Button>
+      <Tooltip title="Calculate the optimal delay to set for Repeat# settings">
+        <Button variant="outlined" onClick={handleClickOpen}>
+          EAVA calculator
+        </Button>
+      </Tooltip>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Excite And Visit Again</DialogTitle>
         <DialogContent>

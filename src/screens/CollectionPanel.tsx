@@ -10,6 +10,7 @@ import {
   Select,
   Stack,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
@@ -80,123 +81,147 @@ function CollectionInput() {
         </Grid2>
         <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
-            <TextField
-              size="small"
-              label="Sub-directory"
-              defaultValue={subDir}
-              onChange={(e) => setSubDir(String(e.target.value))}
-              style={{ width: 180 }}
-            />
-            <TextField
-              size="small"
-              label="Chip Name"
-              defaultValue={chipName}
-              onChange={(e) => setChipName(String(e.target.value))}
-              style={{ width: 180 }}
-            />
-            <TextField
-              size="small"
-              label="Shots Per Aperture"
-              defaultValue={shots}
-              onChange={(e) => setShots(Number(e.target.value))}
-              style={{ width: 180 }}
-            />
-            <TextField
-              size="small"
-              label="Exposure Time (s)"
-              defaultValue={expTime}
-              onChange={(e) => setExpTime(Number(e.target.value))}
-              style={{ width: 180 }}
-            />
-            <TextField
-              size="small"
-              label="Transmission (fraction)"
-              defaultValue={trans}
-              onChange={(e) => setTrans(Number(e.target.value))}
-              style={{ width: 180 }}
-            />
-            <TextField
-              size="small"
-              label="Detector Distance (mm)"
-              defaultValue={detDist}
-              onChange={(e) => setDetDist(Number(e.target.value))}
-              style={{ width: 180 }}
-            />
+            <Tooltip title="Location inside visit directory to save data">
+              <TextField
+                size="small"
+                label="Sub-directory"
+                defaultValue={subDir}
+                onChange={(e) => setSubDir(String(e.target.value))}
+                style={{ width: 180 }}
+              />
+            </Tooltip>
+            <Tooltip title="Chip identifier, this will be used as filename">
+              <TextField
+                size="small"
+                label="Chip Name"
+                defaultValue={chipName}
+                onChange={(e) => setChipName(String(e.target.value))}
+                style={{ width: 180 }}
+              />
+            </Tooltip>
+            <Tooltip title="How many consecutive times each window should be collected.">
+              <TextField
+                size="small"
+                label="Shots Per Aperture"
+                defaultValue={shots}
+                onChange={(e) => setShots(Number(e.target.value))}
+                style={{ width: 180 }}
+              />
+            </Tooltip>
+            <Tooltip title="Exposure time for each window, in seconds">
+              <TextField
+                size="small"
+                label="Exposure Time (s)"
+                defaultValue={expTime}
+                onChange={(e) => setExpTime(Number(e.target.value))}
+                style={{ width: 180 }}
+              />
+            </Tooltip>
+            <Tooltip title="Request transmission for collection, expressed as a fraction">
+              <TextField
+                size="small"
+                label="Transmission (fraction)"
+                defaultValue={trans}
+                onChange={(e) => setTrans(Number(e.target.value))}
+                style={{ width: 180 }}
+              />
+            </Tooltip>
+            <Tooltip title="Distance to move the detector y stage to, in millimeters">
+              <TextField
+                size="small"
+                label="Detector Distance (mm)"
+                defaultValue={detDist}
+                onChange={(e) => setDetDist(Number(e.target.value))}
+                style={{ width: 180 }}
+              />
+            </Tooltip>
           </Stack>
         </Grid2>
         {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/25 */}
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
-            <FormControl size="small" style={{ width: 150 }}>
-              <InputLabel id="pp-label">Pump Probe</InputLabel>
-              <Select
-                labelId="pp-label"
-                id="pp"
-                value={pumpProbe}
-                label="Pump Probe"
-                onChange={(e) => setPumpProbe(String(e.target.value))}
-              >
-                {pumpProbeMode.map((pumpProbe) => (
-                  <MenuItem key={pumpProbe} value={pumpProbe}>
-                    {pumpProbe}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Tooltip title="Is this a pump probe experiment? Choose the setting.">
+              <FormControl size="small" style={{ width: 150 }}>
+                <InputLabel id="pp-label">Pump Probe</InputLabel>
+                <Select
+                  labelId="pp-label"
+                  id="pp"
+                  value={pumpProbe}
+                  label="Pump Probe"
+                  onChange={(e) => setPumpProbe(String(e.target.value))}
+                >
+                  {pumpProbeMode.map((pumpProbe) => (
+                    <MenuItem key={pumpProbe} value={pumpProbe}>
+                      {pumpProbe}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Tooltip>
             {/*TODO See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C16 */}
-            <TextField
-              size="small"
-              label="Laser Dwell (s)"
-              defaultValue={laserDwell}
-              onChange={(e) => setLaserDwell(Number(e.target.value))}
-              style={{ width: 150 }}
-            />
-            <TextField
-              size="small"
-              label="Laser Delay (s)"
-              defaultValue={laserDelay}
-              onChange={(e) => setLaserDelay(Number(e.target.value))}
-              style={{ width: 150 }}
-            />
-            <TextField
-              size="small"
-              label="Pre-Pump Exposure Time (s)"
-              defaultValue={prePump}
-              onChange={(e) => setPerPumpExp(Number(e.target.value))}
-              style={{ width: 150 }}
-            />
-            <FormControl>
-              <FormControlLabel
-                label="Checker Pattern"
-                control={
-                  <Checkbox
-                    checked={checkerPattern}
-                    onChange={(e) => setChecked(Boolean(e.target.checked))} // NOPE!
-                  />
-                }
+            <Tooltip title="Exposure time for the laser pump, in seconds">
+              <TextField
+                size="small"
+                label="Laser Dwell (s)"
+                defaultValue={laserDwell}
+                onChange={(e) => setLaserDwell(Number(e.target.value))}
+                style={{ width: 150 }}
               />
-            </FormControl>
+            </Tooltip>
+            <Tooltip title="Delay time between the laser pump and the collection, in seconds">
+              <TextField
+                size="small"
+                label="Laser Delay (s)"
+                defaultValue={laserDelay}
+                onChange={(e) => setLaserDelay(Number(e.target.value))}
+                style={{ width: 150 }}
+              />
+            </Tooltip>
+            <Tooltip title="How long to collect before laser pump, if setting is Short2, in seconds">
+              <TextField
+                size="small"
+                label="Pre-Pump Exposure Time (s)"
+                defaultValue={prePump}
+                onChange={(e) => setPerPumpExp(Number(e.target.value))}
+                style={{ width: 150 }}
+              />
+            </Tooltip>
+            <Tooltip title="Select for drop on chip">
+              <FormControl>
+                <FormControlLabel
+                  label="Checker Pattern"
+                  control={
+                    <Checkbox
+                      checked={checkerPattern}
+                      onChange={(e) => setChecked(Boolean(e.target.checked))} // NOPE!
+                    />
+                  }
+                />
+              </FormControl>
+            </Tooltip>
             <PumpProbeDialog laserDwell={laserDwell} expTime={expTime} />
           </Stack>
         </Grid2>
         <Grid2 size={4.5}>
           <Stack direction={"column"} alignItems={"center"} spacing={1}>
-            <FormControl size="small" style={{ width: 150 }}>
-              <InputLabel id="chip-label">Chip Type</InputLabel>
-              <Select
-                labelId="chip-label"
-                id="chip"
-                value={chipType}
-                label="Chip Type"
-                onChange={(e) => setChipType(String(e.target.value))}
-              >
-                {chipTypes.map((chipType) => (
-                  <MenuItem key={chipType} value={chipType}>
-                    {chipType}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Tooltip title="Select the type of chip in use">
+              <FormControl size="small" style={{ width: 150 }}>
+                <InputLabel id="chip-label">Chip Type</InputLabel>
+                <Select
+                  labelId="chip-label"
+                  id="chip"
+                  value={chipType}
+                  label="Chip Type"
+                  onChange={(e) => setChipType(String(e.target.value))}
+                >
+                  {chipTypes.map((chipType) => (
+                    <MenuItem key={chipType} value={chipType}>
+                      {chipType}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Tooltip>
             {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C5 */}
             <p>Chip-dependent Map settings TBD.</p>
           </Stack>
@@ -206,27 +231,31 @@ function CollectionInput() {
         <Stack direction={"row"} spacing={"5"} justifyContent={"center"}>
           {/* See
           https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
-          <Button
-            onClick={() =>
-              submitAndRunPlanImmediately("gui_set_parameters", {
-                sub_dir: subDir,
-                chip_name: chipName,
-                exp_time: expTime,
-                det_dist: detDist,
-                transmission: trans,
-                n_shots: shots,
-                chip_type: chipType,
-                checker_pattern: checkerPattern.valueOf(),
-                pump_probe: pumpProbe,
-                laser_dwell: laserDwell,
-                laser_delay: laserDelay,
-                pre_pump: prePump,
-              })
-            }
-          >
-            Run (for now just set)!
-          </Button>
-          <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
+          <Tooltip title="Start fixed target collection">
+            <Button
+              onClick={() =>
+                submitAndRunPlanImmediately("gui_set_parameters", {
+                  sub_dir: subDir,
+                  chip_name: chipName,
+                  exp_time: expTime,
+                  det_dist: detDist,
+                  transmission: trans,
+                  n_shots: shots,
+                  chip_type: chipType,
+                  checker_pattern: checkerPattern.valueOf(),
+                  pump_probe: pumpProbe,
+                  laser_dwell: laserDwell,
+                  laser_delay: laserDelay,
+                  pre_pump: prePump,
+                })
+              }
+            >
+              Run (for now just set)!
+            </Button>
+          </Tooltip>
+          <Tooltip title="Abort current operation">
+            <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
+          </Tooltip>
         </Stack>
       </Grid2>
     </Box>
