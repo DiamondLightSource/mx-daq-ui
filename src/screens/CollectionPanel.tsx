@@ -124,6 +124,7 @@ function CollectionInput() {
             />
           </Stack>
         </Grid2>
+        {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/25 */}
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
             <FormControl size="small" style={{ width: 150 }}>
