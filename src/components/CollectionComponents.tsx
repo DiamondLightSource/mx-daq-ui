@@ -105,3 +105,56 @@ export function PumpProbeDialog(props: EavaRequest) {
     </React.Fragment>
   );
 }
+
+export function PumpProbeOptions({
+  pumpProbe,
+  laserDwell,
+  expTime,
+  setLaserDwell,
+  setLaserDelay,
+  setPrePumpExp,
+}: {
+  pumpProbe: string;
+  laserDwell: number;
+  expTime: number;
+  setLaserDwell: React.Dispatch<React.SetStateAction<number>>;
+  setLaserDelay: React.Dispatch<React.SetStateAction<number>>;
+  setPrePumpExp: React.Dispatch<React.SetStateAction<number>>;
+}): JSX.Element | null {
+  if (pumpProbe === "NoPP") {
+    return null;
+  }
+
+  return (
+    <Stack spacing={1} direction={"column"}>
+      <Tooltip title="Exposure time for the laser pump, in seconds">
+        <TextField
+          size="small"
+          label="Laser Dwell (s)"
+          defaultValue={laserDwell}
+          onChange={(e) => setLaserDwell(Number(e.target.value))}
+          style={{ width: 150 }}
+        />
+      </Tooltip>
+      <Tooltip title="Delay time between the laser pump and the collection, in seconds">
+        <TextField
+          size="small"
+          label="Laser Delay (s)"
+          defaultValue={0.0}
+          onChange={(e) => setLaserDelay(Number(e.target.value))}
+          style={{ width: 150 }}
+        />
+      </Tooltip>
+      <Tooltip title="How long to collect before laser pump, if setting is Short2, in seconds">
+        <TextField
+          size="small"
+          label="Pre-Pump Exposure Time (s)"
+          defaultValue={0.0}
+          onChange={(e) => setPrePumpExp(Number(e.target.value))}
+          style={{ width: 150 }}
+        />
+      </Tooltip>
+      <PumpProbeDialog laserDwell={laserDwell} expTime={expTime} />
+    </Stack>
+  );
+}
