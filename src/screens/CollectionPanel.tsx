@@ -85,6 +85,7 @@ type ParametersProp = {
 };
 
 function RunButtons(props: ParametersProp) {
+  console.log(props);
   return (
     <Grid2 size={12}>
       <Stack direction={"row"} spacing={8} justifyContent={"center"}>

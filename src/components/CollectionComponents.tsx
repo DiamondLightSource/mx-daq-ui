@@ -13,6 +13,8 @@ import {
   Select,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Tooltip,
 } from "@mui/material";
 import React from "react";
@@ -176,9 +178,12 @@ export function PumpProbeOptions({
   );
 }
 
+// Selection like this works but chipmap showing does not update
 function OxfordMapSelection({
+  chipMap,
   setChipMap,
 }: {
+  chipMap: number[];
   setChipMap: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -190,17 +195,73 @@ function OxfordMapSelection({
   const handleClose = () => {
     setDialogOpen(false);
   };
+
+  const handleBlocks = (
+    event: React.MouseEvent<HTMLElement>,
+    newBlocks: number[]
+  ) => {
+    setChipMap(newBlocks);
+  };
+
+  const handleClear = () => {
+    setChipMap([]);
+  };
+
   return (
     <Stack direction={"column"} alignItems={"center"} spacing={2}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Choose Map
       </Button>
-      <Dialog open={dialogOpen} onClose={handleClose}></Dialog>
+      <Dialog open={dialogOpen} onClose={handleClose}>
+        <Stack direction={"row"}>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <ToggleButton value={1} aria-label="01">
+              01
+              {/* <Button>01</Button> */}
+            </ToggleButton>
+            <ToggleButton value={2} aria-label="02">
+              02
+            </ToggleButton>
+            <ToggleButton value={3} aria-label="02">
+              03
+            </ToggleButton>
+            <ToggleButton value={4} aria-label="02">
+              04
+            </ToggleButton>
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <ToggleButton value={5} aria-label="01">
+              05
+              {/* <Button>01</Button> */}
+            </ToggleButton>
+            <ToggleButton value={6} aria-label="02">
+              06
+            </ToggleButton>
+            <ToggleButton value={7} aria-label="02">
+              07
+            </ToggleButton>
+            <ToggleButton value={8} aria-label="02">
+              08
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
+        <Button onClick={handleClear}> Clear Map </Button>
+      </Dialog>
       <TextField
         size="small"
         label="selectedBlocks"
-        defaultValue={[]}
-        // defaultValue={select.valueOf()}
+        value={chipMap.sort((a, b) => a - b)}
+        defaultValue={chipMap}
         slotProps={{
           input: { readOnly: true },
         }}
@@ -213,17 +274,13 @@ function OxfordMapSelection({
 const MapTypes = ["Full Chip", "Lite"];
 
 function OxfordMapComponent({
+  chipMap,
   setChipMap,
 }: {
+  chipMap: number[];
   setChipMap: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
   const [mapType, setMapType] = React.useState<string>(MapTypes[0]);
-
-  // const [chipMap, setChipMap] = React.useState<number[]>([]);
-
-  // const fromInputMap = (blockList: number[]) => {
-  //   setChipMap({ chipMap: blockList });
-  // };
 
   return (
     <Box>
@@ -245,7 +302,7 @@ function OxfordMapComponent({
           </Select>
         </FormControl>
         {mapType === MapTypes[0] ? null : (
-          <OxfordMapSelection setChipMap={setChipMap} />
+          <OxfordMapSelection chipMap={chipMap} setChipMap={setChipMap} />
         )}
       </Stack>
     </Box>
@@ -299,7 +356,6 @@ function CustomMapComponent({
   );
 }
 
-// TODO Actually return values from components
 export function MapView({
   chipType,
 }: {
@@ -318,11 +374,16 @@ export function MapView({
 
   switch (chipType) {
     case "Oxford":
-      component = <OxfordMapComponent setChipMap={setChipMap} />;
+      component = (
+        <OxfordMapComponent chipMap={chipMap} setChipMap={setChipMap} />
+      );
       chipInfo = chipMap;
+      console.log(chipMap);
       return component;
     case "OxfordInner":
-      component = <OxfordMapComponent setChipMap={setChipMap} />;
+      component = (
+        <OxfordMapComponent chipMap={chipMap} setChipMap={setChipMap} />
+      );
       return component;
     case "Custom":
       component = (
