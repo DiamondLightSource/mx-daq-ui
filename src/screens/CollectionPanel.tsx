@@ -90,7 +90,7 @@ function RunButtons(props: ParametersProp) {
       <Stack direction={"row"} spacing={8} justifyContent={"center"}>
         {/* See
           https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
-        <Tooltip title="Start fixed target collection">
+        <Tooltip title="Start fixed target collection" placement="bottom">
           <Button
             onClick={() =>
               submitAndRunPlanImmediately("gui_set_parameters", {
@@ -112,7 +112,7 @@ function RunButtons(props: ParametersProp) {
             Run (for now just set)!
           </Button>
         </Tooltip>
-        <Tooltip title="Abort current operation">
+        <Tooltip title="Abort current operation" placement="bottom">
           <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
         </Tooltip>
       </Stack>
@@ -140,7 +140,10 @@ function CollectionInput() {
         <FixedInputs />
         <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
-            <Tooltip title="Location inside visit directory to save data">
+            <Tooltip
+              title="Location inside visit directory to save data"
+              placement="right"
+            >
               <TextField
                 size="small"
                 label="Sub-directory"
@@ -149,7 +152,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Chip identifier, this will be used as filename">
+            <Tooltip
+              title="Chip identifier, this will be used as filename"
+              placement="right"
+            >
               <TextField
                 size="small"
                 label="Chip Name"
@@ -158,7 +164,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="How many consecutive times each window should be collected.">
+            <Tooltip
+              title="How many consecutive times each window should be collected."
+              placement="right"
+            >
               <TextField
                 size="small"
                 label="Shots Per Aperture"
@@ -167,7 +176,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Exposure time for each window, in seconds">
+            <Tooltip
+              title="Exposure time for each window, in seconds"
+              placement="right"
+            >
               <TextField
                 size="small"
                 label="Exposure Time (s)"
@@ -176,7 +188,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Request transmission for collection, expressed as a fraction">
+            <Tooltip
+              title="Request transmission for collection, expressed as a fraction"
+              placement="right"
+            >
               <TextField
                 size="small"
                 label="Transmission (fraction)"
@@ -185,7 +200,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Distance to move the detector y stage to, in millimeters">
+            <Tooltip
+              title="Distance to move the detector y stage to, in millimeters"
+              placement="right"
+            >
               <TextField
                 size="small"
                 label="Detector Distance (mm)"
@@ -199,7 +217,7 @@ function CollectionInput() {
         {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/25 */}
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
-            <Tooltip title="Select for drop on chip">
+            <Tooltip title="Select for drop on chip" placement="right">
               <FormControl>
                 <FormControlLabel
                   label="Checker Pattern"
@@ -212,7 +230,10 @@ function CollectionInput() {
                 />
               </FormControl>
             </Tooltip>
-            <Tooltip title="Is this a pump probe experiment? Choose the setting.">
+            <Tooltip
+              title="Is this a pump probe experiment? Choose the setting."
+              placement="right"
+            >
               <FormControl size="small" style={{ width: 150 }}>
                 <InputLabel id="pp-label">Pump Probe</InputLabel>
                 <Select
@@ -242,7 +263,7 @@ function CollectionInput() {
         </Grid2>
         <Grid2 size={4.5}>
           <Stack direction={"column"} alignItems={"center"} spacing={1}>
-            <Tooltip title="Select the type of chip in use">
+            <Tooltip title="Select the type of chip in use" placement="right">
               <FormControl size="small" style={{ width: 150 }}>
                 <InputLabel id="chip-label">Chip Type</InputLabel>
                 <Select

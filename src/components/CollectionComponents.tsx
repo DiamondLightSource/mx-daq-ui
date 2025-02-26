@@ -135,7 +135,10 @@ export function PumpProbeOptions({
 
   return (
     <Stack spacing={1} direction={"column"}>
-      <Tooltip title="Exposure time for the laser pump, in seconds">
+      <Tooltip
+        title="Exposure time for the laser pump, in seconds"
+        placement="right"
+      >
         <TextField
           size="small"
           label="Laser Dwell (s)"
@@ -144,7 +147,10 @@ export function PumpProbeOptions({
           style={{ width: 150 }}
         />
       </Tooltip>
-      <Tooltip title="Delay time between the laser pump and the collection, in seconds">
+      <Tooltip
+        title="Delay time between the laser pump and the collection, in seconds"
+        placement="right"
+      >
         <TextField
           size="small"
           label="Laser Delay (s)"
@@ -153,7 +159,10 @@ export function PumpProbeOptions({
           style={{ width: 150 }}
         />
       </Tooltip>
-      <Tooltip title="How long to collect before laser pump, if setting is Short2, in seconds">
+      <Tooltip
+        title="How long to collect before laser pump, if setting is Short2, in seconds"
+        placement="right"
+      >
         <TextField
           size="small"
           label="Pre-Pump Exposure Time (s)"
