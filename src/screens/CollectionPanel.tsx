@@ -82,42 +82,42 @@ function CollectionInput() {
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <TextField
               size="small"
-              label="subDirectory"
+              label="Sub-directory"
               defaultValue={subDir}
               onChange={(e) => setSubDir(String(e.target.value))}
               style={{ width: 180 }}
             />
             <TextField
               size="small"
-              label="chipName"
+              label="Chip Name"
               defaultValue={chipName}
               onChange={(e) => setChipName(String(e.target.value))}
               style={{ width: 180 }}
             />
             <TextField
               size="small"
-              label="shotsPerAperture"
+              label="Shots Per Aperture"
               defaultValue={shots}
               onChange={(e) => setShots(Number(e.target.value))}
               style={{ width: 180 }}
             />
             <TextField
               size="small"
-              label="exposureTime (s)"
+              label="Exposure Time (s)"
               defaultValue={expTime}
               onChange={(e) => setExpTime(Number(e.target.value))}
               style={{ width: 180 }}
             />
             <TextField
               size="small"
-              label="transmission (fraction)"
+              label="Transmission (fraction)"
               defaultValue={trans}
               onChange={(e) => setTrans(Number(e.target.value))}
               style={{ width: 180 }}
             />
             <TextField
               size="small"
-              label="detectorDistance (mm)"
+              label="Detector Distance (mm)"
               defaultValue={detDist}
               onChange={(e) => setDetDist(Number(e.target.value))}
               style={{ width: 180 }}
@@ -127,12 +127,12 @@ function CollectionInput() {
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
             <FormControl size="small" style={{ width: 150 }}>
-              <InputLabel id="pp-label">pumpProbe</InputLabel>
+              <InputLabel id="pp-label">Pump Probe</InputLabel>
               <Select
                 labelId="pp-label"
                 id="pp"
                 value={pumpProbe}
-                label="pumpProbe"
+                label="Pump Probe"
                 onChange={(e) => setPumpProbe(String(e.target.value))}
               >
                 {pumpProbeMode.map((pumpProbe) => (
@@ -145,21 +145,21 @@ function CollectionInput() {
             {/*TODO See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C16 */}
             <TextField
               size="small"
-              label="laserDwell (s)"
+              label="Laser Dwell (s)"
               defaultValue={laserDwell}
               onChange={(e) => setLaserDwell(Number(e.target.value))}
               style={{ width: 150 }}
             />
             <TextField
               size="small"
-              label="laserDelay (s)"
+              label="Laser Delay (s)"
               defaultValue={laserDelay}
               onChange={(e) => setLaserDelay(Number(e.target.value))}
               style={{ width: 150 }}
             />
             <TextField
               size="small"
-              label="prePumpExposure (s)"
+              label="Pre-Pump Exposure Time (s)"
               defaultValue={prePump}
               onChange={(e) => setPerPumpExp(Number(e.target.value))}
               style={{ width: 150 }}
@@ -181,12 +181,12 @@ function CollectionInput() {
         <Grid2 size={4.5}>
           <Stack direction={"column"} alignItems={"center"} spacing={1}>
             <FormControl size="small" style={{ width: 150 }}>
-              <InputLabel id="chip-label">chipType</InputLabel>
+              <InputLabel id="chip-label">Chip Type</InputLabel>
               <Select
                 labelId="chip-label"
                 id="chip"
                 value={chipType}
-                label="chipType"
+                label="Chip Type"
                 onChange={(e) => setChipType(String(e.target.value))}
               >
                 {chipTypes.map((chipType) => (
