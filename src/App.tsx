@@ -5,6 +5,7 @@ import { TestBoxesTabPanel } from "./screens/TestBoxes";
 import { OavMover } from "./screens/OavMover";
 import "./App.css";
 import { BlueApiInfo } from "./screens/BlueApiInfo";
+import { ParamsPanel } from "./screens/CollectionPanel";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -43,7 +44,13 @@ function App() {
   };
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider", color: theme.palette.text.secondary }}>
+      <Box
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          color: theme.palette.text.secondary,
+        }}
+      >
         <Tabs
           value={value}
           onChange={handleChange}
@@ -54,6 +61,7 @@ function App() {
           <Tab label="Detector position" {...a11yProps(1)} />
           <Tab label="OAV view" {...a11yProps(2)} />
           <Tab label="Beamline stats" {...a11yProps(3)} />
+          <Tab label="Fixed Target Collection" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -67,6 +75,9 @@ function App() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
         <TestBoxesTabPanel />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={4}>
+        <ParamsPanel />
       </CustomTabPanel>
     </Box>
   );
