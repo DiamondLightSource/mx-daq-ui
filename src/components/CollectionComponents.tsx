@@ -12,11 +12,8 @@ import {
   MenuItem,
   Select,
   Stack,
-  styled,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  toggleButtonGroupClasses,
+  Tooltip,
 } from "@mui/material";
 import React from "react";
 
@@ -25,14 +22,26 @@ type EavaRequest = {
   expTime: number;
 };
 
-export function CalculateEAVA(
+/**
+ * Calculate laser delay for EAVA (Excite And Visit Again) pump probe settings.
+ * These are the options labeles as "repeat#" in the UI, the number after repeat
+ * indicating how many rows are pumped at a time.
+ *
+ * @param {number} laserDwell - laser exposure time
+ * @param {number} expTime - collection exposure time for each window
+ * @param {number} factor - number of rows pumped at the time, multiplied by 2
+ * @returns {number} The laser delay to set
+ */
+function calculateEAVA(
   laserDwell: number,
   expTime: number,
   factor: number
 ): number {
   const movetime: number = 0.008;
-  const res = factor * 20 * (movetime + (laserDwell + expTime) / 2);
-  return Number(res.toFixed(4));
+  const windowsPerRow: number = 20;
+  const delay =
+    factor * windowsPerRow * (movetime + (laserDwell + expTime) / 2);
+  return Number(delay.toFixed(4));
 }
 
 export function PumpProbeDialog(props: EavaRequest) {
@@ -48,9 +57,11 @@ export function PumpProbeDialog(props: EavaRequest) {
 
   return (
     <React.Fragment>
-      <Button size="small" variant="outlined" onClick={handleClickOpen}>
-        EAVA calculator
-      </Button>
+      <Tooltip title="Calculate the optimal delay to set for Repeat# settings">
+        <Button variant="outlined" onClick={handleClickOpen}>
+          EAVA calculator
+        </Button>
+      </Tooltip>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Excite And Visit Again</DialogTitle>
         <DialogContent>
@@ -61,23 +72,23 @@ export function PumpProbeDialog(props: EavaRequest) {
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <p>
               <b>Repeat1: </b>
-              {CalculateEAVA(props.laserDwell, props.expTime, 2)}s
+              {calculateEAVA(props.laserDwell, props.expTime, 2)}s
             </p>
             <p>
               <b>Repeat2: </b>
-              {CalculateEAVA(props.laserDwell, props.expTime, 4)}s
+              {calculateEAVA(props.laserDwell, props.expTime, 4)}s
             </p>
             <p>
               <b>Repeat3: </b>
-              {CalculateEAVA(props.laserDwell, props.expTime, 6)}s
+              {calculateEAVA(props.laserDwell, props.expTime, 6)}s
             </p>
             <p>
               <b>Repeat5: </b>
-              {CalculateEAVA(props.laserDwell, props.expTime, 10)}s
+              {calculateEAVA(props.laserDwell, props.expTime, 10)}s
             </p>
             <p>
               <b>Repeat10: </b>
-              {CalculateEAVA(props.laserDwell, props.expTime, 20)}s
+              {calculateEAVA(props.laserDwell, props.expTime, 20)}s
             </p>
           </Stack>
           <DialogContentText>
