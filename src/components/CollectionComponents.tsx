@@ -197,7 +197,7 @@ function OxfordMapSelection({
   };
 
   const handleBlocks = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newBlocks: number[]
   ) => {
     setChipMap(newBlocks);
@@ -206,6 +206,11 @@ function OxfordMapSelection({
   const handleClear = () => {
     setChipMap([]);
   };
+
+  const blocks: number[] = [1, 2, 3, 4];
+  const btns = blocks.map((block) => (
+    <ToggleButton value={block}>0{block}</ToggleButton>
+  ));
 
   return (
     <Stack direction={"column"} alignItems={"center"} spacing={2}>
@@ -220,19 +225,7 @@ function OxfordMapSelection({
             onChange={handleBlocks}
             aria-label="blocks"
           >
-            <ToggleButton value={1} aria-label="01">
-              01
-              {/* <Button>01</Button> */}
-            </ToggleButton>
-            <ToggleButton value={2} aria-label="02">
-              02
-            </ToggleButton>
-            <ToggleButton value={3} aria-label="02">
-              03
-            </ToggleButton>
-            <ToggleButton value={4} aria-label="02">
-              04
-            </ToggleButton>
+            {btns}
           </ToggleButtonGroup>
           <ToggleButtonGroup
             orientation="vertical"
@@ -240,17 +233,16 @@ function OxfordMapSelection({
             onChange={handleBlocks}
             aria-label="blocks"
           >
-            <ToggleButton value={5} aria-label="01">
+            <ToggleButton value={5} aria-label="05">
               05
-              {/* <Button>01</Button> */}
             </ToggleButton>
-            <ToggleButton value={6} aria-label="02">
+            <ToggleButton value={6} aria-label="06">
               06
             </ToggleButton>
-            <ToggleButton value={7} aria-label="02">
+            <ToggleButton value={7} aria-label="07">
               07
             </ToggleButton>
-            <ToggleButton value={8} aria-label="02">
+            <ToggleButton value={8} aria-label="08">
               08
             </ToggleButton>
           </ToggleButtonGroup>
