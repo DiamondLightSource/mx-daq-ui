@@ -192,6 +192,11 @@ export function PumpProbeOptions({
   );
 }
 
+/**
+ * Create list of numbered ToggleButtons to add to a ToggleButtonGroup
+ *
+ * @param {number[]} blocks - list of numbered buttons to add
+ */
 function LiteMapItems({ blocks }: { blocks: number[] }) {
   const btns = blocks.map((block) => (
     <ToggleButton value={block}>
@@ -201,7 +206,12 @@ function LiteMapItems({ blocks }: { blocks: number[] }) {
   return btns;
 }
 
-// Selection like this works but chipmap showing does not update
+/**
+ * Create a Map Selection dialog for Oxford type chips
+ *
+ * @param {number[]} chipMap - list of blocks which will be collected
+ * @param {React.Dispatch} setChipMap - callback to set the chip map state
+ */
 function OxfordMapSelection({
   chipMap,
   setChipMap,
