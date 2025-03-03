@@ -110,6 +110,15 @@ export function PumpProbeDialog(props: EavaRequest) {
   );
 }
 
+/**
+ * Dynamic component which will show the pump probe options if one of the settings is selected in the
+ * dropdown.
+ *
+ * @param {string} pumpProbe - selected setting
+ * @param {number} laserDwell - laser exposure time
+ * @param {number} expTime - collection exposure time
+ * @returns null if the selected pump probe setting is `NoPP`, a JSX.Element with input text fields otherwise
+ */
 export function PumpProbeOptions({
   pumpProbe,
   laserDwell,
