@@ -238,9 +238,14 @@ function OxfordMapSelection({
 
   return (
     <Stack direction={"column"} alignItems={"center"} spacing={2}>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Choose Map
-      </Button>
+      <Tooltip
+        title="Choose which blocks to collect on the map"
+        placement="right"
+      >
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Choose Map
+        </Button>
+      </Tooltip>
       <Dialog open={dialogOpen} onClose={handleClose}>
         <Stack direction={"row"}>
           <ToggleButtonGroup
@@ -310,16 +315,18 @@ function OxfordMapSelection({
         </Stack>
         <Button onClick={handleClear}> Clear Map </Button>
       </Dialog>
-      <TextField
-        size="small"
-        label="selectedBlocks"
-        value={chipMap.sort((a, b) => a - b)}
-        defaultValue={chipMap}
-        slotProps={{
-          input: { readOnly: true },
-        }}
-        style={{ width: 150 }}
-      />
+      <Tooltip title="This will show which blocks are currently selected for collection">
+        <TextField
+          size="small"
+          label="selectedBlocks"
+          value={chipMap.sort((a, b) => a - b)}
+          defaultValue={chipMap}
+          slotProps={{
+            input: { readOnly: true },
+          }}
+          style={{ width: 150 }}
+        />
+      </Tooltip>
     </Stack>
   );
 }
@@ -340,19 +347,21 @@ function OxfordMapComponent({
       <Stack direction={"column"} spacing={2}>
         <FormControl size="small" style={{ width: 150 }}>
           <InputLabel id="map-label">mapType</InputLabel>
-          <Select
-            labelId="map-label"
-            id="map"
-            value={mapType}
-            label="mapType"
-            onChange={(e) => setMapType(String(e.target.value))}
-          >
-            {MapTypes.map((mapType) => (
-              <MenuItem key={mapType} value={mapType}>
-                {mapType}
-              </MenuItem>
-            ))}
-          </Select>
+          <Tooltip title="Select mapping type" placement="right">
+            <Select
+              labelId="map-label"
+              id="map"
+              value={mapType}
+              label="mapType"
+              onChange={(e) => setMapType(String(e.target.value))}
+            >
+              {MapTypes.map((mapType) => (
+                <MenuItem key={mapType} value={mapType}>
+                  {mapType}
+                </MenuItem>
+              ))}
+            </Select>
+          </Tooltip>
         </FormControl>
         {mapType === MapTypes[0] ? null : (
           <OxfordMapSelection chipMap={chipMap} setChipMap={setChipMap} />
@@ -376,34 +385,42 @@ function CustomMapComponent({
   return (
     <Box>
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
-        <TextField
-          size="small"
-          label="numWindowsX"
-          defaultValue={0.0}
-          onChange={(e) => setWinX(Number(e.target.value))}
-          style={{ width: 150 }}
-        />
-        <TextField
-          size="small"
-          label="numWindowsy"
-          defaultValue={0.0}
-          onChange={(e) => setWinY(Number(e.target.value))}
-          style={{ width: 150 }}
-        />
-        <TextField
-          size="small"
-          label="stepSizeX"
-          defaultValue={0.0}
-          onChange={(e) => setStepX(Number(e.target.value))}
-          style={{ width: 150 }}
-        />
-        <TextField
-          size="small"
-          label="stepSizeY"
-          defaultValue={0.0}
-          onChange={(e) => setStepY(Number(e.target.value))}
-          style={{ width: 150 }}
-        />
+        <Tooltip title="Type number of windows in x" placement="right">
+          <TextField
+            size="small"
+            label="numWindowsX"
+            defaultValue={0.0}
+            onChange={(e) => setWinX(Number(e.target.value))}
+            style={{ width: 150 }}
+          />
+        </Tooltip>
+        <Tooltip title="Type number of windows in y" placement="right">
+          <TextField
+            size="small"
+            label="numWindowsy"
+            defaultValue={0.0}
+            onChange={(e) => setWinY(Number(e.target.value))}
+            style={{ width: 150 }}
+          />
+        </Tooltip>
+        <Tooltip title="Type step size between windows in x" placement="right">
+          <TextField
+            size="small"
+            label="stepSizeX"
+            defaultValue={0.0}
+            onChange={(e) => setStepX(Number(e.target.value))}
+            style={{ width: 150 }}
+          />
+        </Tooltip>
+        <Tooltip title="Type step size between windows in y" placement="right">
+          <TextField
+            size="small"
+            label="stepSizeY"
+            defaultValue={0.0}
+            onChange={(e) => setStepY(Number(e.target.value))}
+            style={{ width: 150 }}
+          />
+        </Tooltip>
       </Stack>
     </Box>
   );
