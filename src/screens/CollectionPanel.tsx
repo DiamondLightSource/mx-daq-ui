@@ -14,10 +14,7 @@ import {
 } from "@mui/material";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
-import {
-  PumpProbeDialog,
-  PumpProbeOptions,
-} from "../components/CollectionComponents";
+import { PumpProbeOptions } from "../components/CollectionComponents";
 import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
@@ -143,7 +140,7 @@ function CollectionInput() {
         {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/25 */}
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
-            <Tooltip title="Select for drop on chip">
+            <Tooltip title="Select for drop on chip" placement="right">
               <FormControl>
                 <FormControlLabel
                   label="Checker Pattern"
@@ -156,7 +153,10 @@ function CollectionInput() {
                 />
               </FormControl>
             </Tooltip>
-            <Tooltip title="Is this a pump probe experiment? Choose the setting.">
+            <Tooltip
+              title="Is this a pump probe experiment? Choose the setting."
+              placement="right"
+            >
               <FormControl size="small" style={{ width: 150 }}>
                 <InputLabel id="pp-label">Pump Probe</InputLabel>
                 <Select
@@ -213,7 +213,7 @@ function CollectionInput() {
         <Stack direction={"row"} spacing={"5"} justifyContent={"center"}>
           {/* See
           https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
-          <Tooltip title="Start fixed target collection">
+          <Tooltip title="Start fixed target collection" placement="bottom">
             <Button
               onClick={() =>
                 submitAndRunPlanImmediately("gui_set_parameters", {
