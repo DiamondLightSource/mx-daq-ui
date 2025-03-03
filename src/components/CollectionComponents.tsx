@@ -192,6 +192,15 @@ export function PumpProbeOptions({
   );
 }
 
+function LiteMapItems({ blocks }: { blocks: number[] }) {
+  const btns = blocks.map((block) => (
+    <ToggleButton value={block}>
+      {block.toString().padStart(2, "0")}
+    </ToggleButton>
+  ));
+  return btns;
+}
+
 // Selection like this works but chipmap showing does not update
 function OxfordMapSelection({
   chipMap,
@@ -221,10 +230,11 @@ function OxfordMapSelection({
     setChipMap([]);
   };
 
-  const blocks: number[] = [1, 2, 3, 4];
-  const btns = blocks.map((block) => (
-    <ToggleButton value={block}>0{block}</ToggleButton>
-  ));
+  const rangeUp = (start: number, end: number) =>
+    Array.from(Array(end - start + 1).keys()).map((x) => x + start);
+
+  const rangeDown = (start: number, end: number) =>
+    Array.from(Array(start - end + 1).keys()).map((x) => start - x);
 
   return (
     <Stack direction={"column"} alignItems={"center"} spacing={2}>
@@ -239,7 +249,7 @@ function OxfordMapSelection({
             onChange={handleBlocks}
             aria-label="blocks"
           >
-            {btns}
+            <LiteMapItems blocks={rangeUp(1, 8)} />
           </ToggleButtonGroup>
           <ToggleButtonGroup
             orientation="vertical"
@@ -247,18 +257,55 @@ function OxfordMapSelection({
             onChange={handleBlocks}
             aria-label="blocks"
           >
-            <ToggleButton value={5} aria-label="05">
-              05
-            </ToggleButton>
-            <ToggleButton value={6} aria-label="06">
-              06
-            </ToggleButton>
-            <ToggleButton value={7} aria-label="07">
-              07
-            </ToggleButton>
-            <ToggleButton value={8} aria-label="08">
-              08
-            </ToggleButton>
+            <LiteMapItems blocks={rangeDown(16, 9)} />
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <LiteMapItems blocks={rangeUp(17, 24)} />
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <LiteMapItems blocks={rangeDown(32, 25)} />
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <LiteMapItems blocks={rangeUp(33, 40)} />
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <LiteMapItems blocks={rangeDown(48, 41)} />
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <LiteMapItems blocks={rangeUp(49, 56)} />
+          </ToggleButtonGroup>
+          <ToggleButtonGroup
+            orientation="vertical"
+            value={chipMap}
+            onChange={handleBlocks}
+            aria-label="blocks"
+          >
+            <LiteMapItems blocks={rangeDown(64, 57)} />
           </ToggleButtonGroup>
         </Stack>
         <Button onClick={handleClear}> Clear Map </Button>
