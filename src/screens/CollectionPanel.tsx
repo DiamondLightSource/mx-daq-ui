@@ -143,7 +143,7 @@ function CollectionInput() {
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <Tooltip
               title="Location inside visit directory to save data"
-              placement="right"
+              placement="left"
             >
               <TextField
                 size="small"
@@ -155,7 +155,7 @@ function CollectionInput() {
             </Tooltip>
             <Tooltip
               title="Chip identifier, this will be used as filename"
-              placement="right"
+              placement="left"
             >
               <TextField
                 size="small"
@@ -167,7 +167,7 @@ function CollectionInput() {
             </Tooltip>
             <Tooltip
               title="How many consecutive times each window should be collected."
-              placement="right"
+              placement="left"
             >
               <TextField
                 size="small"
@@ -179,7 +179,7 @@ function CollectionInput() {
             </Tooltip>
             <Tooltip
               title="Exposure time for each window, in seconds"
-              placement="right"
+              placement="left"
             >
               <TextField
                 size="small"
@@ -191,7 +191,7 @@ function CollectionInput() {
             </Tooltip>
             <Tooltip
               title="Request transmission for collection, expressed as a fraction"
-              placement="right"
+              placement="left"
             >
               <TextField
                 size="small"
@@ -203,7 +203,7 @@ function CollectionInput() {
             </Tooltip>
             <Tooltip
               title="Distance to move the detector y stage to, in millimeters"
-              placement="right"
+              placement="left"
             >
               <TextField
                 size="small"
