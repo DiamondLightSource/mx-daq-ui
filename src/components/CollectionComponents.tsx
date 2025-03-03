@@ -44,6 +44,13 @@ function calculateEAVA(
   return Number(delay.toFixed(4));
 }
 
+/**
+ * Opens a dilog showing the calculated laser delay to set for each EAVA setting, given the laser
+ * exposure time and collection exposure time.
+ *
+ * @param {number} laserDwell - laser exposure time
+ * @param {number} expTime - collection exposure time
+ */
 export function PumpProbeDialog(props: EavaRequest) {
   const [open, setOpen] = React.useState(false);
 
@@ -114,6 +121,15 @@ export function PumpProbeDialog(props: EavaRequest) {
   );
 }
 
+/**
+ * Dynamic component which will show the pump probe options if one of the settings is selected in the
+ * dropdown.
+ *
+ * @param {string} pumpProbe - selected setting
+ * @param {number} laserDwell - laser exposure time
+ * @param {number} expTime - collection exposure time
+ * @returns null if the selected pump probe setting is `NoPP`, a JSX.Element with input text fields otherwise
+ */
 export function PumpProbeOptions({
   pumpProbe,
   laserDwell,
