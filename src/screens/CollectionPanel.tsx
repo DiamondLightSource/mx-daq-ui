@@ -93,6 +93,7 @@ function RunButtons(props: ParametersProp) {
           https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
         <Tooltip title="Start fixed target collection" placement="bottom">
           <Button
+            variant="outlined"
             onClick={() =>
               submitAndRunPlanImmediately("gui_set_parameters", {
                 sub_dir: props.subDir,
@@ -110,11 +111,13 @@ function RunButtons(props: ParametersProp) {
               })
             }
           >
-            Run (for now just set)!
+            Start!
           </Button>
         </Tooltip>
         <Tooltip title="Abort current operation" placement="bottom">
-          <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
+          <Button variant="outlined" onClick={() => abortCurrentPlan()}>
+            Abort!
+          </Button>
         </Tooltip>
       </Stack>
     </Grid2>
@@ -286,19 +289,19 @@ function CollectionInput() {
             <MapView chipType={chipType} />
           </Stack>
         </Grid2>
+        <RunButtons
+          subDir={subDir}
+          chipName={chipName}
+          expTime={expTime}
+          detDist={detDist}
+          transFract={trans}
+          nShots={shots}
+          chipType={chipType}
+          checkerPattern={checkerPattern.valueOf()}
+          pumpProbe={pumpProbe}
+          pumpInputs={[laserDwell, laserDelay, prePump]}
+        />
       </Grid2>
-      <RunButtons
-        subDir={subDir}
-        chipName={chipName}
-        expTime={expTime}
-        detDist={detDist}
-        transFract={trans}
-        nShots={shots}
-        chipType={chipType}
-        checkerPattern={checkerPattern.valueOf()}
-        pumpProbe={pumpProbe}
-        pumpInputs={[laserDwell, laserDelay, prePump]}
-      />
     </Box>
   );
 }
