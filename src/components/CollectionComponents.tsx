@@ -318,7 +318,7 @@ function OxfordMapSelection({
       <Tooltip title="This will show which blocks are currently selected for collection">
         <TextField
           size="small"
-          label="selectedBlocks"
+          label="Selected Blocks"
           value={chipMap.sort((a, b) => a - b)}
           defaultValue={chipMap}
           slotProps={{
@@ -331,6 +331,14 @@ function OxfordMapSelection({
   );
 }
 
+/**
+ * Dynamic component for the map choice for an Oxford chip.
+ * If the mapType is set to Lite, it will show the button to select the blocks
+ * to collect.
+ *
+ * @param {string} mapType - Choice of mapping, could be Full Chip or Lite
+ * @param {number[]} chipMap - Chipmap to be updated in case of Lite map.
+ */
 function OxfordMapComponent({
   mapType,
   chipMap,
@@ -346,13 +354,13 @@ function OxfordMapComponent({
     <Box>
       <Stack direction={"column"} spacing={2}>
         <FormControl size="small" style={{ width: 150 }}>
-          <InputLabel id="map-label">mapType</InputLabel>
+          <InputLabel id="map-label">Map Type</InputLabel>
           <Tooltip title="Select mapping type" placement="right">
             <Select
               labelId="map-label"
               id="map"
               value={mapType}
-              label="mapType"
+              label="Map Type"
               onChange={(e) => setMapType(String(e.target.value))}
             >
               {MapTypes.map((mapType) => (
@@ -371,6 +379,9 @@ function OxfordMapComponent({
   );
 }
 
+/** Component to set the format of a Custom chip: number of windows in x and y
+ * and step size between each window, in mm.
+ */
 function CustomMapComponent({
   setChipFormat,
 }: {
@@ -435,6 +446,7 @@ function CustomMapComponent({
 }
 
 // See https://github.com/DiamondLightSource/mx-daq-ui/issues/30
+/**Open a different Map component based on the selected chip type. */
 export function MapView({
   chipType,
   mapType,

@@ -21,6 +21,9 @@ import {
 } from "../blueapi/blueapi";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 
+/**
+ * A couple of read-only boxes showing what the visit and detector in use are.
+ */
 function FixedInputs() {
   return (
     <Grid2 size={12}>
@@ -69,6 +72,11 @@ type ParametersProps = {
   pumpInputs: number[];
 };
 
+/**
+ * Component to add Start and Abort buttons to collection panel.
+ *
+ * @param {ParametersProps} props
+ */
 function RunButtons(props: ParametersProps) {
   console.log(props);
   return (
@@ -111,6 +119,7 @@ function RunButtons(props: ParametersProps) {
   );
 }
 
+/**Main collection input window for the panel. */
 function CollectionInput() {
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
