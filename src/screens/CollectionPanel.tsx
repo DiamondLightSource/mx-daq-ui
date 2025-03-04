@@ -19,7 +19,7 @@ import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
 } from "../blueapi/blueapi";
-import { chipTypes, pumpProbeMode } from "../components/params";
+import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 
 function FixedInputs() {
   return (
@@ -62,6 +62,8 @@ type ParametersProps = {
   transFract: number;
   nShots: number;
   chipType: string;
+  mapType: string;
+  chipFormat: number[];
   checkerPattern: boolean;
   pumpProbe: string;
   pumpInputs: number[];
@@ -86,6 +88,8 @@ function RunButtons(props: ParametersProps) {
                 transmission: props.transFract,
                 n_shots: props.nShots,
                 chip_type: props.chipType,
+                map_type: props.mapType,
+                chip_format: props.chipFormat,
                 checker_pattern: props.checkerPattern,
                 pump_probe: props.pumpProbe,
                 laser_dwell: props.pumpInputs[0],
@@ -120,6 +124,9 @@ function CollectionInput() {
   const [prePump, setPrePumpExp] = React.useState<number>(0.0);
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
+
+  const [mapType, setMapType] = React.useState<string>(MapTypes[0]);
+  const [chipFormat, setChipFormat] = React.useState<number[]>([]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -269,7 +276,13 @@ function CollectionInput() {
               </FormControl>
             </Tooltip>
             {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C5 */}
-            <MapView chipType={chipType} />
+            <MapView
+              chipType={chipType}
+              mapType={mapType}
+              chipFormat={chipFormat}
+              setMapType={setMapType}
+              setChipFormat={setChipFormat}
+            />
           </Stack>
         </Grid2>
         <RunButtons
@@ -280,6 +293,8 @@ function CollectionInput() {
           transFract={trans}
           nShots={shots}
           chipType={chipType}
+          mapType={mapType}
+          chipFormat={chipFormat}
           checkerPattern={checkerPattern.valueOf()}
           pumpProbe={pumpProbe}
           pumpInputs={[laserDwell, laserDelay, prePump]}

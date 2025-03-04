@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { calculateEAVA, EavaRequest, MapTypes } from "./params";
+import { BrushRounded } from "@mui/icons-material";
 
 /**
  * Opens a dilog showing the calculated laser delay to set for each EAVA setting, given the laser
@@ -182,7 +183,9 @@ function LiteMapItems({ blocks }: { blocks: number[] }) {
 }
 
 /**
- * Create a Map Selection dialog for Oxford type chips
+ * Create a Map Selection dialog for Oxford type chips. The numbering of the
+ * individual windows follows the order in which they are collected by the
+ * motion program.
  *
  * @param {number[]} chipMap - list of blocks which will be collected
  * @param {React.Dispatch} setChipMap - callback to set the chip map state
@@ -329,14 +332,16 @@ function OxfordMapSelection({
 }
 
 function OxfordMapComponent({
+  mapType,
   chipMap,
+  setMapType,
   setChipMap,
 }: {
+  mapType: string;
   chipMap: number[];
+  setMapType: React.Dispatch<React.SetStateAction<string>>;
   setChipMap: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
-  const [mapType, setMapType] = React.useState<string>(MapTypes[0]);
-
   return (
     <Box>
       <Stack direction={"column"} spacing={2}>
@@ -367,16 +372,19 @@ function OxfordMapComponent({
 }
 
 function CustomMapComponent({
-  setWinX,
-  setWinY,
-  setStepX,
-  setStepY,
+  setChipFormat,
 }: {
-  setWinX: React.Dispatch<React.SetStateAction<number>>;
-  setWinY: React.Dispatch<React.SetStateAction<number>>;
-  setStepX: React.Dispatch<React.SetStateAction<number>>;
-  setStepY: React.Dispatch<React.SetStateAction<number>>;
+  setChipFormat: React.Dispatch<React.SetStateAction<number[]>>;
 }) {
+  const [numWindowsX, setWinX] = React.useState<number>(0);
+  const [numWindowsY, setWinY] = React.useState<number>(0);
+  const [stepSizeX, setStepX] = React.useState<number>(0);
+  const [stepSizeY, setStepY] = React.useState<number>(0);
+
+  const handleUpdate = () => {
+    setChipFormat([numWindowsX, numWindowsY, stepSizeX, stepSizeY]);
+  };
+
   return (
     <Box>
       <Stack direction={"column"} alignItems={"center"} spacing={1}>
@@ -384,7 +392,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="numWindowsX"
-            defaultValue={0.0}
+            value={numWindowsX}
             onChange={(e) => setWinX(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -393,7 +401,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="numWindowsy"
-            defaultValue={0.0}
+            value={numWindowsY}
             onChange={(e) => setWinY(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -402,7 +410,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="stepSizeX"
-            defaultValue={0.0}
+            value={stepSizeX}
             onChange={(e) => setStepX(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -411,10 +419,15 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="stepSizeY"
-            defaultValue={0.0}
+            value={stepSizeY}
             onChange={(e) => setStepY(Number(e.target.value))}
             style={{ width: 150 }}
           />
+        </Tooltip>
+        <Tooltip title="Set chip format for Custom" placement="right">
+          <Button onClick={handleUpdate} size="small">
+            Set
+          </Button>
         </Tooltip>
       </Stack>
     </Box>
@@ -423,40 +436,35 @@ function CustomMapComponent({
 
 export function MapView({
   chipType,
+  mapType,
+  chipFormat,
+  setMapType,
+  setChipFormat,
 }: {
   chipType: string;
+  mapType: string;
+  chipFormat: number[];
+  setMapType: React.Dispatch<React.SetStateAction<string>>;
+  setChipFormat: React.Dispatch<React.SetStateAction<number[]>>;
 }): JSX.Element | null {
-  let chipInfo: number[];
-
-  const [chipMap, setChipMap] = React.useState<number[]>([]);
-
-  const [numWindowsX, setWinX] = React.useState<number>(0);
-  const [numWindowsY, setWinY] = React.useState<number>(0);
-  const [stepSizeX, setStepX] = React.useState<number>(0);
-  const [stepSizeY, setStepY] = React.useState<number>(0);
-
   let component: JSX.Element;
 
   switch (chipType) {
     case "OxfordInner":
     case "Oxford":
       component = (
-        <OxfordMapComponent chipMap={chipMap} setChipMap={setChipMap} />
-      );
-      chipInfo = chipMap;
-      console.log(chipMap);
-      return component;
-    case "Custom":
-      component = (
-        <CustomMapComponent
-          setWinX={setWinX}
-          setWinY={setWinY}
-          setStepX={setStepX}
-          setStepY={setStepY}
+        <OxfordMapComponent
+          mapType={mapType}
+          chipMap={chipFormat}
+          setMapType={setMapType}
+          setChipMap={setChipFormat}
         />
       );
-      chipInfo = [numWindowsX, numWindowsY, stepSizeX, stepSizeY];
-      console.log(chipInfo);
+      console.log(chipFormat);
+      return component;
+    case "Custom":
+      component = <CustomMapComponent setChipFormat={setChipFormat} />;
+      console.log(chipFormat);
       return component;
     default:
       return null;
