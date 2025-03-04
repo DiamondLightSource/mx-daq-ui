@@ -453,17 +453,13 @@ export function MapView({
   let component: JSX.Element;
 
   switch (chipType) {
+    case "OxfordInner":
     case "Oxford":
       component = (
         <OxfordMapComponent chipMap={chipMap} setChipMap={setChipMap} />
       );
       chipInfo = chipMap;
       console.log(chipMap);
-      return component;
-    case "OxfordInner":
-      component = (
-        <OxfordMapComponent chipMap={chipMap} setChipMap={setChipMap} />
-      );
       return component;
     case "Custom":
       component = (
