@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -220,6 +221,11 @@ function OxfordMapSelection({
   const rangeDown = (start: number, end: number) =>
     Array.from(Array(start - end + 1).keys()).map((x) => start - x);
 
+  const handleSelectAll = () => {
+    const newMap = rangeUp(1, 64);
+    setChipMap(newMap);
+  };
+
   return (
     <Stack direction={"column"} alignItems={"center"} spacing={2}>
       <Tooltip
@@ -297,7 +303,14 @@ function OxfordMapSelection({
             <LiteMapItems blocks={rangeDown(64, 57)} />
           </ToggleButtonGroup>
         </Stack>
-        <Button onClick={handleClear}> Clear Map </Button>
+        <ButtonGroup
+          orientation="horizontal"
+          // variant="text"
+          style={{ justifyContent: "center" }}
+        >
+          <Button onClick={handleSelectAll}> Select All </Button>
+          <Button onClick={handleClear}> Clear Map </Button>
+        </ButtonGroup>
       </Dialog>
       <Tooltip title="This will show which blocks are currently selected for collection">
         <TextField
