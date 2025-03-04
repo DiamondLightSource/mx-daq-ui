@@ -14,29 +14,12 @@ import {
 } from "@mui/material";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
-import {
-  MapView,
-  PumpProbeDialog,
-  PumpProbeOptions,
-} from "../components/CollectionComponents";
+import { MapView, PumpProbeOptions } from "../components/CollectionComponents";
 import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
 } from "../blueapi/blueapi";
-
-const pumpProbeMode = [
-  "NoPP",
-  "Short1",
-  "Short2",
-  "Repeat1",
-  "Repeat2",
-  "Repeat3",
-  "Repeat5",
-  "Repeat10",
-  "Medium1",
-];
-
-const chipTypes = ["Oxford", "OxfordInner", "Custom", "MISP"];
+import { chipTypes, pumpProbeMode } from "../components/params";
 
 function FixedInputs() {
   return (
@@ -71,7 +54,7 @@ function FixedInputs() {
   );
 }
 
-type ParametersProp = {
+type ParametersProps = {
   subDir: string;
   chipName: string;
   expTime: number;
@@ -84,7 +67,7 @@ type ParametersProp = {
   pumpInputs: number[];
 };
 
-function RunButtons(props: ParametersProp) {
+function RunButtons(props: ParametersProps) {
   console.log(props);
   return (
     <Grid2 size={12}>

@@ -16,33 +16,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import React from "react";
-
-type EavaRequest = {
-  laserDwell: number;
-  expTime: number;
-};
-
-/**
- * Calculate laser delay for EAVA (Excite And Visit Again) pump probe settings.
- * These are the options labeles as "repeat#" in the UI, the number after repeat
- * indicating how many rows are pumped at a time.
- *
- * @param {number} laserDwell - laser exposure time
- * @param {number} expTime - collection exposure time for each window
- * @param {number} factor - number of rows pumped at the time, multiplied by 2
- * @returns {number} The laser delay to set
- */
-function calculateEAVA(
-  laserDwell: number,
-  expTime: number,
-  factor: number
-): number {
-  const movetime: number = 0.008;
-  const windowsPerRow: number = 20;
-  const delay =
-    factor * windowsPerRow * (movetime + (laserDwell + expTime) / 2);
-  return Number(delay.toFixed(4));
-}
+import { calculateEAVA, EavaRequest, MapTypes } from "./params";
 
 /**
  * Opens a dilog showing the calculated laser delay to set for each EAVA setting, given the laser
@@ -340,8 +314,6 @@ function OxfordMapSelection({
     </Stack>
   );
 }
-
-const MapTypes = ["Full Chip", "Lite"];
 
 function OxfordMapComponent({
   chipMap,
