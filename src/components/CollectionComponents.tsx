@@ -434,6 +434,9 @@ function CustomMapComponent({
   );
 }
 
+// TODO The fact that chip format is common is a problem because it will
+// hold state when switching between one chip type and the other
+// not that it happens during beamtime BUT it still should be done correctly
 export function MapView({
   chipType,
   mapType,
