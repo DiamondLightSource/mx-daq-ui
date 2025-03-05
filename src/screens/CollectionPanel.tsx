@@ -270,7 +270,6 @@ function CollectionInput() {
                 </Select>
               </FormControl>
             </Tooltip>
-            {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C5 */}
             <MapView
               chipType={chipType}
               mapType={mapType}
