@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
-  FormControlLabel,
   Grid2,
   InputLabel,
   MenuItem,
@@ -217,22 +215,8 @@ function CollectionInput() {
             </Tooltip>
           </Stack>
         </Grid2>
-        {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/25 */}
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
-            <Tooltip title="Select for drop on chip" placement="right">
-              <FormControl>
-                <FormControlLabel
-                  label="Checker Pattern"
-                  control={
-                    <Checkbox
-                      checked={checkerPattern}
-                      onChange={(e) => setChecked(Boolean(e.target.checked))} // NOPE!
-                    />
-                  }
-                />
-              </FormControl>
-            </Tooltip>
             <Tooltip
               title="Is this a pump probe experiment? Choose the setting."
               placement="right"
@@ -258,9 +242,11 @@ function CollectionInput() {
               pumpProbe={pumpProbe}
               laserDwell={laserDwell}
               expTime={expTime}
+              checkerPattern={checkerPattern}
               setLaserDwell={setLaserDwell}
               setLaserDelay={setLaserDelay}
               setPrePumpExp={setPrePumpExp}
+              setChecked={setChecked}
             />
           </Stack>
         </Grid2>

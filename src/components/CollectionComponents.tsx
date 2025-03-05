@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Checkbox,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -10,6 +11,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  FormControlLabel,
   Stack,
   TextField,
   ToggleButton,
@@ -18,7 +20,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import { calculateEAVA, EavaRequest, MapTypes } from "./params";
-import { BrushRounded } from "@mui/icons-material";
 
 /**
  * Opens a dilog showing the calculated laser delay to set for each EAVA setting, given the laser
@@ -104,22 +105,27 @@ export function PumpProbeDialog(props: EavaRequest) {
  * @param {string} pumpProbe - selected setting
  * @param {number} laserDwell - laser exposure time
  * @param {number} expTime - collection exposure time
+ * @param {boolean} checkerPattern - pump in a checkerboard pattern
  * @returns null if the selected pump probe setting is `NoPP`, a JSX.Element with input text fields otherwise
  */
 export function PumpProbeOptions({
   pumpProbe,
   laserDwell,
   expTime,
+  checkerPattern,
   setLaserDwell,
   setLaserDelay,
   setPrePumpExp,
+  setChecked,
 }: {
   pumpProbe: string;
   laserDwell: number;
   expTime: number;
+  checkerPattern: boolean;
   setLaserDwell: React.Dispatch<React.SetStateAction<number>>;
   setLaserDelay: React.Dispatch<React.SetStateAction<number>>;
   setPrePumpExp: React.Dispatch<React.SetStateAction<number>>;
+  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }): JSX.Element | null {
   if (pumpProbe === "NoPP") {
     return null;
@@ -162,6 +168,22 @@ export function PumpProbeOptions({
           onChange={(e) => setPrePumpExp(Number(e.target.value))}
           style={{ width: 150 }}
         />
+      </Tooltip>
+      <Tooltip
+        title="If selected, do pump every other well in a checkerboard pattern"
+        placement="right"
+      >
+        <FormControl>
+          <FormControlLabel
+            label="Checker Pattern"
+            control={
+              <Checkbox
+                checked={checkerPattern}
+                onChange={(e) => setChecked(Boolean(e.target.checked))} // NOPE!
+              />
+            }
+          />
+        </FormControl>
       </Tooltip>
       <PumpProbeDialog laserDwell={laserDwell} expTime={expTime} />
     </Stack>
