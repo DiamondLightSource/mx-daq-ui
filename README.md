@@ -2,44 +2,45 @@
 
 ## Installation
 
-Currently this relies on a branch of cs-web-lib. This is waiting on https://github.com/DiamondLightSource/cs-web-lib/pull/69#pullrequestreview-2470013371 after which the code currently in this repo will work with installation of `@diamondlightsource/cs-web-lib` but it's possible we will need to do more of this in the future if I didn't add enough there.
-
-Clone that repository, and run
+On a DLS workstation, clone the repository and inside it run:
 
 ```bash
-git checkout expose_hooks
+module load node
+
 npm install
-npm run rollup
-npm pack
 ```
-
-and copy the generated .tgz file over to this repo
-
-then here run `npm install` and also run it again on the tarball of cs-web-lib. this avoids the issue of ending up with multiple copies of react due to linked dependencies (https://react.dev/warnings/invalid-hook-call-warning#duplicate-react)
 
 ## Gotchas
 
+### Environment variables
+
 To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk` the environment variables `VITE_PVWS_SOCKET` and `VITE_PVWS_SSL` must be set to the URL and `"true"` respectively. This is in the file `.env`. Note that the value must be the string "true"
 
-Settings for connecting to BlueAPI should also be in the .env file. There is a branch on mx-bluesky 
-https://github.com/DiamondLightSource/mx-bluesky/tree/i23_and_ui_testing which has some test devices and plans. This UI expects to connect to a local instance of BlueAPI with those plans and devices loaded. You can use the config
+### BlueAPI config
+
+Settings for connecting to BlueAPI should also be in the .env file.
+For I23, there is a branch on mx-bluesky https://github.com/DiamondLightSource/mx-bluesky/tree/i23_and_ui_testing which has some test devices and plans. This UI expects to connect to a local instance of BlueAPI with those plans and devices loaded. You can use the config
 
 ```yaml
 env:
   sources:
     - kind: dodal
-      module: mx_bluesky.ui_working.devices 
+      module: mx_bluesky.ui_working.devices
     - kind: planFunctions
       module: mx_bluesky.ui_working.plans
 
 stomp:
-    host: localhost
-    port: 61613
-    auth:
-        username: guest
-        # This is for local development only, production systems should use good passwords
-        password: guest
+  host: localhost
+  port: 61613
+  auth:
+    username: guest
+    # This is for local development only, production systems should use good passwords
+    password: guest
 ```
+
+For I24 instead, The first few plans are in the branch https://github.com/DiamondLightSource/mx-bluesky/tree/151_web-ui-first-plans and there is already a BlueAPI configuration defined in https://github.com/DiamondLightSource/mx-bluesky/blob/main/src/mx_bluesky/beamlines/i24/serial/blueapi_config.yaml that can be used for testing.
+
+### BlueAPI issue - firefox error
 
 If firefox gives you CORS errors you can edit blueAPI's main.py to add to `get_app()`:
 
@@ -57,3 +58,18 @@ If firefox gives you CORS errors you can edit blueAPI's main.py to add to `get_a
 plus `from fastapi.middleware.cors import CORSMiddleware`
 
 until https://github.com/DiamondLightSource/blueapi/issues/738 is resolved
+
+### Dark mode
+
+At the moment, the color scheme defaults to dark mode, making things difficult to read in a browser set light mode.
+Until https://github.com/DiamondLightSource/mx-daq-ui/issues/13 is fixed, the browser needs to be temporarily set to dark mode to run the gui.
+
+## Run
+
+Once all the above steps are done, start a blueapi server. The gui can be started by running:
+
+```bash
+npm run dev
+```
+
+inside the repository and clicking on the link.
