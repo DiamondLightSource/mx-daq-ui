@@ -10,7 +10,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
-// const theme = createTheme({ palette: { mode: "dark" } });
 const theme = createTheme({
   colorSchemes: {
     light: true,
