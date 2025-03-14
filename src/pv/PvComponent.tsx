@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
 import { RawValue } from "./util";
 
-export type Transformer = (value: RawValue) => string | number;
+type Transformer = (value: RawValue) => string | number;
 export type PvDisplayTypes = string | number;
 export type PvItem = { label: string; value: RawValue | PvDisplayTypes };
 export type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;

@@ -1,33 +1,33 @@
 import React from "react";
-import {
-  PvDescription,
-  Transformer,
-  useParsedPvConnection,
-} from "../pv/PvComponent";
+import { PvDescription, useParsedPvConnection } from "../pv/PvComponent";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { forceString } from "../pv/util";
 
 type SelectionProps = PvDescription & {
   id: string;
   plan_name: string;
-  choices: string[] | number[];
+  choices: string[];
   transformValue?: Transformer;
 };
 
+/** Custom component for a dropdown selection which runs a plan unpon every change event
+ * For now to be used for backlight and zoom control
+ */
 export function SelectAndRunPlan(props: SelectionProps) {
-  const currentValue = useParsedPvConnection({
-    pv: props.pv,
-    label: props.label,
-    transformValue: props.transformValue,
-  });
+  const currentValue = String(
+    useParsedPvConnection({
+      pv: props.pv,
+      label: props.label,
+      transformValue: forceString,
+    })
+  );
   console.log(`${props.id} current value: ${currentValue}`);
-  const [_, updateVal] = React.useState<typeof currentValue>();
-  // const [val, updateVal] = React.useState<typeof currentValue>();
-  // console.log(val);
+  const [_, updateVal] = React.useState<string>("");
 
   const handleChange = (newValue: typeof currentValue) => {
     updateVal(newValue);
-    submitAndRunPlanImmediately(props.plan_name, { position: newValue }); // TODO it won't always be position
+    submitAndRunPlanImmediately(props.plan_name, { position: newValue });
   };
 
   return (
@@ -37,8 +37,7 @@ export function SelectAndRunPlan(props: SelectionProps) {
         labelId={props.label}
         id={props.id}
         value={currentValue}
-        label="blControl"
-        // defaultValue={blPos}
+        label={props.label}
         onChange={(e) => handleChange(String(e.target.value))}
       >
         {props.choices.map((choice) => (
