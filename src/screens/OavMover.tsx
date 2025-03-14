@@ -24,6 +24,7 @@ import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
 import { useParsedPvConnection, PvDescription } from "../pv/PvComponent";
 import { forceString } from "../pv/util";
+import { SelectAndRunPlan } from "../components/SelectionControl";
 
 const BacklightPositions = [
   "Out",
@@ -34,7 +35,7 @@ const BacklightPositions = [
   "White In",
 ];
 
-export function BacklightControl(props: PvDescription) {
+function BacklightControl(props: PvDescription) {
   const theme = useTheme();
   const currentPos = String(
     useParsedPvConnection({
@@ -78,6 +79,27 @@ export function BacklightControl(props: PvDescription) {
           ))}
         </Select>
       </FormControl>
+    </Box>
+  );
+}
+
+function NewBacklightControl(props: PvDescription) {
+  const theme = useTheme();
+  return (
+    <Box
+      bgcolor={theme.palette.primary.dark}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
+      <SelectAndRunPlan
+        pv={props.pv}
+        label={props.label}
+        id="Backlight"
+        plan_name="gui_move_backlight"
+        choices={BacklightPositions}
+        transformValue={forceString}
+      />
     </Box>
   );
 }
@@ -245,6 +267,10 @@ export function OavMover() {
             setCrosshairY={setCrosshairY}
           />
           <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
+          <NewBacklightControl
+            label="backlight-pos"
+            pv="ca://BL24I-MO-BL-01:MP:SELECT"
+          />
           <BacklightControl
             label="backlight-pos"
             pv="ca://BL24I-MO-BL-01:MP:SELECT"
