@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid2,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Grid2, Stack, TextField, useTheme } from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
   ArrowBackRounded,
@@ -22,8 +11,8 @@ import { useState } from "react";
 import React from "react";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
-import { useParsedPvConnection, PvDescription } from "../pv/PvComponent";
-import { forceString } from "../pv/util";
+import { PvDescription } from "../pv/PvComponent";
+import { SelectAndRunPlan } from "../components/SelectionControl";
 
 const BacklightPositions = [
   "Out",
@@ -36,24 +25,6 @@ const BacklightPositions = [
 
 export function BacklightControl(props: PvDescription) {
   const theme = useTheme();
-  const currentPos = String(
-    useParsedPvConnection({
-      pv: props.pv,
-      label: props.label,
-      transformValue: forceString,
-    })
-  );
-  console.log(`Backlight position: ${currentPos}`);
-  const [blPos, moveBl] = React.useState<string>("");
-  console.log(blPos);
-  // Like this it now works (updates from epics etc) but it's iffy?
-  // Will need to improve on it
-
-  const handleChange = (newValue: string) => {
-    moveBl(newValue);
-    submitAndRunPlanImmediately("gui_move_backlight", { position: newValue });
-  };
-
   return (
     <Box
       bgcolor={theme.palette.background.paper}
@@ -61,23 +32,13 @@ export function BacklightControl(props: PvDescription) {
       paddingTop={1}
       paddingBottom={1}
     >
-      <FormControl size="small" style={{ width: 150 }}>
-        <InputLabel id="bl-label">backlight</InputLabel>
-        <Select
-          labelId="bl-label"
-          id="backlight"
-          value={currentPos}
-          label="blControl"
-          // defaultValue={blPos}
-          onChange={(e) => handleChange(String(e.target.value))}
-        >
-          {BacklightPositions.map((blPos) => (
-            <MenuItem key={blPos} value={blPos}>
-              {blPos}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <SelectAndRunPlan
+        pv={props.pv}
+        label={props.label}
+        id="Backlight"
+        plan_name="gui_move_backlight"
+        choices={BacklightPositions}
+      />
     </Box>
   );
 }
