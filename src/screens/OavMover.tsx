@@ -23,7 +23,19 @@ const BacklightPositions = [
   "White In",
 ];
 
-export function BacklightControl(props: PvDescription) {
+const ZoomLevels = [
+  "1.0",
+  "2.0",
+  "3.0",
+  "4.0",
+  "5.0",
+  "6.0",
+  "8.0",
+  "10.0",
+  "11.0",
+];
+
+function BacklightControl(props: PvDescription) {
   const theme = useTheme();
   return (
     <Box
@@ -38,6 +50,26 @@ export function BacklightControl(props: PvDescription) {
         id="Backlight"
         plan_name="gui_move_backlight"
         choices={BacklightPositions}
+      />
+    </Box>
+  );
+}
+
+function ZoomControl(props: PvDescription) {
+  const theme = useTheme();
+  return (
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
+      <SelectAndRunPlan
+        pv={props.pv}
+        label={props.label}
+        id="ZoomControl"
+        plan_name="gui_set_zoom_level"
+        choices={ZoomLevels}
       />
     </Box>
   );
@@ -209,6 +241,10 @@ export function OavMover() {
           <BacklightControl
             label="backlight-pos"
             pv="ca://BL24I-MO-BL-01:MP:SELECT"
+          />
+          <ZoomControl
+            label="zoom-level"
+            pv="BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
         </Grid2>
       </Grid2>

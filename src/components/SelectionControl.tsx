@@ -8,7 +8,6 @@ type SelectionProps = PvDescription & {
   id: string;
   plan_name: string;
   choices: string[];
-  transformValue?: Transformer;
 };
 
 /** Custom component for a dropdown selection which runs a plan unpon every change event
@@ -31,7 +30,7 @@ export function SelectAndRunPlan(props: SelectionProps) {
   };
 
   return (
-    <FormControl size="small" style={{ width: 150 }}>
+    <FormControl size="small" style={{ width: 200 }}>
       <InputLabel id={props.label}>{props.id}</InputLabel>
       <Select
         labelId={props.label}
