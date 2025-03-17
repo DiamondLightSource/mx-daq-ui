@@ -425,7 +425,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="numWindowsX"
-            value={numWindowsX}
+            defaultValue={numWindowsX}
             onChange={(e) => setWinX(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -434,7 +434,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="numWindowsy"
-            value={numWindowsY}
+            defaultValue={numWindowsY}
             onChange={(e) => setWinY(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -443,7 +443,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="stepSizeX"
-            value={stepSizeX}
+            defaultValue={stepSizeX}
             onChange={(e) => setStepX(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -452,7 +452,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="stepSizeY"
-            value={stepSizeY}
+            defaultValue={stepSizeY}
             onChange={(e) => setStepY(Number(e.target.value))}
             style={{ width: 150 }}
           />
