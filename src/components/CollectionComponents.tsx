@@ -11,22 +11,12 @@ import {
   InputLabel,
   MenuItem,
   Select,
-<<<<<<< HEAD
-  Stack,
-  styled,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  toggleButtonGroupClasses,
-  Tooltip,
-=======
   FormControlLabel,
   Stack,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
->>>>>>> 5_add-mapping
 } from "@mui/material";
 import React from "react";
 import { calculateEAVA, EavaRequest, MapTypes } from "./params";
@@ -416,15 +406,18 @@ function OxfordMapComponent({
  */
 function CustomMapComponent({
   setChipFormat,
+  setMapType,
 }: {
   setChipFormat: React.Dispatch<React.SetStateAction<number[]>>;
+  setMapType: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [numWindowsX, setWinX] = React.useState<number>(0);
   const [numWindowsY, setWinY] = React.useState<number>(0);
-  const [stepSizeX, setStepX] = React.useState<number>(0);
-  const [stepSizeY, setStepY] = React.useState<number>(0);
+  const [stepSizeX, setStepX] = React.useState<number>(0.0);
+  const [stepSizeY, setStepY] = React.useState<number>(0.0);
 
   const handleUpdate = () => {
+    setMapType("");
     setChipFormat([numWindowsX, numWindowsY, stepSizeX, stepSizeY]);
   };
 
@@ -435,7 +428,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="numWindowsX"
-            value={numWindowsX}
+            defaultValue={numWindowsX}
             onChange={(e) => setWinX(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -444,7 +437,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="numWindowsy"
-            value={numWindowsY}
+            defaultValue={numWindowsY}
             onChange={(e) => setWinY(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -453,7 +446,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="stepSizeX"
-            value={stepSizeX}
+            defaultValue={stepSizeX}
             onChange={(e) => setStepX(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -462,7 +455,7 @@ function CustomMapComponent({
           <TextField
             size="small"
             label="stepSizeY"
-            value={stepSizeY}
+            defaultValue={stepSizeY}
             onChange={(e) => setStepY(Number(e.target.value))}
             style={{ width: 150 }}
           />
@@ -508,7 +501,12 @@ export function MapView({
       console.log(chipFormat);
       return component;
     case "Custom":
-      component = <CustomMapComponent setChipFormat={setChipFormat} />;
+      component = (
+        <CustomMapComponent
+          setChipFormat={setChipFormat}
+          setMapType={setMapType}
+        />
+      );
       console.log(chipFormat);
       return component;
     default:
