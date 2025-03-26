@@ -16,7 +16,7 @@ type EavaRequest = {
 
 /**
  * Calculate laser delay for EAVA (Excite And Visit Again) pump probe settings.
- * These are the options labeles as "repeat#" in the UI, the number after repeat
+ * These are the options labeled as "repeat#" in the UI, the number after repeat
  * indicating how many rows are pumped at a time.
  *
  * @param {number} laserDwell - laser exposure time
