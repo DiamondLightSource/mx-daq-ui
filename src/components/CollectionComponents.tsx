@@ -29,7 +29,7 @@ function calculateEAVA(
   expTime: number,
   factor: number
 ): number {
-  const movetime: number = 0.008;
+  const moveTime: number = 0.008;
   const windowsPerRow: number = 20;
   const delay =
     factor * windowsPerRow * (movetime + (laserDwell + expTime) / 2);
