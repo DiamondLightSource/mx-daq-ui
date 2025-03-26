@@ -30,7 +30,7 @@ function calculateEAVA(
   expTime: number,
   factor: number
 ): number {
-  const moveTime: number = 0.008;
+  const moveTime: number = 0.008; // Approximate time the motors need to move from one window to the next
   const windowsPerRow: number = 20;
   const delay =
     factor * windowsPerRow * (moveTime + (laserDwell + expTime) / 2);
@@ -59,8 +59,8 @@ export function PumpProbeDialog(props: EavaRequest) {
         <DialogTitle>Excite And Visit Again</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Calculate the laser delay for each Excite And Visit Again setting from laser dwell
-            time and exposure time.
+            Calculate the laser delay for each Excite And Visit Again setting
+            from laser dwell time and exposure time.
           </DialogContentText>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <p>

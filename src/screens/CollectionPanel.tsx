@@ -48,6 +48,7 @@ function CollectionInput() {
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
 
+  // NOTE PVComponent ROBox will show the value and slice out the DType:
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2}>
