@@ -20,8 +20,9 @@ type EavaRequest = {
 
 /**
  * Calculate laser delay for EAVA (Excite And Visit Again) pump probe settings.
- * These are the options labeles as "repeat#" in the UI, the number after repeat
+ * These are the options labeled as "repeat#" in the UI, the number after repeat
  * indicating how many rows are pumped at a time.
+ *  * See https://confluence.diamond.ac.uk/display/MXTech/Dynamics+and+fixed+targets
  *
  * @param {number} laserDwell - laser exposure time
  * @param {number} expTime - collection exposure time for each window
@@ -33,10 +34,10 @@ function calculateEAVA(
   expTime: number,
   factor: number
 ): number {
-  const movetime: number = 0.008;
+  const moveTime: number = 0.008; // Approximate time the motors need to move from one window to the next
   const windowsPerRow: number = 20;
   const delay =
-    factor * windowsPerRow * (movetime + (laserDwell + expTime) / 2);
+    factor * windowsPerRow * (moveTime + (laserDwell + expTime) / 2);
   return Number(delay.toFixed(4));
 }
 
@@ -61,7 +62,7 @@ export function PumpProbeDialog(props: EavaRequest) {
   return (
     <React.Fragment>
       <Tooltip
-        title="Calculate the optimal delay to set for Repeat# settings"
+        title="Calculate the optimal delay to set for Repeat# Excite And Visit Again settings"
         placement="bottom"
       >
         <Button variant="outlined" onClick={handleClickOpen}>
@@ -72,8 +73,8 @@ export function PumpProbeDialog(props: EavaRequest) {
         <DialogTitle>Excite And Visit Again</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Calculate the laser delay for each EAVA setting from laser dwell
-            time and exposure time.
+            Calculate the laser delay for each Excite And Visit Again setting
+            from laser dwell time and exposure time.
           </DialogContentText>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <p>

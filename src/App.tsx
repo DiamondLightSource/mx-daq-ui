@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs, Tab, useTheme, Box } from "@mui/material";
 import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
-import { TestBoxesTabPanel } from "./screens/TestBoxes";
+import { BeamlineStatsTabPanel } from "./screens/BeamlineStats";
 import { OavMover } from "./screens/OavMover";
 import "./App.css";
 import { BlueApiInfo } from "./screens/BlueApiInfo";
@@ -74,7 +74,7 @@ function App() {
         <OavMover />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <TestBoxesTabPanel />
+        <BeamlineStatsTabPanel />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
         <ParamsPanel />
