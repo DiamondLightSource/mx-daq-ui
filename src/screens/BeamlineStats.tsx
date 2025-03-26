@@ -31,7 +31,7 @@ export function BeamlineStatsTabPanel() {
               return (
                 <Box>
                   <p>
-                    <b>{label}:</b> {parseNumericPv(value)}
+                    <b>{label}:</b> {parseNumericPv(value, 4)}
                   </p>
                 </Box>
               );
