@@ -186,7 +186,7 @@ function CollectionInput() {
                 style={{ width: 150 }}
               />
             </Tooltip>
-            <Tooltip title="Select for drop on chip">
+            <Tooltip title="If selected, do pump every other well in a checkerboard pattern">
               <FormControl>
                 <FormControlLabel
                   label="Checker Pattern"
