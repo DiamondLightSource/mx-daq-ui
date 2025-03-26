@@ -70,7 +70,7 @@ export function PumpProbeDialog(props: EavaRequest) {
         </Button>
       </Tooltip>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Excite And Visit Again</DialogTitle>
+        <DialogTitle>EAVA: Excite And Visit Again</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Calculate the laser delay for each Excite And Visit Again setting
