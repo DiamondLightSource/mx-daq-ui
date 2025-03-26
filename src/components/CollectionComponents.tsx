@@ -59,7 +59,7 @@ export function PumpProbeDialog(props: EavaRequest) {
         <DialogTitle>Excite And Visit Again</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Calculate the laser delay for each EAVA setting from laser dwell
+            Calculate the laser delay for each Excite And Visit Again setting from laser dwell
             time and exposure time.
           </DialogContentText>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
