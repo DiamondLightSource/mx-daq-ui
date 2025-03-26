@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
-  FormControlLabel,
   Grid2,
   InputLabel,
   MenuItem,
@@ -14,7 +12,7 @@ import {
 } from "@mui/material";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
-import { PumpProbeDialog } from "../components/CollectionComponents";
+import { PumpProbeOptions } from "../components/CollectionComponents";
 import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
@@ -44,7 +42,7 @@ function CollectionInput() {
   const [pumpProbe, setPumpProbe] = React.useState<string>(pumpProbeMode[0]);
   const [laserDwell, setLaserDwell] = React.useState<number>(0.0);
   const [laserDelay, setLaserDelay] = React.useState<number>(0.0);
-  const [prePump, setPerPumpExp] = React.useState<number>(0.0);
+  const [prePump, setPrePumpExp] = React.useState<number>(0.0);
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
 
@@ -138,10 +136,12 @@ function CollectionInput() {
             </Tooltip>
           </Stack>
         </Grid2>
-        {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/25 */}
         <Grid2 size={3}>
           <Stack spacing={1} direction={"column"}>
-            <Tooltip title="Is this a pump probe experiment? Choose the setting.">
+            <Tooltip
+              title="Is this a pump probe experiment? Choose the setting."
+              placement="right"
+            >
               <FormControl size="small" style={{ width: 150 }}>
                 <InputLabel id="pp-label">Pump Probe</InputLabel>
                 <Select
@@ -159,48 +159,16 @@ function CollectionInput() {
                 </Select>
               </FormControl>
             </Tooltip>
-            {/*TODO See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C16 */}
-            <Tooltip title="Exposure time for the laser pump, in seconds">
-              <TextField
-                size="small"
-                label="Laser Dwell (s)"
-                defaultValue={laserDwell}
-                onChange={(e) => setLaserDwell(Number(e.target.value))}
-                style={{ width: 150 }}
-              />
-            </Tooltip>
-            <Tooltip title="Delay time between the laser pump and the collection, in seconds">
-              <TextField
-                size="small"
-                label="Laser Delay (s)"
-                defaultValue={laserDelay}
-                onChange={(e) => setLaserDelay(Number(e.target.value))}
-                style={{ width: 150 }}
-              />
-            </Tooltip>
-            <Tooltip title="How long to collect before laser pump, if setting is Short2, in seconds">
-              <TextField
-                size="small"
-                label="Pre-Pump Exposure Time (s)"
-                defaultValue={prePump}
-                onChange={(e) => setPerPumpExp(Number(e.target.value))}
-                style={{ width: 150 }}
-              />
-            </Tooltip>
-            <Tooltip title="If selected, do pump every other well in a checkerboard pattern">
-              <FormControl>
-                <FormControlLabel
-                  label="Checker Pattern"
-                  control={
-                    <Checkbox
-                      checked={checkerPattern}
-                      onChange={(e) => setChecked(Boolean(e.target.checked))}
-                    />
-                  }
-                />
-              </FormControl>
-            </Tooltip>
-            <PumpProbeDialog laserDwell={laserDwell} expTime={expTime} />
+            <PumpProbeOptions
+              pumpProbe={pumpProbe}
+              laserDwell={laserDwell}
+              expTime={expTime}
+              checkerPattern={checkerPattern}
+              setLaserDwell={setLaserDwell}
+              setLaserDelay={setLaserDelay}
+              setPrePumpExp={setPrePumpExp}
+              setChecked={setChecked}
+            />
           </Stack>
         </Grid2>
         <Grid2 size={4.5}>
@@ -232,7 +200,7 @@ function CollectionInput() {
         <Stack direction={"row"} spacing={"5"} justifyContent={"center"}>
           {/* See
           https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
-          <Tooltip title="Start fixed target collection">
+          <Tooltip title="Start fixed target collection" placement="bottom">
             <Button
               onClick={() =>
                 submitAndRunPlanImmediately("gui_set_parameters", {
