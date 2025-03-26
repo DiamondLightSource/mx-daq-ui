@@ -193,7 +193,7 @@ function CollectionInput() {
                   control={
                     <Checkbox
                       checked={checkerPattern}
-                      onChange={(e) => setChecked(Boolean(e.target.checked))} // NOPE!
+                      onChange={(e) => setChecked(Boolean(e.target.checked))}
                     />
                   }
                 />
