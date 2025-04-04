@@ -23,7 +23,7 @@ export function SelectAndRunPlan(props: SelectionProps) {
     })
   );
   console.log(`${props.id} current value: ${currentValue}`);
-  const [_, updateVal] = React.useState<string>("");
+  const [val, updateVal] = React.useState<string>(currentValue.toString());
 
   const handleChange = (newValue: typeof currentValue) => {
     updateVal(newValue);
@@ -36,7 +36,7 @@ export function SelectAndRunPlan(props: SelectionProps) {
       <Select
         labelId={props.label}
         id={props.id}
-        value={currentValue}
+        value={val}
         label={props.label}
         onChange={(e) => handleChange(String(e.target.value))}
       >
