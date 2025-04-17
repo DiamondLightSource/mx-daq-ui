@@ -244,7 +244,7 @@ export function OavMover() {
           />
           <ZoomControl
             label="zoom-level"
-            pv="BL24I-EA-OAV-01:FZOOM:MP:SELECT"
+            pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
         </Grid2>
       </Grid2>
