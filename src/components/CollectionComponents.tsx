@@ -261,7 +261,7 @@ function OxfordMapSelection({
         placement="right"
       >
         <Button variant="outlined" onClick={handleClickOpen}>
-          Choose Map
+          Configure Map
         </Button>
       </Tooltip>
       <Dialog open={dialogOpen} onClose={handleClose}>
