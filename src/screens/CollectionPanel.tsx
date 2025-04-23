@@ -12,26 +12,113 @@ import {
 } from "@mui/material";
 import { PvComponent, PvItem } from "../pv/PvComponent";
 import React from "react";
-import { PumpProbeOptions } from "../components/CollectionComponents";
+import { MapView, PumpProbeOptions } from "../components/CollectionComponents";
 import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
 } from "../blueapi/blueapi";
+import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 
-const pumpProbeMode = [
-  "NoPP",
-  "Short1",
-  "Short2",
-  "Repeat1",
-  "Repeat2",
-  "Repeat3",
-  "Repeat5",
-  "Repeat10",
-  "Medium1",
-];
+/**
+ * A couple of read-only boxes showing what the visit and detector in use are.
+ */
+function FixedInputs() {
+  // NOTE PVComponent ROBox will show the value and slice out the DType:
+  return (
+    <Grid2 size={12}>
+      <PvComponent
+        label="Visit"
+        pv="ca://ME14E-MO-IOC-01:GP100"
+        render={({ label, value }: PvItem) => {
+          return (
+            <Box>
+              <p>
+                <b>{label}:</b> {value?.toString().slice(7)}
+              </p>
+            </Box>
+          );
+        }}
+      />
+      <PvComponent
+        label="Detector in use"
+        pv="ca://ME14E-MO-IOC-01:GP101"
+        render={({ label, value }: PvItem) => {
+          return (
+            <Box>
+              <p>
+                <b>{label}:</b> {value?.toString().slice(7)}
+              </p>
+            </Box>
+          );
+        }}
+      />
+    </Grid2>
+  );
+}
 
-const chipTypes = ["Oxford", "OxfordInner", "Custom", "MISP"];
+type ParametersProps = {
+  subDir: string;
+  chipName: string;
+  expTime: number;
+  detDist: number;
+  transFract: number;
+  nShots: number;
+  chipType: string;
+  mapType: string;
+  chipFormat: number[];
+  checkerPattern: boolean;
+  pumpProbe: string;
+  pumpInputs: number[];
+};
 
+/**
+ * Component to add Start and Abort buttons to collection panel.
+ *
+ * @param {ParametersProps} props
+ */
+function RunButtons(props: ParametersProps) {
+  console.log(props);
+  return (
+    <Grid2 size={12}>
+      <Stack direction={"row"} spacing={8} justifyContent={"center"}>
+        {/* See
+          https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
+        <Tooltip title="Start fixed target collection" placement="bottom">
+          <Button
+            variant="outlined"
+            onClick={() =>
+              submitAndRunPlanImmediately("gui_set_parameters", {
+                sub_dir: props.subDir,
+                chip_name: props.chipName,
+                exp_time: props.expTime,
+                det_dist: props.detDist,
+                transmission: props.transFract,
+                n_shots: props.nShots,
+                chip_type: props.chipType,
+                map_type: props.mapType,
+                chip_format: props.chipFormat,
+                checker_pattern: props.checkerPattern,
+                pump_probe: props.pumpProbe,
+                laser_dwell: props.pumpInputs[0],
+                laser_delay: props.pumpInputs[1],
+                pre_pump: props.pumpInputs[2],
+              })
+            }
+          >
+            Start!
+          </Button>
+        </Tooltip>
+        <Tooltip title="Abort current operation" placement="bottom">
+          <Button variant="outlined" onClick={() => abortCurrentPlan()}>
+            Abort!
+          </Button>
+        </Tooltip>
+      </Stack>
+    </Grid2>
+  );
+}
+
+/**Main collection input window for the panel. */
 function CollectionInput() {
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
@@ -46,41 +133,19 @@ function CollectionInput() {
   const [checkerPattern, setChecked] = React.useState(false);
   const [chipType, setChipType] = React.useState<string>(chipTypes[0]);
 
-  // NOTE PVComponent ROBox will show the value and slice out the DType:
+  const [mapType, setMapType] = React.useState<string>(MapTypes[0]);
+  const [chipFormat, setChipFormat] = React.useState<number[]>([]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2}>
-        <Grid2 size={12}>
-          <PvComponent
-            label="Visit"
-            pv="ca://ME14E-MO-IOC-01:GP100"
-            render={({ label, value }: PvItem) => {
-              return (
-                <Box>
-                  <p>
-                    <b>{label}:</b> {value?.toString().slice(7)}
-                  </p>
-                </Box>
-              );
-            }}
-          />
-          <PvComponent
-            label="Detector in use"
-            pv="ca://ME14E-MO-IOC-01:GP101"
-            render={({ label, value }: PvItem) => {
-              return (
-                <Box>
-                  <p>
-                    <b>{label}:</b> {value?.toString().slice(7)}
-                  </p>
-                </Box>
-              );
-            }}
-          />
-        </Grid2>
+        <FixedInputs />
         <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
-            <Tooltip title="Location inside visit directory to save data">
+            <Tooltip
+              title="Location inside visit directory to save data"
+              placement="left"
+            >
               <TextField
                 size="small"
                 label="Sub-directory"
@@ -89,7 +154,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Chip identifier, this will be used as filename">
+            <Tooltip
+              title="Chip identifier, this will be used as filename"
+              placement="left"
+            >
               <TextField
                 size="small"
                 label="Chip Name"
@@ -98,7 +166,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="How many consecutive times each window should be collected.">
+            <Tooltip
+              title="How many consecutive times each window should be collected."
+              placement="left"
+            >
               <TextField
                 size="small"
                 label="Shots Per Aperture"
@@ -107,7 +178,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Exposure time for each window, in seconds">
+            <Tooltip
+              title="Exposure time for each window, in seconds"
+              placement="left"
+            >
               <TextField
                 size="small"
                 label="Exposure Time (s)"
@@ -116,7 +190,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Request transmission for collection, expressed as a fraction">
+            <Tooltip
+              title="Request transmission for collection, expressed as a fraction"
+              placement="left"
+            >
               <TextField
                 size="small"
                 label="Transmission (fraction)"
@@ -125,7 +202,10 @@ function CollectionInput() {
                 style={{ width: 180 }}
               />
             </Tooltip>
-            <Tooltip title="Distance to move the detector y stage to, in millimeters">
+            <Tooltip
+              title="Distance to move the detector y stage to, in millimeters"
+              placement="left"
+            >
               <TextField
                 size="small"
                 label="Detector Distance (mm)"
@@ -173,7 +253,7 @@ function CollectionInput() {
         </Grid2>
         <Grid2 size={4.5}>
           <Stack direction={"column"} alignItems={"center"} spacing={1}>
-            <Tooltip title="Select the type of chip in use">
+            <Tooltip title="Select the type of chip in use" placement="right">
               <FormControl size="small" style={{ width: 150 }}>
                 <InputLabel id="chip-label">Chip Type</InputLabel>
                 <Select
@@ -191,41 +271,29 @@ function CollectionInput() {
                 </Select>
               </FormControl>
             </Tooltip>
-            {/* See https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C5 */}
-            <p>Chip-dependent Map settings TBD.</p>
+            <MapView
+              chipType={chipType}
+              mapType={mapType}
+              chipFormat={chipFormat}
+              setMapType={setMapType}
+              setChipFormat={setChipFormat}
+            />
           </Stack>
         </Grid2>
-      </Grid2>
-      <Grid2 size={12}>
-        <Stack direction={"row"} spacing={"5"} justifyContent={"center"}>
-          {/* See
-          https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
-          <Tooltip title="Start fixed target collection" placement="bottom">
-            <Button
-              onClick={() =>
-                submitAndRunPlanImmediately("gui_set_parameters", {
-                  sub_dir: subDir,
-                  chip_name: chipName,
-                  exp_time: expTime,
-                  det_dist: detDist,
-                  transmission: trans,
-                  n_shots: shots,
-                  chip_type: chipType,
-                  checker_pattern: checkerPattern.valueOf(),
-                  pump_probe: pumpProbe,
-                  laser_dwell: laserDwell,
-                  laser_delay: laserDelay,
-                  pre_pump: prePump,
-                })
-              }
-            >
-              Run (for now just set)!
-            </Button>
-          </Tooltip>
-          <Tooltip title="Abort current operation">
-            <Button onClick={() => abortCurrentPlan()}>Abort!</Button>
-          </Tooltip>
-        </Stack>
+        <RunButtons
+          subDir={subDir}
+          chipName={chipName}
+          expTime={expTime}
+          detDist={detDist}
+          transFract={trans}
+          nShots={shots}
+          chipType={chipType}
+          mapType={mapType}
+          chipFormat={chipFormat}
+          checkerPattern={checkerPattern.valueOf()}
+          pumpProbe={pumpProbe}
+          pumpInputs={[laserDwell, laserDelay, prePump]}
+        />
       </Grid2>
     </Box>
   );
