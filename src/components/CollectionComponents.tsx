@@ -42,7 +42,7 @@ function calculateEAVA(
 }
 
 /**
- * Opens a dilog showing the calculated laser delay to set for each EAVA setting, given the laser
+ * Opens a dialog showing the calculated laser delay to set for each EAVA setting, given the laser
  * exposure time and collection exposure time.
  *
  * @param {number} laserDwell - laser exposure time
