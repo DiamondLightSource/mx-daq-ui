@@ -2,7 +2,7 @@ import { Box, Grid2, useTheme } from "@mui/material";
 import { PvItem, PvComponent } from "../pv/PvComponent";
 import { parseNumericPv } from "../pv/util";
 
-export function TestBoxesTabPanel() {
+export function BeamlineStatsTabPanel() {
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
