@@ -41,13 +41,16 @@ export function PumpProbeDialog(props: EavaRequest) {
 
   return (
     <React.Fragment>
-      <Tooltip title="Calculate the optimal delay to set for Repeat# Excite And Visit Again settings">
+      <Tooltip
+        title="Calculate the optimal delay to set for Repeat# Excite And Visit Again settings"
+        placement="bottom"
+      >
         <Button variant="outlined" onClick={handleClickOpen}>
           EAVA calculator
         </Button>
       </Tooltip>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Excite And Visit Again</DialogTitle>
+        <DialogTitle>EAVA: Excite And Visit Again</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Calculate the laser delay for each Excite And Visit Again setting
