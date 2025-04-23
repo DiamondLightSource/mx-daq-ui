@@ -11,6 +11,37 @@ import { useState } from "react";
 import React from "react";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
+import { PvDescription } from "../pv/PvComponent";
+import { SelectAndRunPlan } from "../components/SelectionControl";
+
+const BacklightPositions = [
+  "Out",
+  "In",
+  "LoadCheck",
+  "OAV2",
+  "Diode",
+  "White In",
+];
+
+function BacklightControl(props: PvDescription) {
+  const theme = useTheme();
+  return (
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
+      <SelectAndRunPlan
+        pv={props.pv}
+        label={props.label}
+        id="Backlight"
+        plan_name="gui_move_backlight"
+        choices={BacklightPositions}
+      />
+    </Box>
+  );
+}
 
 export function MoveArrows() {
   const theme = useTheme();
@@ -175,6 +206,10 @@ export function OavMover() {
             setCrosshairY={setCrosshairY}
           />
           <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
+          <BacklightControl
+            label="backlight-pos"
+            pv="ca://BL24I-MO-BL-01:MP:SELECT"
+          />
         </Grid2>
       </Grid2>
     </div>
