@@ -13,27 +13,7 @@ import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
 import { PvDescription } from "../pv/PvComponent";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
-
-const BacklightPositions = [
-  "Out",
-  "In",
-  "LoadCheck",
-  "OAV2",
-  "Diode",
-  "White In",
-];
-
-const ZoomLevels = [
-  "1.0",
-  "2.0",
-  "3.0",
-  "4.0",
-  "5.0",
-  "6.0",
-  "8.0",
-  "10.0",
-  "11.0",
-];
+import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 
 function BacklightControl(props: PvDescription) {
   const theme = useTheme();
