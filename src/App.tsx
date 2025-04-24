@@ -10,6 +10,10 @@ import {
   ColourSchemeButton,
   Footer,
   FooterLinks,
+  Navbar,
+  NavLink,
+  NavLinks,
+  User,
 } from "@diamondlightsource/sci-react-ui";
 
 interface TabPanelProps {
@@ -49,6 +53,22 @@ function App() {
   };
   return (
     <Box sx={{ width: "100%" }}>
+      <Navbar>
+        <p>I24 Serial Crystallography</p>
+        <NavLinks>
+          <NavLink href="#">Fixed Target</NavLink>
+          <NavLink href="#">Extruder</NavLink>
+        </NavLinks>
+        <User
+          color="white"
+          onLogin={() => {}}
+          onLogout={() => {}}
+          user={{
+            fedid: "FedID",
+            name: "Name",
+          }}
+        />
+      </Navbar>
       <Box
         sx={{
           borderBottom: 1,
