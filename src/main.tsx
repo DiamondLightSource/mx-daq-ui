@@ -33,7 +33,7 @@ const I24DiamondTheme: Theme = createTheme({
     dark: {
       palette: {
         background: {
-          default: "121212",
+          // default: "121212",
           paper: "121212",
         },
       },
