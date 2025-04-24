@@ -11,7 +11,12 @@ import { ThemeProvider, DiamondTheme } from "@diamondlightsource/sci-react-ui";
 
 const queryClient = new QueryClient();
 
-// const theme = createTheme({ palette: { mode: "dark" } });
+// const theme = createTheme({
+//   colorSchemes: {
+//     light: true,
+//     dark: true,
+//   },
+// });
 
 const container = document.getElementById("root");
 if (!container) throw new Error("Failed to find the root element");
