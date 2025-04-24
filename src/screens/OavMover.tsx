@@ -12,16 +12,8 @@ import React from "react";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
 import { PvDescription } from "../pv/PvComponent";
-import { SelectAndRunPlan } from "../components/SelectionControl";
-
-const BacklightPositions = [
-  "Out",
-  "In",
-  "LoadCheck",
-  "OAV2",
-  "Diode",
-  "White In",
-];
+import { SelectionWithPlanRunner } from "../components/SelectionControl";
+import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 
 function BacklightControl(props: PvDescription) {
   const theme = useTheme();
@@ -32,12 +24,32 @@ function BacklightControl(props: PvDescription) {
       paddingTop={1}
       paddingBottom={1}
     >
-      <SelectAndRunPlan
+      <SelectionWithPlanRunner
         pv={props.pv}
         label={props.label}
         id="Backlight"
         plan_name="gui_move_backlight"
         choices={BacklightPositions}
+      />
+    </Box>
+  );
+}
+
+function ZoomControl(props: PvDescription) {
+  const theme = useTheme();
+  return (
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius={5}
+      paddingTop={1}
+      paddingBottom={1}
+    >
+      <SelectionWithPlanRunner
+        pv={props.pv}
+        label={props.label}
+        id="ZoomControl"
+        plan_name="gui_set_zoom_level"
+        choices={ZoomLevels}
       />
     </Box>
   );
@@ -209,6 +221,10 @@ export function OavMover() {
           <BacklightControl
             label="backlight-pos"
             pv="ca://BL24I-MO-BL-01:MP:SELECT"
+          />
+          <ZoomControl
+            label="zoom-level"
+            pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
         </Grid2>
       </Grid2>
