@@ -51,13 +51,28 @@ function App() {
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const handleNavLink = (
+    _event: React.MouseEvent<HTMLElement>,
+    linkName: string
+  ) => {
+    console.log(linkName);
+    return <Box>NOTHING HERE YET</Box>;
+  };
   return (
     <Box sx={{ width: "100%" }}>
       <Navbar>
         <p>I24 Serial Crystallography</p>
         <NavLinks>
           <NavLink href="#">Fixed Target</NavLink>
-          {/* <NavLink href="#">Extruder</NavLink> // TO BE ADDED LATER*/}
+          <NavLink
+            href="#"
+            onClick={() => {
+              handleNavLink((linkName = "e"));
+            }}
+          >
+            Extruder
+          </NavLink>
         </NavLinks>
         <User
           color="white"
