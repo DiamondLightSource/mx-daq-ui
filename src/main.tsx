@@ -1,4 +1,3 @@
-// import { createTheme, ThemeProvider } from "@mui/material";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -17,8 +16,20 @@ import { createTheme, Theme } from "@mui/material";
 
 const queryClient = new QueryClient();
 
-// Set up a customisable theme derived from the common DiamondTheme
-// This way it should be possible to easily add settings if required
+/** Set up a customisable theme derived from the common DiamondTheme
+ * This way it should be possible to easily add settings if required
+ * eg. to add colorescheme options
+ * colorSchemes: {
+ *   dark: {
+ *     palette: {
+ *       background: {
+ *         default: "121212",
+ *         paper: "121212",
+ *       },
+ *     },
+ *   },
+ * }, */
+
 const dlsLogo: ImageColorSchemeSwitchType = {
   src: logo,
   alt: "DLS Logo",
@@ -28,16 +39,6 @@ const I24DiamondTheme: Theme = createTheme({
   ...DiamondTheme,
   logos: {
     normal: dlsLogo,
-  },
-  colorSchemes: {
-    dark: {
-      palette: {
-        background: {
-          // default: "121212",
-          paper: "121212",
-        },
-      },
-    },
   },
 });
 
