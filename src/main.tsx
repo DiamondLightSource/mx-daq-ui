@@ -40,13 +40,6 @@ const I24DiamondTheme: Theme = createTheme({
   logos: {
     normal: dlsLogo,
   },
-  colorSchemes: {
-    dark: {
-      palette: {
-        background: { paper: "#050505" },
-      },
-    },
-  },
 });
 
 const container = document.getElementById("root");
