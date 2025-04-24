@@ -54,12 +54,10 @@ function App() {
   return (
     <Box sx={{ width: "100%" }}>
       <Navbar>
-        <Box sx={{ marginLeft: "1px", marginTop: "2px" }}>
-          <p>I24 Serial Crystallography</p>
-        </Box>
+        <p>I24 Serial Crystallography</p>
         <NavLinks>
           <NavLink href="#">Fixed Target</NavLink>
-          <NavLink href="#">Extruder</NavLink>
+          {/* <NavLink href="#">Extruder</NavLink> // TO BE ADDED LATER*/}
         </NavLinks>
         <User
           color="white"
