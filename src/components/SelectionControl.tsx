@@ -14,7 +14,7 @@ type SelectionProps = PvDescription & {
 /** Custom component for a dropdown selection which runs a plan unpon every change event
  * For now to be used for backlight and zoom control
  */
-export function SelectAndRunPlan(props: SelectionProps) {
+export function SelectionWithPlanRunner(props: SelectionProps) {
   const currentValue = String(
     useParsedPvConnection({
       pv: props.pv,

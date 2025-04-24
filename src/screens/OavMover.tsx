@@ -12,7 +12,7 @@ import React from "react";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
 import { PvDescription } from "../pv/PvComponent";
-import { SelectAndRunPlan } from "../components/SelectionControl";
+import { SelectionWithPlanRunner } from "../components/SelectionControl";
 
 const BacklightPositions = [
   "Out",
@@ -32,7 +32,7 @@ function BacklightControl(props: PvDescription) {
       paddingTop={1}
       paddingBottom={1}
     >
-      <SelectAndRunPlan
+      <SelectionWithPlanRunner
         pv={props.pv}
         label={props.label}
         id="Backlight"
