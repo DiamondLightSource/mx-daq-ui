@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Tabs, Tab, useTheme, Box } from "@mui/material";
 import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
 import { BeamlineStatsTabPanel } from "./screens/BeamlineStats";
@@ -6,6 +6,16 @@ import { OavMover } from "./screens/OavMover";
 import "./App.css";
 import { BlueApiInfo } from "./screens/BlueApiInfo";
 import { ParamsPanel } from "./screens/CollectionPanel";
+import {
+  ColourSchemeButton,
+  Footer,
+  FooterLinks,
+  Navbar,
+  NavLink,
+  NavLinks,
+  User,
+} from "@diamondlightsource/sci-react-ui";
+import { CommitOutlined } from "@mui/icons-material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,14 +46,14 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function App() {
+function FixedTargetPanels() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   return (
-    <Box sx={{ width: "100%" }}>
+    <div>
       <Box
         sx={{
           borderBottom: 1,
@@ -79,6 +89,54 @@ function App() {
       <CustomTabPanel value={value} index={4}>
         <ParamsPanel />
       </CustomTabPanel>
+    </div>
+  );
+}
+
+function App() {
+  const theme = useTheme();
+
+  // const handleOnClick = (
+  //   _event: React.MouseEvent<HTMLElement>,
+  //   name: string
+  // ) => {
+  //   let component: JSX.Element;
+  //   switch (name) {
+  //     case "ft":
+  //       component = <FixedTargetPanels />;
+  //       return component;
+  //     case "ex":
+  //       component = <Box>NOTHING HERE YET</Box>;
+  //       return component;
+  //     default:
+  //       return null;
+  //   }
+  // };
+  // NOTE NavLinks not reactive yet. They should change the tabs displayed on click.
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Navbar>
+        <p>I24 Serial Crystallography</p>
+        <NavLinks>
+          <NavLink href="#">Fixed Target</NavLink>
+          <NavLink href="#">Extruder</NavLink>
+        </NavLinks>
+        <User
+          color="white"
+          onLogin={() => {}}
+          onLogout={() => {}}
+          user={{
+            fedid: "FedID",
+            name: "Name",
+          }}
+        />
+      </Navbar>
+      <FixedTargetPanels />
+      <Footer logo={theme.logos.normal}>
+        <FooterLinks>
+          <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
+        </FooterLinks>
+      </Footer>
     </Box>
   );
 }
