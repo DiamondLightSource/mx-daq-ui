@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Tabs, Tab, useTheme, Box } from "@mui/material";
 import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
 import { BeamlineStatsTabPanel } from "./screens/BeamlineStats";
@@ -15,6 +15,7 @@ import {
   NavLinks,
   User,
 } from "@diamondlightsource/sci-react-ui";
+import { CommitOutlined } from "@mui/icons-material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -94,6 +95,23 @@ function FixedTargetPanels() {
 
 function App() {
   const theme = useTheme();
+
+  // const handleOnClick = (
+  //   _event: React.MouseEvent<HTMLElement>,
+  //   name: string
+  // ) => {
+  //   let component: JSX.Element;
+  //   switch (name) {
+  //     case "ft":
+  //       component = <FixedTargetPanels />;
+  //       return component;
+  //     case "ex":
+  //       component = <Box>NOTHING HERE YET</Box>;
+  //       return component;
+  //     default:
+  //       return null;
+  //   }
+  // };
   // NOTE NavLinks not reactive yet. They should change the tabs displayed on click.
   return (
     <Box sx={{ width: "100%" }}>
