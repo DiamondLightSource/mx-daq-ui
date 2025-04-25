@@ -45,31 +45,14 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function App() {
+function FixedTargetPanels() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  // NOTE NavLinks not reactive yet. They should change the tabs displayed on click.
   return (
-    <Box sx={{ width: "100%" }}>
-      <Navbar>
-        <p>I24 Serial Crystallography</p>
-        <NavLinks>
-          <NavLink href="#">Fixed Target</NavLink>
-          <NavLink href="#">Extruder</NavLink>
-        </NavLinks>
-        <User
-          color="white"
-          onLogin={() => {}}
-          onLogout={() => {}}
-          user={{
-            fedid: "FedID",
-            name: "Name",
-          }}
-        />
-      </Navbar>
+    <div>
       <Box
         sx={{
           borderBottom: 1,
@@ -105,6 +88,32 @@ function App() {
       <CustomTabPanel value={value} index={4}>
         <ParamsPanel />
       </CustomTabPanel>
+    </div>
+  );
+}
+
+function App() {
+  const theme = useTheme();
+  // NOTE NavLinks not reactive yet. They should change the tabs displayed on click.
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Navbar>
+        <p>I24 Serial Crystallography</p>
+        <NavLinks>
+          <NavLink href="#">Fixed Target</NavLink>
+          <NavLink href="#">Extruder</NavLink>
+        </NavLinks>
+        <User
+          color="white"
+          onLogin={() => {}}
+          onLogout={() => {}}
+          user={{
+            fedid: "FedID",
+            name: "Name",
+          }}
+        />
+      </Navbar>
+      <FixedTargetPanels />
       <Footer logo={theme.logos.normal}>
         <FooterLinks>
           <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
