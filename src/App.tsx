@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Tabs, Tab, useTheme, Box, Container, Typography } from "@mui/material";
+import React from "react";
+import { Tabs, Tab, useTheme, Box } from "@mui/material";
 import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
 import { BeamlineStatsTabPanel } from "./screens/BeamlineStats";
 import { OavMover } from "./screens/OavMover";
@@ -10,10 +10,6 @@ import {
   ColourSchemeButton,
   Footer,
   FooterLinks,
-  Navbar,
-  NavLink,
-  NavLinks,
-  User,
 } from "@diamondlightsource/sci-react-ui";
 
 interface TabPanelProps {
@@ -97,18 +93,6 @@ function App() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Navbar>
-        <b>I24 Serial Crystallography</b>
-        <User
-          color="white"
-          onLogin={() => {}}
-          onLogout={() => {}}
-          user={{
-            fedid: "FedID",
-            name: "Name",
-          }}
-        />
-      </Navbar>
       <FixedTargetPanels />
       <Footer logo={theme.logos.normal}>
         <FooterLinks>
