@@ -6,6 +6,11 @@ import { OavMover } from "./screens/OavMover";
 import "./App.css";
 import { BlueApiInfo } from "./screens/BlueApiInfo";
 import { ParamsPanel } from "./screens/CollectionPanel";
+import {
+  ColourSchemeButton,
+  Footer,
+  FooterLinks,
+} from "@diamondlightsource/sci-react-ui";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,14 +41,14 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function App() {
+function FixedTargetPanels() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   return (
-    <Box sx={{ width: "100%" }}>
+    <div>
       <Box
         sx={{
           borderBottom: 1,
@@ -79,6 +84,21 @@ function App() {
       <CustomTabPanel value={value} index={4}>
         <ParamsPanel />
       </CustomTabPanel>
+    </div>
+  );
+}
+
+function App() {
+  const theme = useTheme();
+
+  return (
+    <Box sx={{ width: "100%" }}>
+      <FixedTargetPanels />
+      <Footer logo={theme.logos.normal}>
+        <FooterLinks>
+          <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
+        </FooterLinks>
+      </Footer>
     </Box>
   );
 }
