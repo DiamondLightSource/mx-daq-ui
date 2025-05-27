@@ -92,25 +92,46 @@ function App() {
   const theme = useTheme();
 
   return (
-    <Box
-      sx={[
-        () => ({
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "column",
-          minHeight: "100vh",
-          minWidth: "320px",
-          margin: 0,
-        }),
-      ]}
-    >
-      <FixedTargetPanels />
+    <div>
+      <Box
+        sx={[
+          () => ({
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "column",
+            minHeight: "100vh",
+            minWidth: "320px",
+            margin: 0,
+          }),
+        ]}
+      >
+        <FixedTargetPanels />
+      </Box>
       <Footer logo={theme.logos.normal} color={theme.palette.primary.main}>
         <FooterLinks>
           <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
         </FooterLinks>
       </Footer>
-    </Box>
+    </div>
+    // <Box
+    //   sx={[
+    //     () => ({
+    //       display: "flex",
+    //       justifyContent: "space-between",
+    //       flexDirection: "column",
+    //       minHeight: "100vh",
+    //       minWidth: "320px",
+    //       margin: 0,
+    //     }),
+    //   ]}
+    // >
+    //   <FixedTargetPanels />
+    //   <Footer logo={theme.logos.normal} color={theme.palette.primary.main}>
+    //     <FooterLinks>
+    //       <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
+    //     </FooterLinks>
+    //   </Footer>
+    // </Box>
   );
 }
 

@@ -7,11 +7,7 @@ import { store } from "@diamondlightsource/cs-web-lib";
 import logo from "./assets/logo.svg";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-import {
-  ThemeProvider,
-  DiamondTheme,
-  ImageColorSchemeSwitchType,
-} from "@diamondlightsource/sci-react-ui";
+import { ThemeProvider, DiamondTheme } from "@diamondlightsource/sci-react-ui";
 import { createTheme, Theme } from "@mui/material";
 
 const queryClient = new QueryClient();
@@ -30,15 +26,14 @@ const queryClient = new QueryClient();
  *   },
  * }, */
 
-const dlsLogo: ImageColorSchemeSwitchType = {
-  src: logo,
-  alt: "DLS Logo",
-};
-
 const I24DiamondTheme: Theme = createTheme({
   ...DiamondTheme,
   logos: {
-    normal: dlsLogo,
+    normal: {
+      src: logo,
+      srcDark: logo,
+      alt: "DLS logo",
+    },
   },
 });
 
