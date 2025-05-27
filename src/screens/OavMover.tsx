@@ -231,6 +231,7 @@ export function OavMover() {
           </Box>
         </Grid2>
         <Grid2 size={3} height={3}>
+          https://www.redhat.com/en
           <MoveArrows />
           <Grid2 size={3} padding={1} />
           <BeamCentre
@@ -246,6 +247,7 @@ export function OavMover() {
             label="zoom-level"
             pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
+          https://www.redhat.com/en
         </Grid2>
       </Grid2>
     </div>

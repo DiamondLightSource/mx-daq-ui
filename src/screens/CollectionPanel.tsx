@@ -23,6 +23,7 @@ import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
  * A couple of read-only boxes showing what the visit and detector in use are.
  */
 function FixedInputs() {
+  // NOTE PVComponent ROBox will show the value and slice out the DType:
   return (
     <Grid2 size={12}>
       <PvComponent
