@@ -49,7 +49,7 @@ const I24DiamondTheme: Theme = createTheme({
           dark: "#AF9004", // dark yellow
         },
         custom: {
-          main: "#FF5733",
+          main: "#1976d2",
         },
         background: {
           paper: "121212",
