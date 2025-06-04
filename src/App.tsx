@@ -50,6 +50,7 @@ function FixedTargetPanels() {
   return (
     <div>
       <Box
+        component="section"
         sx={{
           borderBottom: 1,
           borderColor: "divider",
@@ -61,6 +62,7 @@ function FixedTargetPanels() {
           onChange={handleChange}
           aria-label="basic tabs example"
           textColor="primary"
+          centered
         >
           <Tab label="BlueAPI info" {...a11yProps(0)} />
           <Tab label="Detector position" {...a11yProps(1)} />
