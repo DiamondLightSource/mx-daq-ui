@@ -61,7 +61,7 @@ function FixedTargetPanels() {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
-          textColor="primary"
+          textColor="secondary"
           centered
         >
           <Tab label="BlueAPI info" {...a11yProps(0)} />

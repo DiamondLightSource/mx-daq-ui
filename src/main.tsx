@@ -35,6 +35,28 @@ const I24DiamondTheme: Theme = createTheme({
       alt: "DLS logo",
     },
   },
+  colorSchemes: {
+    dark: {
+      palette: {
+        primary: {
+          main: "#202740",
+          light: "#4C5266",
+          dark: "#161B2C",
+        },
+        secondary: {
+          main: "#facf07",
+          light: "#FBD838", // light yellow
+          dark: "#AF9004", // dark yellow
+        },
+        custom: {
+          main: "#FF5733",
+        },
+        background: {
+          paper: "121212",
+        },
+      },
+    },
+  },
 });
 
 const container = document.getElementById("root");
