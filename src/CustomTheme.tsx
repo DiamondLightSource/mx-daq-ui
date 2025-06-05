@@ -3,6 +3,24 @@ import logo from "./assets/logo.svg";
 import { DiamondTheme } from "@diamondlightsource/sci-react-ui";
 import { createTheme, Theme } from "@mui/material";
 
+// Augment the palette to include a custom color
+declare module "@mui/material/styles" {
+  interface Palette {
+    custom: Palette["primary"];
+  }
+
+  interface PaletteOptions {
+    custom?: PaletteOptions["primary"];
+  }
+}
+
+// Update the Button's color options to include a violet option
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    custom: true;
+  }
+}
+
 export const I24DiamondTheme: Theme = createTheme({
   ...DiamondTheme,
   logos: {
@@ -27,6 +45,9 @@ export const I24DiamondTheme: Theme = createTheme({
         },
         custom: {
           main: "#1976d2",
+          light: "#68a0e2",
+          dark: "#10569b",
+          contrastText: "#ffffff", // white
         },
         background: {
           paper: "121212",

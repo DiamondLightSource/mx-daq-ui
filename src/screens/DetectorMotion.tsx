@@ -34,6 +34,7 @@ export function DetectorMotionTabPanel() {
         />
         <Stack direction={"row"} spacing={5} justifyContent={"center"}>
           <Button
+            color="custom"
             onClick={() =>
               submitAndRunPlanImmediately("gui_move_detector", { det: "eiger" })
             }
@@ -41,6 +42,7 @@ export function DetectorMotionTabPanel() {
             Move to Eiger!
           </Button>
           <Button
+            color="custom"
             onClick={() =>
               submitAndRunPlanImmediately("gui_move_detector", {
                 det: "pilatus",
