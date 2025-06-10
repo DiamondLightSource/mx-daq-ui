@@ -89,12 +89,11 @@ function FixedTargetPanels() {
 }
 
 function App() {
-  const theme = useTheme();
 
   return (
     <Box sx={{ width: "100%" }}>
       <FixedTargetPanels />
-      <Footer logo={theme.logos.normal}>
+      <Footer>
         <FooterLinks>
           <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
         </FooterLinks>
