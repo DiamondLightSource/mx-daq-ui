@@ -50,6 +50,7 @@ function FixedTargetPanels() {
   return (
     <div>
       <Box
+        component="section"
         sx={{
           borderBottom: 1,
           borderColor: "divider",
@@ -60,7 +61,8 @@ function FixedTargetPanels() {
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
-          textColor="primary"
+          textColor="secondary"
+          centered
         >
           <Tab label="BlueAPI info" {...a11yProps(0)} />
           <Tab label="Detector position" {...a11yProps(1)} />
@@ -92,9 +94,20 @@ function App() {
   const theme = useTheme();
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box
+      sx={[
+        () => ({
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          minHeight: "100vh",
+          minWidth: "320px",
+          margin: 0,
+        }),
+      ]}
+    >
       <FixedTargetPanels />
-      <Footer logo={theme.logos.normal}>
+      <Footer logo={theme.logos.normal} color={theme.palette.primary.main}>
         <FooterLinks>
           <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
         </FooterLinks>

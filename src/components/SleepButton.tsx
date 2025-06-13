@@ -20,6 +20,7 @@ export function SleepButton() {
         style={{ width: 100 }}
       />
       <Button
+        color="custom"
         onClick={() =>
           submitAndRunPlanImmediately("gui_sleep", { sec: seconds })
         }

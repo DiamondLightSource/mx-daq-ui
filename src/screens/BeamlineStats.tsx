@@ -7,8 +7,8 @@ export function BeamlineStatsTabPanel() {
   const bgColor = theme.palette.background.paper;
   return (
     <div>
-      <Grid2 container spacing={2}>
-        <Grid2 size={4} sx={{ bgcolor: bgColor }}>
+      <Grid2 container spacing={2} justifyContent="center">
+        <Grid2 size={2} sx={{ bgcolor: bgColor }}>
           <PvComponent
             label="Flux"
             pv="ca://BL24I-EA-FLUX-01:XBPM-03"
@@ -23,7 +23,7 @@ export function BeamlineStatsTabPanel() {
             }}
           />
         </Grid2>
-        <Grid2 size={4} sx={{ bgcolor: bgColor }}>
+        <Grid2 size={2} sx={{ bgcolor: bgColor }}>
           <PvComponent
             label="Energy"
             pv="ca://BL24I-MO-DCM-01:ENERGY.RBV"
@@ -38,7 +38,7 @@ export function BeamlineStatsTabPanel() {
             }}
           />
         </Grid2>
-        <Grid2 size={4} sx={{ bgcolor: bgColor }}>
+        <Grid2 size={2} sx={{ bgcolor: bgColor }}>
           <PvComponent
             label="Shutter"
             pv="ca://BL24I-PS-SHTR-01:CON"

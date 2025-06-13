@@ -45,7 +45,7 @@ export function PumpProbeDialog(props: EavaRequest) {
         title="Calculate the optimal delay to set for Repeat# Excite And Visit Again settings"
         placement="bottom"
       >
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <Button color="custom" variant="outlined" onClick={handleClickOpen}>
           EAVA calculator
         </Button>
       </Tooltip>
@@ -260,7 +260,7 @@ function OxfordMapSelection({
         title="Choose which blocks to collect on the map"
         placement="right"
       >
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <Button color="custom" variant="outlined" onClick={handleClickOpen}>
           Configure Map
         </Button>
       </Tooltip>
@@ -461,7 +461,7 @@ function CustomMapComponent({
           />
         </Tooltip>
         <Tooltip title="Set chip format for Custom" placement="right">
-          <Button onClick={handleUpdate} size="small">
+          <Button color="custom" onClick={handleUpdate} size="small">
             Set
           </Button>
         </Tooltip>

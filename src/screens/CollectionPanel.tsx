@@ -86,8 +86,9 @@ function RunButtons(props: ParametersProps) {
         <Tooltip title="Start fixed target collection" placement="bottom">
           <Button
             variant="outlined"
+            color="custom"
             onClick={() =>
-              submitAndRunPlanImmediately("gui_set_parameters", {
+              submitAndRunPlanImmediately("gui_run_chip_collection", {
                 sub_dir: props.subDir,
                 chip_name: props.chipName,
                 exp_time: props.expTime,
@@ -109,7 +110,11 @@ function RunButtons(props: ParametersProps) {
           </Button>
         </Tooltip>
         <Tooltip title="Abort current operation" placement="bottom">
-          <Button variant="outlined" onClick={() => abortCurrentPlan()}>
+          <Button
+            color="custom"
+            variant="outlined"
+            onClick={() => abortCurrentPlan()}
+          >
             Abort!
           </Button>
         </Tooltip>
