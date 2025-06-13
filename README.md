@@ -40,25 +40,6 @@ stomp:
 
 For I24 instead, The first few plans are in the branch https://github.com/DiamondLightSource/mx-bluesky/tree/151_web-ui-first-plans and there is already a BlueAPI configuration defined in https://github.com/DiamondLightSource/mx-bluesky/blob/main/src/mx_bluesky/beamlines/i24/serial/blueapi_config.yaml that can be used for testing.
 
-### BlueAPI issue - firefox error
-
-If firefox gives you CORS errors you can edit blueAPI's main.py to add to `get_app()`:
-
-```python
-    origins = ["*"]
-
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-```
-
-plus `from fastapi.middleware.cors import CORSMiddleware`
-
-until https://github.com/DiamondLightSource/blueapi/issues/738 is resolved
-
 ## Run
 
 Once all the above steps are done, start a blueapi server. The gui can be started by running:
