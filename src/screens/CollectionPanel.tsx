@@ -88,7 +88,7 @@ function RunButtons(props: ParametersProps) {
             variant="outlined"
             color="custom"
             onClick={() =>
-              submitAndRunPlanImmediately("gui_set_parameters", {
+              submitAndRunPlanImmediately("gui_run_chip_collection", {
                 sub_dir: props.subDir,
                 chip_name: props.chipName,
                 exp_time: props.expTime,
