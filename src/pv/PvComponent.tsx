@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
 import { RawValue } from "./util";
 
-type Transformer = (value: RawValue) => string | number;
+export type Transformer = (value: RawValue) => string | number;
 export type PvDisplayTypes = string | number;
 export type PvItem = { label: string; value: RawValue | PvDisplayTypes };
 export type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
@@ -17,14 +17,20 @@ export type PvComponentProps = PvDescription & {
   transformValue?: Transformer;
 };
 
+export function readPvRawValue(label: string, pv: string): RawValue {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [_effectivePvName, connected, _readonly, latestValue] = useConnection(
+    label,
+    pv
+  );
+  const rawValue: RawValue = connected ? latestValue : "not connected";
+  return rawValue;
+}
+
 export function useParsedPvConnection(
   props: PvDescription & { transformValue?: Transformer }
 ) {
-  const [_effectivePvName, connected, _readonly, latestValue] = useConnection(
-    props.label,
-    props.pv
-  );
-  const rawValue: RawValue = connected ? latestValue : "not connected";
+  const rawValue = readPvRawValue(props.label, props.pv);
   const returnValue = props.transformValue
     ? props.transformValue(rawValue)
     : rawValue;
