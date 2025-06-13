@@ -1,13 +1,15 @@
 import { Box, Grid2, useTheme } from "@mui/material";
 import { PvItem, PvComponent } from "../pv/PvComponent";
 import { parseNumericPv } from "../pv/util";
+import { WorkerStatus } from "../components/WorkerStatus";
 
 export function BeamlineStatsTabPanel() {
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
-    <div>
+    <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2} justifyContent="center">
+        <WorkerStatus />
         <Grid2 size={2} sx={{ bgcolor: bgColor }}>
           <PvComponent
             label="Flux"
@@ -54,6 +56,6 @@ export function BeamlineStatsTabPanel() {
           />
         </Grid2>
       </Grid2>
-    </div>
+    </Box>
   );
 }

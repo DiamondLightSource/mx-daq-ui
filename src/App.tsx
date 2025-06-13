@@ -64,15 +64,16 @@ function FixedTargetPanels() {
           textColor="secondary"
           centered
         >
-          <Tab label="BlueAPI info" {...a11yProps(0)} />
+          <Tab label="Beamline info" {...a11yProps(0)} />
           <Tab label="Detector position" {...a11yProps(1)} />
           <Tab label="OAV view" {...a11yProps(2)} />
-          <Tab label="Beamline stats" {...a11yProps(3)} />
-          <Tab label="Fixed Target Collection" {...a11yProps(4)} />
+          {/* <Tab label="Beamline stats" {...a11yProps(3)} /> */}
+          <Tab label="Fixed Target Collection" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <BlueApiInfo />
+        <BeamlineStatsTabPanel />
+        {/* <BlueApiInfo /> */}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <DetectorMotionTabPanel />
@@ -80,10 +81,10 @@ function FixedTargetPanels() {
       <CustomTabPanel value={value} index={2}>
         <OavMover />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
+      {/* <CustomTabPanel value={value} index={3}>
         <BeamlineStatsTabPanel />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={4}>
+      </CustomTabPanel> */}
+      <CustomTabPanel value={value} index={3}>
         <ParamsPanel />
       </CustomTabPanel>
     </div>
