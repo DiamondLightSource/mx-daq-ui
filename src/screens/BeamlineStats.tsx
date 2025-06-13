@@ -8,7 +8,7 @@ export function BeamlineStatsTabPanel() {
   const bgColor = theme.palette.background.paper;
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid2 container spacing={2} justifyContent="center">
+      <Grid2 container spacing={3} justifyContent="center">
         <WorkerStatus />
         <Grid2 size={2} sx={{ bgcolor: bgColor }}>
           <PvComponent

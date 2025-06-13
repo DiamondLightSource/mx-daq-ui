@@ -49,6 +49,10 @@ export const I24DiamondTheme: Theme = createTheme({
           dark: "#10569b",
           contrastText: "#ffffff", // white
         },
+        background: {
+          default: "#050505",
+          paper: "#121212",
+        },
       },
     },
   },
