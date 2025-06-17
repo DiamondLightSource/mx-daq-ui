@@ -1,9 +1,9 @@
 import { useConnection } from "@diamondlightsource/cs-web-lib";
 import { Box } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
-import { RawValue } from "./util";
+import { RawValue, TransformString, TransformNumeric } from "./util";
 
-export type Transformer = (value: RawValue) => string | number;
+export type PvTransformer = TransformString | TransformNumeric; /// = (value: RawValue) => string | number; // type for callback function
 export type PvDisplayTypes = string | number;
 export type PvItem = { label: string; value: RawValue | PvDisplayTypes };
 export type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
@@ -14,7 +14,7 @@ export type PvDescription = {
 };
 export type PvComponentProps = PvDescription & {
   render: PvItemComponent;
-  transformValue?: Transformer;
+  transformValue?: PvTransformer;
 };
 
 export function readPvRawValue(label: string, pv: string): RawValue {
@@ -28,12 +28,12 @@ export function readPvRawValue(label: string, pv: string): RawValue {
 }
 
 export function useParsedPvConnection(
-  props: PvDescription & { transformValue?: Transformer }
+  props: PvDescription & { transformValue?: PvTransformer }
 ) {
   const rawValue = readPvRawValue(props.label, props.pv);
   const returnValue = props.transformValue
     ? props.transformValue(rawValue)
-    : rawValue;
+    : rawValue; // This is never actually used! Because transformValue is optional and never passed.
   console.log(
     `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`
   );

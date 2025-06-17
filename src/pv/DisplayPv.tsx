@@ -1,17 +1,53 @@
-import { PvDescription, PvItemComponent, readPvRawValue } from "./PvComponent";
+import { Box } from "@mui/material";
+import {
+  PvDescription,
+  PvItem,
+  PvItemComponent,
+  PvTransformer,
+  readPvRawValue,
+} from "./PvComponent";
+import { ErrorBoundary } from "react-error-boundary";
+import { RawValue } from "./util";
 
 type RoPvProps = PvDescription & {
-  render: PvItemComponent;
-  transformValue?: Transformer;
+  // render: PvItemComponent;
+  transformValue?: PvTransformer;
   decimals?: number;
   scaleFactor?: number;
 };
 
-export function DisplayPvBox(props: RoPvProps) {
+type RenderedValue = RawValue | string | number;
+
+function parsePvValue(props: RoPvProps): RenderedValue {
   const rawValue = readPvRawValue(props.label, props.pv);
-  if rawValue === "not connected" {
-    valueToRender = rawValue
+  let valueToRender: RenderedValue;
+  if (rawValue === "not connected") {
+    valueToRender = rawValue;
   } else {
-    valueToRender = props.transformValue ? props.transformValue(rawValue) : rawValue;
+    valueToRender = props.transformValue
+      ? props.transformValue(rawValue, props.decimals, props.scaleFactor)
+      : rawValue;
+    // valueToRender = valueToRender?.toString().slice(7);
   }
+  return valueToRender;
+}
+
+function RoPvComponent(props: RoPvProps): JSX.Element {
+  const latestValue = parsePvValue(props);
+  // return <Box>{props.render({ label: props.label, value: latestValue })}</Box>;
+  return (
+    <Box>
+      <p>
+        <b>{props.label}:</b> {latestValue}
+      </p>
+    </Box>
+  );
+}
+
+export function DisplayPvBox(props: RoPvProps) {
+  return (
+    <ErrorBoundary fallback={<p>ERROR CONNECTING</p>}>
+      {RoPvComponent(props)}
+    </ErrorBoundary>
+  );
 }

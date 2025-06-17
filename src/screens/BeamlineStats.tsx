@@ -1,7 +1,8 @@
 import { Box, Grid2, useTheme } from "@mui/material";
 import { PvItem, PvComponent } from "../pv/PvComponent";
-import { parseNumericPv } from "../pv/util";
+import { forceString, parseNumericPv } from "../pv/util";
 import { WorkerStatus } from "../components/WorkerStatus";
+import { DisplayPvBox } from "../pv/DisplayPv";
 
 export function BeamlineStatsTabPanel() {
   const theme = useTheme();
@@ -26,21 +27,27 @@ export function BeamlineStatsTabPanel() {
           />
         </Grid2>
         <Grid2 size={2} sx={{ bgcolor: bgColor }}>
-          <PvComponent
+          {/* // <PvComponent */}
+          <DisplayPvBox
             label="Energy"
             pv="ca://BL24I-MO-DCM-01:ENERGY.RBV"
-            render={({ label, value }: PvItem) => {
-              return (
-                <Box>
-                  <p>
-                    <b>{label}:</b> {parseNumericPv(value, 4)}
-                  </p>
-                </Box>
-              );
-            }}
+            transformValue={parseNumericPv}
+            decimals={4}
+            // render={({ label, value }: PvItem) => {
+            //   return (
+            //     // <Box>
+            //     <p>
+            //       <b>{label}:</b> {value}
+            //       {/* // SIGH WILL FIGURE OUT TYPE ERROR ANOTHER TIME */}
+            //       {/* <b>{label}:</b> {parseNumericPv(value, 4)} */}
+            //     </p>
+            //     // </Box>
+            //   );
+            // }}
           />
         </Grid2>
         <Grid2 size={2} sx={{ bgcolor: bgColor }}>
+          {/* <DisplayPvBox */}
           <PvComponent
             label="Shutter"
             pv="ca://BL24I-PS-SHTR-01:CON"
@@ -48,6 +55,7 @@ export function BeamlineStatsTabPanel() {
               return (
                 <Box>
                   <p>
+                    {/* <b>{label}:</b> {value} */}
                     <b>{label}:</b> {value?.toString().slice(7)}
                   </p>
                 </Box>

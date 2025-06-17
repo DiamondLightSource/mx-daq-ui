@@ -1,5 +1,11 @@
 import { DType } from "@diamondlightsource/cs-web-lib";
 export type RawValue = DType | "not connected" | undefined;
+export type TransformString = (value: RawValue) => string | number;
+export type TransformNumeric = (
+  value: RawValue,
+  decimals?: number,
+  scaleFactor?: number
+) => string | number;
 
 export function forceString(value: RawValue | string | number): string {
   let displayValue: string;
@@ -21,7 +27,7 @@ export function parseNumericPv(
   value: string | number | DType | undefined,
   decimals?: number,
   scaleFactor?: number
-) {
+): string {
   const decimalsToUse = decimals ? decimals : 2;
   const scaleFactorToUse = scaleFactor ? scaleFactor : 1;
   if (value === undefined) {
