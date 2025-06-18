@@ -1,48 +1,26 @@
-import { useConnection } from "@diamondlightsource/cs-web-lib";
 import { Box } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
-import { RawValue, TransformString, TransformNumeric } from "./util";
+import { PvComponentProps } from "./types";
+import { useParsedPvConnection } from "./util";
 
-export type PvTransformer = TransformString | TransformNumeric; /// = (value: RawValue) => string | number; // type for callback function
-export type PvDisplayTypes = string | number;
-export type PvItem = { label: string; value: RawValue | PvDisplayTypes };
-export type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
-export type PvItemHandler = ({ label, value }: PvItem) => void;
-export type PvDescription = {
-  label: string;
-  pv: string;
-};
-export type PvComponentProps = PvDescription & {
-  render: PvItemComponent;
-  transformValue?: PvTransformer;
-};
-
-export function readPvRawValue(label: string, pv: string): RawValue {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [_effectivePvName, connected, _readonly, latestValue] = useConnection(
-    label,
-    pv
+function defaultPvBox(label: string, value: number | string): JSX.Element {
+  return (
+    <Box>
+      <p>
+        <b>{label}:</b> {value}
+      </p>
+    </Box>
   );
-  const rawValue: RawValue = connected ? latestValue : "not connected";
-  return rawValue;
 }
 
-export function useParsedPvConnection(
-  props: PvDescription & { transformValue?: PvTransformer }
-) {
-  const rawValue = readPvRawValue(props.label, props.pv);
-  const returnValue = props.transformValue
-    ? props.transformValue(rawValue)
-    : rawValue; // This is never actually used! Because transformValue is optional and never passed.
-  console.log(
-    `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`
-  );
-  return returnValue;
-}
-
-function WsPvComponent(props: PvComponentProps) {
+function WsPvComponent(props: PvComponentProps): JSX.Element {
   const latestValue = useParsedPvConnection(props);
-  return <Box>{props.render({ label: props.label, value: latestValue })}</Box>;
+  const renderedPvBox = props.render ? (
+    <Box>{props.render({ label: props.label, value: latestValue })}</Box>
+  ) : (
+    defaultPvBox(props.label, latestValue)
+  );
+  return renderedPvBox;
 }
 
 export function PvComponent(props: PvComponentProps) {
