@@ -18,6 +18,15 @@ export function BeamlineStatsTabPanel() {
             transformValue={parseNumericPv}
             decimals={2}
             scaleFactor={1e-9}
+            render={({ label, value }: PvItem) => {
+              return (
+                <Box>
+                  <p>
+                    <b>{label}:</b> {value}e+09
+                  </p>
+                </Box>
+              );
+            }}
           />
         </Grid2>
         <Grid2 size={2} sx={{ bgcolor: bgColor }}>
