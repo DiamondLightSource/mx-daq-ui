@@ -1,11 +1,5 @@
 import { Box } from "@mui/material";
-import {
-  PvDescription,
-  PvItem,
-  PvItemComponent,
-  PvTransformer,
-  readPvRawValue,
-} from "./PvComponent";
+import { PvDescription, PvTransformer, readPvRawValue } from "./PvComponent";
 import { ErrorBoundary } from "react-error-boundary";
 import { RawValue } from "./util";
 
@@ -18,7 +12,7 @@ type RoPvProps = PvDescription & {
 
 type RenderedValue = RawValue | string | number;
 
-function parsePvValue(props: RoPvProps): RenderedValue {
+function parsePvValue(props: RoPvProps) {
   const rawValue = readPvRawValue(props.label, props.pv);
   let valueToRender: RenderedValue;
   if (rawValue === "not connected") {
