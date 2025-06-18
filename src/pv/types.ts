@@ -16,7 +16,7 @@ export type PvDescription = {
   pv: string;
 };
 
-type PvItem = { label: string; value: RawValue | number | string };
+export type PvItem = { label: string; value: RawValue | number | string };
 type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
 
 export type RenderedPvValue = RawValue | string | number;
