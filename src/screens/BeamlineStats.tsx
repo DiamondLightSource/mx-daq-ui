@@ -15,15 +15,9 @@ export function BeamlineStatsTabPanel() {
           <PvComponent
             label="Flux"
             pv="ca://BL24I-EA-FLUX-01:XBPM-03"
-            render={({ label, value }: PvItem) => {
-              return (
-                <Box>
-                  <p>
-                    <b>{label}:</b> {parseNumericPv(value, 2, 1e-9)}e+9
-                  </p>
-                </Box>
-              );
-            }}
+            transformValue={parseNumericPv}
+            decimals={2}
+            scaleFactor={1e-9}
           />
         </Grid2>
         <Grid2 size={2} sx={{ bgcolor: bgColor }}>
