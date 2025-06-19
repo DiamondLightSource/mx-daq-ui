@@ -1,7 +1,7 @@
 import { Box, Grid2, useTheme } from "@mui/material";
 import { PvItem } from "../pv/types";
 import { PvComponent } from "../pv/PvComponent";
-import { parseNumericPv } from "../pv/util";
+import { forceString, parseNumericPv } from "../pv/util";
 import { WorkerStatus } from "../components/WorkerStatus";
 
 export function BeamlineStatsTabPanel() {
@@ -41,15 +41,16 @@ export function BeamlineStatsTabPanel() {
           <PvComponent
             label="Shutter"
             pv="ca://BL24I-PS-SHTR-01:CON"
-            render={({ label, value }: PvItem) => {
-              return (
-                <Box>
-                  <p>
-                    <b>{label}:</b> {value?.toString().slice(7)}
-                  </p>
-                </Box>
-              );
-            }}
+            transformValue={forceString}
+            // render={({ label, value }: PvItem) => {
+            //   return (
+            //     <Box>
+            //       <p>
+            //         <b>{label}:</b> {value?.toString().slice(7)}
+            //       </p>
+            //     </Box>
+            //   );
+            // }}
           />
         </Grid2>
       </Grid2>
