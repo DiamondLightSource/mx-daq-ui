@@ -1,9 +1,8 @@
-import { Button, Stack, useTheme } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { RoPvBox } from "../pv/PvComponent";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 
 export function DetectorMotionTabPanel() {
-  const _theme = useTheme();
   return (
     <div>
       <Stack spacing={1}>
