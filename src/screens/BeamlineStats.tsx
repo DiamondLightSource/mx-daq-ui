@@ -4,6 +4,9 @@ import { PvComponent } from "../pv/PvComponent";
 import { forceString, parseNumericPv } from "../pv/util";
 import { WorkerStatus } from "../components/WorkerStatus";
 
+// These should be in a permanent sidebar
+// See https://github.com/DiamondLightSource/mx-daq-ui/issues/46
+
 export function BeamlineStatsTabPanel() {
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
