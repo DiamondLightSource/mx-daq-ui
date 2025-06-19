@@ -16,13 +16,13 @@ export type PvDescription = {
   pv: string;
 };
 
-export type PvItem = { label: string; value: RawValue | number | string };
+export type PvItem = { label: string; value: number | string | NotConnected };
 type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
 
 export type RenderedPvValue = RawValue | string | number;
 
 export type ParsePvProps = PvDescription & {
-  transformValue?: PvTransformer;
+  transformValue: PvTransformer;
   decimals?: number;
   scaleFactor?: number;
 };

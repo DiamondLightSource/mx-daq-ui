@@ -42,15 +42,6 @@ export function BeamlineStatsTabPanel() {
             label="Shutter"
             pv="ca://BL24I-PS-SHTR-01:CON"
             transformValue={forceString}
-            // render={({ label, value }: PvItem) => {
-            //   return (
-            //     <Box>
-            //       <p>
-            //         <b>{label}:</b> {value?.toString().slice(7)}
-            //       </p>
-            //     </Box>
-            //   );
-            // }}
           />
         </Grid2>
       </Grid2>

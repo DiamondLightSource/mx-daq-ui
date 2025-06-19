@@ -14,7 +14,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-// Update the Button's color options to include a violet option
+// Update the Button's color options to include a new option
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     custom: true;

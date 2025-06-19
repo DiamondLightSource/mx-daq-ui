@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
-import { PvComponentProps } from "./types";
-import { useParsedPvConnection } from "./util";
+import { PvComponentProps, PvDescription, PvItem } from "./types";
+import { useParsedPvConnection, forceString } from "./util";
 
 function defaultPvBox(label: string, value: number | string): JSX.Element {
   return (
@@ -24,9 +24,32 @@ function WsPvComponent(props: PvComponentProps): JSX.Element {
 }
 
 export function PvComponent(props: PvComponentProps) {
+  const theme = useTheme();
   return (
-    <ErrorBoundary fallback={<p>Error Connecting!</p>}>
+    <ErrorBoundary
+      fallback={
+        <Box color={theme.palette.error.main}>
+          <p>Error Connecting!</p>
+        </Box>
+      }
+    >
       {WsPvComponent(props)}
     </ErrorBoundary>
   );
+}
+
+export function RoPvBox(props: PvDescription) {
+  return PvComponent({
+    ...props,
+    transformValue: forceString,
+    render: (props: PvItem) => {
+      return (
+        <Box>
+          <p>
+            {props.label} : {props.value}
+          </p>
+        </Box>
+      );
+    },
+  });
 }
