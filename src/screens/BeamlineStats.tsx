@@ -6,14 +6,24 @@ import { WorkerStatus } from "../components/WorkerStatus";
 
 // These should be in a permanent sidebar
 // See https://github.com/DiamondLightSource/mx-daq-ui/issues/46
-
+// Maybe I should leave this for separate PR when I put in drawer ...
 function PmacStagesState() {
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
-    <Grid2 container justifyContent={"center"}>
-      <Stack alignItems={"center"} spacing={2} bgcolor={bgColor}>
-        <Box>
+    // <Grid2 container justifyContent={"center"}>
+    <Box
+      sx={{
+        maxWidth: 300,
+        padding: 2,
+        position: "relative",
+        zIndex: 1,
+        left: 250,
+      }}
+      component={"section"}
+    >
+      <Stack alignItems={"center"} spacing={1} bgcolor={bgColor}>
+        <Box color={theme.palette.info.main}>
           <b>PMAC Stages</b>
         </Box>
         <PvComponent
@@ -35,7 +45,8 @@ function PmacStagesState() {
           decimals={4}
         />
       </Stack>
-    </Grid2>
+    </Box>
+    // </Grid2>
   );
 }
 
