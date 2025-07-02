@@ -11,42 +11,63 @@ function PmacStagesState() {
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
-    // <Grid2 container justifyContent={"center"}>
-    <Box
-      sx={{
-        maxWidth: 300,
-        padding: 2,
-        position: "relative",
-        zIndex: 1,
-        left: 250,
-      }}
-      component={"section"}
-    >
-      <Stack alignItems={"center"} spacing={1} bgcolor={bgColor}>
-        <Box color={theme.palette.info.main}>
-          <b>PMAC Stages</b>
+    <Grid2 bgcolor={bgColor} justifyContent={"center"}>
+      {/* // <Box
+    //   sx={{
+    //     maxWidth: 400,
+    //     padding: 2,
+    //     position: "relative",
+    //     zIndex: 1,
+    //     left: 250,
+    //   }}
+    //   component={"section"}
+    //   bgColor={bgColor}
+    // > */}
+      <Stack alignItems={"center"}>
+        <Box alignItems={"center"} color={theme.palette.info.main}>
+          <b>Serial Fixed Target Stages</b>
         </Box>
-        <PvComponent
-          label="Stage X"
-          pv="ca://ME14E-MO-CHIP-01:X.RBV"
-          transformValue={parseNumericPv}
-          decimals={4}
-        />
-        <PvComponent
-          label="Stage Y"
-          pv="ca://ME14E-MO-CHIP-01:Y.RBV"
-          transformValue={parseNumericPv}
-          decimals={4}
-        />
-        <PvComponent
-          label="Stage Z"
-          pv="ca://ME14E-MO-CHIP-01:Z.RBV"
-          transformValue={parseNumericPv}
-          decimals={4}
-        />
+        <Stack spacing={2} direction="row">
+          <Stack alignItems={"center"} spacing={1}>
+            {/* <Stack alignItems={"center"} spacing={1} bgcolor={bgColor}> */}
+            {/* <Box color={theme.palette.info.main}>
+          <b>PMAC Stages</b>
+        </Box> */}
+            <PvComponent
+              label="Stage X"
+              pv="ca://ME14E-MO-CHIP-01:X.RBV"
+              transformValue={parseNumericPv}
+              decimals={4}
+            />
+            <PvComponent
+              label="Stage Y"
+              pv="ca://ME14E-MO-CHIP-01:Y.RBV"
+              transformValue={parseNumericPv}
+              decimals={4}
+            />
+            <PvComponent
+              label="Stage Z"
+              pv="ca://ME14E-MO-CHIP-01:Z.RBV"
+              transformValue={parseNumericPv}
+              decimals={4}
+            />
+          </Stack>
+          <Stack alignItems={"center"} spacing={1}>
+            <PvComponent
+              label="Scan Status"
+              pv="ca://BL24I-MO-STEP-14:signal:P2401"
+              transformValue={forceString}
+            />
+            <PvComponent
+              label="Frames Counter"
+              pv="ca://BL24I-MO-STEP-14:signal:P2402"
+              transformValue={forceString}
+            />
+          </Stack>
+        </Stack>
       </Stack>
-    </Box>
-    // </Grid2>
+      {/* </Box> */}
+    </Grid2>
   );
 }
 
