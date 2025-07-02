@@ -84,8 +84,8 @@ export function BeamlineStatsTabPanel() {
     <Box sx={{ flexGrow: 1 }}>
       <Stack spacing={4} alignItems={"center"}>
         <WorkerStatus />
-        <Grid2 container spacing={4} justifyContent="center">
-          <Grid2 size={2} sx={{ bgcolor: bgColor }}>
+        <Grid2 container spacing={2} justifyContent="center">
+          <Grid2 size={3} sx={{ bgcolor: bgColor }}>
             <PvComponent
               label="Flux"
               pv="ca://BL24I-EA-FLUX-01:XBPM-03"
@@ -103,7 +103,7 @@ export function BeamlineStatsTabPanel() {
               }}
             />
           </Grid2>
-          <Grid2 size={2} sx={{ bgcolor: bgColor }}>
+          <Grid2 size={3} sx={{ bgcolor: bgColor }}>
             <PvComponent
               label="Energy"
               pv="ca://BL24I-MO-DCM-01:ENERGY.RBV"
@@ -111,7 +111,7 @@ export function BeamlineStatsTabPanel() {
               decimals={4}
             />
           </Grid2>
-          <Grid2 size={3} sx={{ bgcolor: bgColor }}>
+          <Grid2 size={6} sx={{ bgcolor: bgColor }}>
             <PvComponent
               label="Filter Transmission"
               pv="ca://BL24I-OP-ATTN-01:MATCH"
@@ -121,14 +121,14 @@ export function BeamlineStatsTabPanel() {
           </Grid2>
         </Grid2>
         <Grid2 container spacing={4} justifyContent="center">
-          <Grid2 size={2} sx={{ bgcolor: bgColor }}>
+          <Grid2 size={6} sx={{ bgcolor: bgColor }}>
             <PvComponent
               label="Expt Shutter"
               pv="ca://BL24I-PS-SHTR-01:CON"
               transformValue={forceString}
             />
           </Grid2>
-          <Grid2 size={2} sx={{ bgcolor: bgColor }}>
+          <Grid2 size={6} sx={{ bgcolor: bgColor }}>
             <PvComponent
               label="Fast Shutter"
               pv="ca://BL24I-EA-SHTR-01:STA"
