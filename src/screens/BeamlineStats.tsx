@@ -11,7 +11,18 @@ function PmacStagesState() {
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
-    <Grid2 bgcolor={bgColor} justifyContent={"center"}>
+    <Grid2
+      bgcolor={bgColor}
+      justifyContent={"center"}
+      sx={{
+        maxWidth: 500,
+        position: "relative",
+        padding: 2,
+        // left: 500,
+        display: "flex",
+      }}
+      // justify={"center"}
+    >
       {/* // <Box
     //   sx={{
     //     maxWidth: 400,
@@ -29,10 +40,6 @@ function PmacStagesState() {
         </Box>
         <Stack spacing={2} direction="row">
           <Stack alignItems={"center"} spacing={1}>
-            {/* <Stack alignItems={"center"} spacing={1} bgcolor={bgColor}> */}
-            {/* <Box color={theme.palette.info.main}>
-          <b>PMAC Stages</b>
-        </Box> */}
             <PvComponent
               label="Stage X"
               pv="ca://ME14E-MO-CHIP-01:X.RBV"
@@ -66,7 +73,6 @@ function PmacStagesState() {
           </Stack>
         </Stack>
       </Stack>
-      {/* </Box> */}
     </Grid2>
   );
 }
@@ -76,7 +82,7 @@ export function BeamlineStatsTabPanel() {
   const bgColor = theme.palette.background.paper;
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Stack spacing={4}>
+      <Stack spacing={4} alignItems={"center"}>
         <WorkerStatus />
         <Grid2 container spacing={4} justifyContent="center">
           <Grid2 size={2} sx={{ bgcolor: bgColor }}>
