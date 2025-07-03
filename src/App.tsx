@@ -107,7 +107,8 @@ function App() {
       ]}
     >
       <FixedTargetPanels />
-      <Footer logo={theme.logos.normal} color={theme.palette.primary.main}>
+      <Footer color={theme.palette.primary.main}>
+        {/* <Footer logo={theme.logos.normal} color={theme.palette.primary.main}> */}
         <FooterLinks>
           <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
         </FooterLinks>
