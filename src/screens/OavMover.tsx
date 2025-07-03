@@ -175,6 +175,53 @@ export function PixelsToMicrons({
   );
 }
 
+export function PresetMovements() {
+  const buttonStyle = {
+    color: "white",
+    margin: "5px",
+    padding: "15px",
+    backgroundColor: "#1c2025",
+  };
+
+  return (
+    <Box>
+      <b>Preset Positions:</b>
+      <Grid2>
+        <Button
+          style={buttonStyle}
+          onClick={() =>
+            submitAndRunPlanImmediately("moveto_preset", {
+              place: "collect_position",
+            })
+          }
+        >
+          Collect Position
+        </Button>
+        <Button
+          style={buttonStyle}
+          onClick={() =>
+            submitAndRunPlanImmediately("moveto_preset", {
+              place: "load_position",
+            })
+          }
+        >
+          Load Position
+        </Button>
+        <Button
+          style={buttonStyle}
+          onClick={() =>
+            submitAndRunPlanImmediately("moveto_preset", {
+              place: "microdrop_position",
+            })
+          }
+        >
+          Microdrop Align
+        </Button>
+      </Grid2>
+    </Box>
+  );
+}
+
 export function OavMover() {
   const [crosshairX, setCrosshairX] = useState<number>(200);
   const [crosshairY, setCrosshairY] = useState<number>(200);
@@ -226,6 +273,7 @@ export function OavMover() {
             label="zoom-level"
             pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
+          <PresetMovements />
         </Grid2>
       </Grid2>
     </div>
