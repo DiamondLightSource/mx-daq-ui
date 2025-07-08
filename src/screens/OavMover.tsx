@@ -1,4 +1,12 @@
-import { Box, Button, Grid2, Stack, TextField, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Drawer,
+  Grid2,
+  Stack,
+  TextField,
+  useTheme,
+} from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
   ArrowBackRounded,
@@ -14,6 +22,13 @@ import { CoordNumberInput } from "../components/CoordNumberInput";
 import { PvDescription } from "../pv/PvComponent";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
+
+const buttonStyle = {
+  color: "white",
+  margin: "5px",
+  padding: "15px",
+  backgroundColor: "#1c2025",
+};
 
 function BacklightControl(props: PvDescription) {
   const theme = useTheme();
@@ -176,16 +191,11 @@ export function PixelsToMicrons({
 }
 
 export function PresetMovements() {
-  const buttonStyle = {
-    color: "white",
-    margin: "5px",
-    padding: "15px",
-    backgroundColor: "#1c2025",
-  };
-
   return (
-    <Box>
-      <b>Preset Positions:</b>
+    <Box sx={{ textAlign: `center` }}>
+      <p>
+        <b>Preset Positions</b>
+      </p>
       <Grid2>
         <Button
           style={buttonStyle}
@@ -219,6 +229,24 @@ export function PresetMovements() {
         </Button>
       </Grid2>
     </Box>
+  );
+}
+
+export function SideDrawer() {
+  const [open, setOpen] = useState(false);
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
+  return (
+    <>
+      <Button style={buttonStyle} onClick={toggleDrawer(true)}>
+        Open drawer
+      </Button>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        <PresetMovements />
+      </Drawer>
+    </>
   );
 }
 
@@ -273,7 +301,7 @@ export function OavMover() {
             label="zoom-level"
             pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
-          <PresetMovements />
+          <SideDrawer />
         </Grid2>
       </Grid2>
     </div>
