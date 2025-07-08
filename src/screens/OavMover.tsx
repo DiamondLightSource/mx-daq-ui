@@ -182,52 +182,50 @@ export function OavMover() {
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
   return (
-    <div>
-      <Grid2 container spacing={2} columns={12}>
-        <Grid2 size={9} sx={{ bgcolor: bgColor }}>
-          <Box width={"100%"}>
-            <OavVideoStream
-              pv="ca://BL24I-DI-OAV-01:"
-              label="I24 OAV image stream"
-              crosshairX={crosshairX}
-              crosshairY={crosshairY}
-              onCoordClick={(x: number, y: number) => {
-                const [x_um, y_um] = [x / pixelsPerMicron, y / pixelsPerMicron];
-                console.log(
-                  `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`
-                );
-                const [x_int, y_int] = [Math.round(x), Math.round(y)];
-                if (Number.isNaN(x_um) || Number.isNaN(y_um)) {
-                  console.log(
-                    "Not submitting plan while disconnected from PVs!"
-                  );
-                } else {
-                  submitAndRunPlanImmediately("gui_gonio_move_on_click", {
-                    position_px: [x_int, y_int],
-                  });
-                }
-              }}
-            />
-          </Box>
-        </Grid2>
-        <Grid2 size={3} height={3}>
-          <MoveArrows />
-          <Grid2 size={3} padding={1} />
-          <BeamCentre
-            setCrosshairX={setCrosshairX}
-            setCrosshairY={setCrosshairY}
+    // <div>
+    <Grid2 container spacing={2} columns={12}>
+      <Grid2 size={9} sx={{ bgcolor: bgColor }}>
+        <Box width={"100%"}>
+          <OavVideoStream
+            pv="ca://BL24I-DI-OAV-01:"
+            label="I24 OAV image stream"
+            crosshairX={crosshairX}
+            crosshairY={crosshairY}
+            onCoordClick={(x: number, y: number) => {
+              const [x_um, y_um] = [x / pixelsPerMicron, y / pixelsPerMicron];
+              console.log(
+                `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`
+              );
+              const [x_int, y_int] = [Math.round(x), Math.round(y)];
+              if (Number.isNaN(x_um) || Number.isNaN(y_um)) {
+                console.log("Not submitting plan while disconnected from PVs!");
+              } else {
+                submitAndRunPlanImmediately("gui_gonio_move_on_click", {
+                  position_px: [x_int, y_int],
+                });
+              }
+            }}
           />
-          <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
-          <BacklightControl
-            label="backlight-pos"
-            pv="ca://BL24I-MO-BL-01:MP:SELECT"
-          />
-          <ZoomControl
-            label="zoom-level"
-            pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
-          />
-        </Grid2>
+        </Box>
       </Grid2>
-    </div>
+      <Grid2 size={3} height={3}>
+        <MoveArrows />
+        <Grid2 size={3} padding={1} />
+        <BeamCentre
+          setCrosshairX={setCrosshairX}
+          setCrosshairY={setCrosshairY}
+        />
+        <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
+        <BacklightControl
+          label="backlight-pos"
+          pv="ca://BL24I-MO-BL-01:MP:SELECT"
+        />
+        <ZoomControl
+          label="zoom-level"
+          pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
+        />
+      </Grid2>
+    </Grid2>
+    // </div>
   );
 }

@@ -56,7 +56,7 @@ export const I24DiamondTheme: Theme = createTheme({
 
 // To be improved and extended to light mode once
 // https://github.com/DiamondLightSource/sci-react-ui/pull/70
-// is merged and released (v0.2.0)
+// is merged and released (v0.2.0+)
 
 /** Set up a customisable theme derived from the common DiamondTheme
  * This way it should be possible to easily add settings if required

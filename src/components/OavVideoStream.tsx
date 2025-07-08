@@ -1,9 +1,16 @@
 import { Box } from "@mui/material";
-import { PvComponent, PvItem, PvDescription, useParsedPvConnection } from "../pv/PvComponent";
+import {
+  PvComponent,
+  PvItem,
+  PvDescription,
+  useParsedPvConnection,
+} from "../pv/PvComponent";
 import { parseNumericPv, pvIntArrayToString } from "../pv/util";
 import React from "react";
 
-export const useContainerDimensions = (ref: React.MutableRefObject<HTMLHeadingElement | null>) => {
+const useContainerDimensions = (
+  ref: React.MutableRefObject<HTMLHeadingElement | null>
+) => {
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
   React.useEffect(() => {
     const getDimensions = () => ({
@@ -62,7 +69,10 @@ export function OavVideoStream(
     label: props.label,
     render: (props: PvItem) => {
       const value = props.value ? props.value : "undefined";
-      if (!streamUrl.startsWith("http") && value.toString().startsWith("http")) {
+      if (
+        !streamUrl.startsWith("http") &&
+        value.toString().startsWith("http")
+      ) {
         setStreamUrl(value.toString());
       }
       return (
@@ -148,8 +158,12 @@ function VideoBoxWithOverlay(props: {
               // x and y relative to the crosshair
               const [relX, relY] = [x - props.crosshairX, y - props.crosshairY];
               // fraction of the image in x/y * original dimension in pixels
-              const scaledX = props.originalDims ? (relX / width) * props.originalDims.width : x;
-              const scaledY = props.originalDims ? (relY / height) * props.originalDims.height : y;
+              const scaledX = props.originalDims
+                ? (relX / width) * props.originalDims.width
+                : x;
+              const scaledY = props.originalDims
+                ? (relY / height) * props.originalDims.height
+                : y;
               props.onCoordClick(scaledX, scaledY);
             }
           }
