@@ -17,7 +17,7 @@ function DetectorState() {
 
 export function DetectorMotionTabPanel() {
   return (
-    <div>
+    <Box>
       <Stack spacing={2} alignItems={"center"}>
         <RoPvBox label="Selected detector" pv="ca://ME14E-MO-IOC-01:GP101" />
         <RoPvBox
@@ -50,6 +50,6 @@ export function DetectorMotionTabPanel() {
         </Stack>
         <DetectorState />
       </Stack>
-    </div>
+    </Box>
   );
 }
