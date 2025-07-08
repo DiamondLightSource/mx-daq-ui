@@ -4,39 +4,26 @@ import { PvComponent } from "../pv/PvComponent";
 import { forceString, parseNumericPv } from "../pv/util";
 import { WorkerStatus } from "../components/WorkerStatus";
 
+type StateBoxProps = { bgColor: string; title: string; titleColor: string };
+
 // These should be in a permanent sidebar
 // See https://github.com/DiamondLightSource/mx-daq-ui/issues/46
 // Maybe I should leave this for separate PR when I put in drawer ...
-function PmacStagesState() {
-  const theme = useTheme();
-  const bgColor = theme.palette.background.paper;
+function PmacStagesState(props: StateBoxProps) {
   return (
     <Grid2
-      bgcolor={bgColor}
+      bgcolor={props.bgColor}
       justifyContent={"center"}
       sx={{
         maxWidth: 500,
         position: "relative",
         padding: 2,
-        // left: 500,
         display: "flex",
       }}
-      // justify={"center"}
     >
-      {/* // <Box
-    //   sx={{
-    //     maxWidth: 400,
-    //     padding: 2,
-    //     position: "relative",
-    //     zIndex: 1,
-    //     left: 250,
-    //   }}
-    //   component={"section"}
-    //   bgColor={bgColor}
-    // > */}
       <Stack alignItems={"center"}>
-        <Box alignItems={"center"} color={theme.palette.info.main}>
-          <b>Serial Fixed Target Stages</b>
+        <Box color={props.titleColor}>
+          <b>{props.title}</b>
         </Box>
         <Stack spacing={2} direction="row">
           <Stack alignItems={"center"} spacing={1}>
@@ -59,7 +46,7 @@ function PmacStagesState() {
               decimals={4}
             />
           </Stack>
-          <Stack alignItems={"center"} spacing={1}>
+          <Stack alignItems={"center"} spacing={1} justifyContent={"center"}>
             <PvComponent
               label="Scan Status"
               pv="ca://BL24I-MO-STEP-14:signal:P2401"
@@ -84,8 +71,8 @@ export function BeamlineStatsTabPanel() {
     <Box sx={{ flexGrow: 1 }}>
       <Stack spacing={4} alignItems={"center"}>
         <WorkerStatus />
-        <Grid2 container spacing={2} justifyContent="center">
-          <Grid2 size={3} sx={{ bgcolor: bgColor }}>
+        <Grid2 container spacing={3} justifyContent="center">
+          <Box bgcolor={bgColor}>
             <PvComponent
               label="Flux"
               pv="ca://BL24I-EA-FLUX-01:XBPM-03"
@@ -102,41 +89,45 @@ export function BeamlineStatsTabPanel() {
                 );
               }}
             />
-          </Grid2>
-          <Grid2 size={3} sx={{ bgcolor: bgColor }}>
+          </Box>
+          <Box bgcolor={bgColor}>
             <PvComponent
               label="Energy"
               pv="ca://BL24I-MO-DCM-01:ENERGY.RBV"
               transformValue={parseNumericPv}
               decimals={4}
             />
-          </Grid2>
-          <Grid2 size={6} sx={{ bgcolor: bgColor }}>
+          </Box>
+          <Box bgcolor={bgColor}>
             <PvComponent
               label="Filter Transmission"
               pv="ca://BL24I-OP-ATTN-01:MATCH"
               transformValue={parseNumericPv}
               decimals={4}
             />
-          </Grid2>
+          </Box>
         </Grid2>
         <Grid2 container spacing={4} justifyContent="center">
-          <Grid2 size={6} sx={{ bgcolor: bgColor }}>
+          <Box bgcolor={bgColor}>
             <PvComponent
-              label="Expt Shutter"
+              label="Experiment Shutter"
               pv="ca://BL24I-PS-SHTR-01:CON"
               transformValue={forceString}
             />
-          </Grid2>
-          <Grid2 size={6} sx={{ bgcolor: bgColor }}>
+          </Box>
+          <Box bgcolor={bgColor}>
             <PvComponent
               label="Fast Shutter"
               pv="ca://BL24I-EA-SHTR-01:STA"
               transformValue={forceString}
             />
-          </Grid2>
+          </Box>
         </Grid2>
-        <PmacStagesState />
+        <PmacStagesState
+          bgColor={bgColor}
+          title="Serial Fixed Target Stages"
+          titleColor={theme.palette.info.main}
+        />
       </Stack>
     </Box>
   );
