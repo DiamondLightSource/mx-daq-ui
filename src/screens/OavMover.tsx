@@ -5,6 +5,7 @@ import {
   Grid2,
   Stack,
   TextField,
+  Tooltip,
   useTheme,
 } from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
@@ -197,36 +198,43 @@ export function PresetMovements() {
         <b>Preset Positions</b>
       </p>
       <Grid2>
-        <Button
-          style={buttonStyle}
-          onClick={() =>
-            submitAndRunPlanImmediately("moveto_preset", {
-              place: "collect_position",
-            })
-          }
-        >
-          Collect Position
-        </Button>
-        <Button
-          style={buttonStyle}
-          onClick={() =>
-            submitAndRunPlanImmediately("moveto_preset", {
-              place: "load_position",
-            })
-          }
-        >
-          Load Position
-        </Button>
-        <Button
-          style={buttonStyle}
-          onClick={() =>
-            submitAndRunPlanImmediately("moveto_preset", {
-              place: "microdrop_position",
-            })
-          }
-        >
-          Microdrop Align
-        </Button>
+        <Tooltip title={"Move into position for collection"}>
+          <Button
+            style={buttonStyle}
+            onClick={() =>
+              submitAndRunPlanImmediately("moveto_preset", {
+                place: "collect_position",
+              })
+            }
+          >
+            Collect Position
+          </Button>
+        </Tooltip>
+
+        <Tooltip title={"Move hardware for sample loading"}>
+          <Button
+            style={buttonStyle}
+            onClick={() =>
+              submitAndRunPlanImmediately("moveto_preset", {
+                place: "load_position",
+              })
+            }
+          >
+            Load Position
+          </Button>
+        </Tooltip>
+        <Tooltip title={"Align microdrop"}>
+          <Button
+            style={buttonStyle}
+            onClick={() =>
+              submitAndRunPlanImmediately("moveto_preset", {
+                place: "microdrop_position",
+              })
+            }
+          >
+            Microdrop Align
+          </Button>
+        </Tooltip>
       </Grid2>
     </Box>
   );
