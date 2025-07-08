@@ -10,7 +10,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import { PvComponent, PvItem } from "../pv/PvComponent";
+import { PvComponent } from "../pv/PvComponent";
 import React from "react";
 import { MapView, PumpProbeOptions } from "../components/CollectionComponents";
 import {
@@ -18,39 +18,23 @@ import {
   submitAndRunPlanImmediately,
 } from "../blueapi/blueapi";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
+import { forceString } from "../pv/util";
 
 /**
  * A couple of read-only boxes showing what the visit and detector in use are.
  */
 function FixedInputs() {
-  // NOTE PVComponent ROBox will show the value and slice out the DType:
   return (
     <Grid2 size={12}>
       <PvComponent
         label="Visit"
         pv="ca://ME14E-MO-IOC-01:GP100"
-        render={({ label, value }: PvItem) => {
-          return (
-            <Box>
-              <p>
-                <b>{label}:</b> {value?.toString().slice(7)}
-              </p>
-            </Box>
-          );
-        }}
+        transformValue={forceString}
       />
       <PvComponent
         label="Detector in use"
         pv="ca://ME14E-MO-IOC-01:GP101"
-        render={({ label, value }: PvItem) => {
-          return (
-            <Box>
-              <p>
-                <b>{label}:</b> {value?.toString().slice(7)}
-              </p>
-            </Box>
-          );
-        }}
+        transformValue={forceString}
       />
     </Grid2>
   );

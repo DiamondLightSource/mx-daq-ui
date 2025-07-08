@@ -14,7 +14,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-// Update the Button's color options to include a violet option
+// Update the Button's color options to include a new option
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     custom: true;
@@ -48,6 +48,10 @@ export const I24DiamondTheme: Theme = createTheme({
           light: "#68a0e2",
           dark: "#10569b",
           contrastText: "#ffffff", // white
+        },
+        background: {
+          default: "#050505",
+          paper: "#121212",
         },
       },
     },

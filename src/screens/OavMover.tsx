@@ -11,7 +11,7 @@ import { useState } from "react";
 import React from "react";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { CoordNumberInput } from "../components/CoordNumberInput";
-import { PvDescription } from "../pv/PvComponent";
+import { PvDescription } from "../pv/types";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 
