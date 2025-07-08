@@ -208,9 +208,8 @@ export function OavMover() {
           />
         </Box>
       </Grid2>
-      <Grid2 size={3} height={3}>
+      <Grid2 size={3} padding={1}>
         <MoveArrows />
-        <Grid2 size={3} padding={1} />
         <BeamCentre
           setCrosshairX={setCrosshairX}
           setCrosshairY={setCrosshairY}
