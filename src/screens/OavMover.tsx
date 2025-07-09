@@ -1,10 +1,25 @@
-import { Box, Button, Grid2, Stack, TextField, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid2,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
   ArrowBackRounded,
   ArrowDownwardRounded,
   ArrowForwardRounded,
   ArrowUpwardRounded,
+  Close,
+  Help,
 } from "@mui/icons-material";
 import { useState } from "react";
 
@@ -175,6 +190,86 @@ export function PixelsToMicrons({
   );
 }
 
+export function CoordinateSystem() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Box>
+        <Grid2 container spacing={2}>
+          <Grid2 size={10}>
+            <b>Co-ordinate System Setup</b>
+          </Grid2>
+          <Grid2>
+            <Help onClick={handleClickOpen} />
+          </Grid2>
+          <Grid2 size={4}>
+            <Button>Move chip to origin</Button>
+          </Grid2>
+          <Grid2 size={4}>
+            <Button>Go to Fiducial 1</Button>
+          </Grid2>
+          <Grid2 size={4}>
+            <Button>Go to Fiducial 2</Button>
+          </Grid2>
+          <Grid2 size={4}>
+            <Button>Set Fiducial 0</Button>
+          </Grid2>
+          <Grid2 size={4}>
+            <Button>Set Fiducial 1</Button>
+          </Grid2>
+          <Grid2 size={4}>
+            <Button>Set Fiducial 2</Button>
+          </Grid2>
+          <Grid2 size={8} offset={2}>
+            <Button>Make Coordinate System</Button>
+          </Grid2>
+        </Grid2>
+      </Box>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+      >
+        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+          Modal title
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={(theme) => ({
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}
+        >
+          <Close />
+        </IconButton>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+            ac consectetur ac, vestibulum at eros.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Save changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+
 export function OavMover() {
   const [crosshairX, setCrosshairX] = useState<number>(200);
   const [crosshairY, setCrosshairY] = useState<number>(200);
@@ -226,6 +321,8 @@ export function OavMover() {
             label="zoom-level"
             pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
+          <hr />
+          <CoordinateSystem />
         </Grid2>
       </Grid2>
     </div>
