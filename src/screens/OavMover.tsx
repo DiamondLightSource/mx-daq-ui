@@ -200,10 +200,17 @@ export function CoordinateSystem() {
     setOpen(false);
   };
 
+  const buttonStyle = {
+    color: "white",
+    margin: "5px",
+    padding: "15px",
+    backgroundColor: "#1c2025",
+  };
+
   return (
     <>
       <Box>
-        <Grid2 container spacing={2}>
+        <Grid2 container spacing={1}>
           <Grid2 size={10}>
             <b>Co-ordinate System Setup</b>
           </Grid2>
@@ -211,25 +218,83 @@ export function CoordinateSystem() {
             <Help onClick={handleClickOpen} />
           </Grid2>
           <Grid2 size={4}>
-            <Button>Move chip to origin</Button>
+            <Button
+              style={buttonStyle}
+              onClick={() =>
+                submitAndRunPlanImmediately("moveto", {
+                  place: "zero",
+                })
+              }
+            >
+              Move chip to origin
+            </Button>
           </Grid2>
           <Grid2 size={4}>
-            <Button>Go to Fiducial 1</Button>
+            <Button
+              style={buttonStyle}
+              onClick={() =>
+                submitAndRunPlanImmediately("moveto", {
+                  place: "f1",
+                })
+              }
+            >
+              Go to Fiducial 1
+            </Button>
           </Grid2>
           <Grid2 size={4}>
-            <Button>Go to Fiducial 2</Button>
+            <Button
+              style={buttonStyle}
+              onClick={() =>
+                submitAndRunPlanImmediately("moveto", {
+                  place: "f2",
+                })
+              }
+            >
+              Go to Fiducial 2
+            </Button>
           </Grid2>
           <Grid2 size={4}>
-            <Button>Set Fiducial 0</Button>
+            <Button style={buttonStyle}>Set Fiducial 0</Button>
           </Grid2>
           <Grid2 size={4}>
-            <Button>Set Fiducial 1</Button>
+            <Button
+              style={buttonStyle}
+              onClick={() =>
+                submitAndRunPlanImmediately("fiducial", {
+                  point: "1",
+                })
+              }
+            >
+              Set Fiducial 1
+            </Button>
           </Grid2>
           <Grid2 size={4}>
-            <Button>Set Fiducial 2</Button>
+            <Button
+              style={buttonStyle}
+              onClick={() =>
+                submitAndRunPlanImmediately("fiducial", {
+                  point: "2",
+                })
+              }
+            >
+              Set Fiducial 2
+            </Button>
           </Grid2>
-          <Grid2 size={8} offset={2}>
-            <Button>Make Coordinate System</Button>
+          <Grid2 size={6}>
+            <Button
+              style={buttonStyle}
+              onClick={() => submitAndRunPlanImmediately("cs_maker", {})}
+            >
+              Make Coordinate System
+            </Button>
+          </Grid2>
+          <Grid2 size={6}>
+            <Button
+              style={buttonStyle}
+              onClick={() => submitAndRunPlanImmediately("block_check", {})}
+            >
+              Block Check
+            </Button>
           </Grid2>
         </Grid2>
       </Box>
