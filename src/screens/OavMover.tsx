@@ -205,6 +205,8 @@ export function CoordinateSystem() {
     margin: "5px",
     padding: "15px",
     backgroundColor: "#1c2025",
+    width: "100%",
+    height: "95%",
   };
 
   return (
@@ -226,7 +228,7 @@ export function CoordinateSystem() {
                 })
               }
             >
-              Move chip to origin
+              Go to Origin
             </Button>
           </Grid2>
           <Grid2 size={4}>
@@ -304,7 +306,7 @@ export function CoordinateSystem() {
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Modal title
+          How to use Co-ordinate System Setup
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -320,16 +322,11 @@ export function CoordinateSystem() {
         </IconButton>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-            ac consectetur ac, vestibulum at eros.
+            This only works for an Oxford chip. Fiducial 0 is the origin, the
+            top left corner. Fiducial 1 is the top right corner and Fiducial 2
+            is the bottom left corner.
           </Typography>
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
       </Dialog>
     </>
   );
