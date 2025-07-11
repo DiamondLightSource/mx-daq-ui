@@ -30,20 +30,20 @@ export function useBlueApiCall(
   method?: string,
   body?: object,
   pollRateMillis?: number,
-  queryKey?: string
+  queryKey?: string,
 ) {
   return useQuery(
     queryKey ?? "BlueApiCall",
     async () => await blueApiCall(endpoint, method, body),
     {
       refetchInterval: pollRateMillis ?? 500,
-    }
+    },
   );
 }
 
 export function processUseBlueApiCall(
   request: UseQueryResult<Response, unknown>,
-  onSuccess: (data: Response) => string
+  onSuccess: (data: Response) => string,
 ) {
   if (request.status === "error") {
     return "Error fetching query!";
@@ -62,7 +62,7 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
 
 export function submitPlan(
   planName: string,
-  planParams: object
+  planParams: object,
 ): Promise<string> {
   return blueApiCall("/tasks", "POST", {
     name: planName,
@@ -72,14 +72,14 @@ export function submitPlan(
 
 export function submitAndRunPlanImmediately(
   planName: string,
-  planParams: object
+  planParams: object,
 ): Promise<string> {
   return submitPlan(planName, planParams).then((res) =>
     // TODO make sure submitPlan was succesful before then putting it to the worker
     // See https://github.com/DiamondLightSource/mx-daq-ui/issues/17
     blueApiCall("/worker/task", "PUT", { task_id: res }).then((res) =>
-      res.json().then((res) => res["task_id"])
-    )
+      res.json().then((res) => res["task_id"]),
+    ),
   );
 }
 
