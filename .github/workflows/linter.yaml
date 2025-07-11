@@ -1,4 +1,4 @@
-name: Prettier
+name: Lint and Format Check
 on:
   pull_request:
   push:
@@ -11,8 +11,5 @@ jobs:
       - uses: actions/setup-node@v4
       - run: |
           yarn
-          yarn prettier . --write
-          yarn eslint . --ext .js,.jsx,.ts,.tsx --fix
-      - uses: autofix-ci/action@v1
-        with:
-          commit-message: "Auto fix: Prettier & ESLint"
+          yarn prettier . --check
+          yarn eslint .
