@@ -249,7 +249,7 @@ export function SideDrawer() {
   return (
     <>
       <Button style={buttonStyle} onClick={toggleDrawer(true)}>
-        Open drawer
+        Preset Positions
       </Button>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         <PresetMovements />
