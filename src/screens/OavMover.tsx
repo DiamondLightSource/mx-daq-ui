@@ -320,6 +320,7 @@ export function CoordinateSystem() {
           <Close />
         </IconButton>
         <DialogContent dividers>
+          <img src="Oxford Chip Diagram.excalidraw.svg" alt="" />
           <Typography gutterBottom>
             This only works for an Oxford chip. Fiducial 0 is the origin, the
             top left corner. Fiducial 1 is the top right corner and Fiducial 2
