@@ -140,7 +140,7 @@ function VideoBoxWithOverlay(props: {
       />
       <canvas
         width={width}
-        height={height}
+        height="auto"
         ref={canvasRef}
         style={{
           top: 0,
