@@ -30,6 +30,7 @@ import { CoordNumberInput } from "../components/CoordNumberInput";
 import { PvDescription } from "../pv/PvComponent";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
+import oxfordChipDiagram from "../assets/Oxford Chip Diagram.excalidraw.svg";
 
 const buttonStyle = {
   color: "white",
@@ -277,17 +278,16 @@ export function CoordinateSystem() {
 
   const buttonStyle = {
     color: "white",
-    margin: "5px",
-    padding: "15px",
+    padding: "12px",
     backgroundColor: "#1c2025",
     width: "100%",
-    height: "95%",
+    height: "85%",
   };
 
   return (
     <>
       <Box>
-        <Grid2 container spacing={1}>
+        <Grid2 container rowSpacing={0} spacing={1}>
           <Grid2 size={10}>
             <b>Co-ordinate System Setup</b>
           </Grid2>
@@ -396,11 +396,11 @@ export function CoordinateSystem() {
           <Close />
         </IconButton>
         <DialogContent dividers>
-          <img src="Oxford Chip Diagram.excalidraw.svg" alt="" />
+          <img src={oxfordChipDiagram} alt="" />
           <Typography gutterBottom>
-            This only works for an Oxford chip. Fiducial 0 is the origin, the
-            top left corner. Fiducial 1 is the top right corner and Fiducial 2
-            is the bottom left corner.
+            Fiducial alignment for an Oxford type chip. Fiducial 0 is the
+            origin, the top left corner. Fiducial 1 is the top right corner and
+            Fiducial 2 is the bottom left corner.
           </Typography>
         </DialogContent>
       </Dialog>
