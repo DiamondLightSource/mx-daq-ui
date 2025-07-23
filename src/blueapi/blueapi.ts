@@ -73,30 +73,39 @@ export function submitPlan(
   return blueApiCall("/tasks", "POST", {
     name: planName,
     params: planParams,
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(
-          `Unable to POST request,response error ${res.statusText}`
-        );
-      }
-      res.json();
-    })
-    .then((res) => res["task_id"]); // This probably needs to be done separately or something
-  // .catch((error) => console.log(error));
+  }).then((res) => res.json().then((res) => res["task_id"]));
+}
+
+export function submitTask(
+  planName: string,
+  planParams: object
+): Promise<object | void> {
+  return blueApiCall("/tasks", "POST", {
+    name: planName,
+    params: planParams,
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error(
+        `Unable to POST request,response error ${res.statusText}`
+      );
+    }
+    res.json();
+  });
 }
 
 export function submitAndRunPlanImmediately(
   planName: string,
   planParams: object
 ): Promise<string> {
-  return submitPlan(planName, planParams).then((res) =>
-    // TODO make sure submitPlan was succesful before then putting it to the worker
-    // See https://github.com/DiamondLightSource/mx-daq-ui/issues/17
-    blueApiCall("/worker/task", "PUT", { task_id: res }).then((res) =>
-      res.json().then((res) => res["task_id"])
+  return submitPlan(planName, planParams)
+    .then((res) =>
+      // TODO make sure submitPlan was succesful before then putting it to the worker
+      // See https://github.com/DiamondLightSource/mx-daq-ui/issues/17
+      blueApiCall("/worker/task", "PUT", { task_id: res }).then((res) =>
+        res.json().then((res) => res["task_id"])
+      )
     )
-  );
+    .catch((error) => console.log(error));
 }
 
 export function abortCurrentPlan(): Promise<BlueApiWorkerState> {
