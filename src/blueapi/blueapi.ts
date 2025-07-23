@@ -74,8 +74,16 @@ export function submitPlan(
     name: planName,
     params: planParams,
   })
-    .then((res) => res.json().then((res) => res["task_id"]))
-    .catch((error) => console.log(error));
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(
+          `Unable to POST request,response error ${res.statusText}`
+        );
+      }
+      res.json();
+    })
+    .then((res) => res["task_id"]); // This probably needs to be done separately or something
+  // .catch((error) => console.log(error));
 }
 
 export function submitAndRunPlanImmediately(
