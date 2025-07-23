@@ -1,6 +1,7 @@
 import { useQuery, UseQueryResult } from "react-query";
 
-const BLUEAPI_SOCKET = import.meta.env.VITE_BLUEAPI_SOCKET;
+const BLUEAPI_SOCKET: string = import.meta.env.VITE_BLUEAPI_SOCKET;
+
 export type BlueApiWorkerState =
   | "IDLE"
   | "RUNNING"
@@ -13,9 +14,14 @@ export type BlueApiWorkerState =
   | "PANICKED"
   | "UNKNOWN";
 
-function blueApiCall(endpoint: string, method?: string, body?: object) {
+function blueApiCall(
+  endpoint: string,
+  method?: string,
+  body?: object
+): Promise<Response> {
   const _method = method ?? "GET";
-  return fetch(BLUEAPI_SOCKET + endpoint, {
+  const fullUrl = BLUEAPI_SOCKET + endpoint;
+  return fetch(fullUrl, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
