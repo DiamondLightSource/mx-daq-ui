@@ -63,9 +63,7 @@ export function processUseBlueApiCall(
 }
 
 export function getWorkerStatus(): Promise<BlueApiWorkerState> {
-  return blueApiCall("/worker/state")
-    .then((res) => res.json())
-    .catch((error) => console.log(error));
+  return blueApiCall("/worker/state").then((res) => res.json());
 }
 
 export function submitPlan(
@@ -75,7 +73,9 @@ export function submitPlan(
   return blueApiCall("/tasks", "POST", {
     name: planName,
     params: planParams,
-  }).then((res) => res.json().then((res) => res["task_id"]));
+  })
+    .then((res) => res.json().then((res) => res["task_id"]))
+    .catch((error) => console.log(error));
 }
 
 export function submitAndRunPlanImmediately(
