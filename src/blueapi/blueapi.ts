@@ -63,7 +63,9 @@ export function processUseBlueApiCall(
 }
 
 export function getWorkerStatus(): Promise<BlueApiWorkerState> {
-  return blueApiCall("/worker/state").then((res) => res.json());
+  return blueApiCall("/worker/state")
+    .then((res) => res.json())
+    .catch((error) => console.log(error));
 }
 
 export function submitPlan(
