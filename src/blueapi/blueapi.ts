@@ -66,16 +66,6 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
   return blueApiCall("/worker/state").then((res) => res.json());
 }
 
-export function submitPlan(
-  planName: string,
-  planParams: object
-): Promise<string> {
-  return blueApiCall("/tasks", "POST", {
-    name: planName,
-    params: planParams,
-  }).then((res) => res.json().then((res) => res["task_id"]));
-}
-
 // Note. fetch only rejects a promise on network errors, but http errors
 // must be caught by checking the response
 export function submitTask(
@@ -116,16 +106,6 @@ export function submitAndRunPlanImmediately(
     })
     .catch((error) => console.log(error));
 }
-//   return submitPlan(planName, planParams)
-//     .then((res) =>
-//       // TODO make sure submitPlan was succesful before then putting it to the worker
-//       // See https://github.com/DiamondLightSource/mx-daq-ui/issues/17
-//       blueApiCall("/worker/task", "PUT", { task_id: res }).then((res) =>
-//         res.json().then((res) => res["task_id"])
-//       )
-//     )
-//     .catch((error) => console.log(error));
-// }
 
 export function abortCurrentPlan(): Promise<BlueApiWorkerState> {
   return blueApiCall("/worker/state", "PUT", {
