@@ -2,6 +2,11 @@ import { useQuery, UseQueryResult } from "react-query";
 
 const BLUEAPI_SOCKET: string = import.meta.env.VITE_BLUEAPI_SOCKET;
 
+type BlueApiRequestBody = {
+  planName: string;
+  planParams: object;
+};
+
 export type BlueApiWorkerState =
   | "IDLE"
   | "RUNNING"
@@ -68,13 +73,10 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
 
 // Note. fetch only rejects a promise on network errors, but http errors
 // must be caught by checking the response
-export function submitTask(
-  planName: string,
-  planParams: object
-): Promise<string | void> {
+function submitTask(request: BlueApiRequestBody): Promise<string | void> {
   return blueApiCall("/tasks", "POST", {
-    name: planName,
-    params: planParams,
+    name: request.planName,
+    params: request.planParams,
   }).then((res) => {
     if (!res.ok) {
       throw new Error(
@@ -85,7 +87,7 @@ export function submitTask(
   });
 }
 
-export function runTask(taskId: string): Promise<string | void> {
+function runTask(taskId: string): Promise<string | void> {
   return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
     if (!res.ok) {
       throw new Error(`Unable to run task, response error ${res.statusText}`);
@@ -95,10 +97,9 @@ export function runTask(taskId: string): Promise<string | void> {
 }
 
 export function submitAndRunPlanImmediately(
-  planName: string,
-  planParams: object
+  request: BlueApiRequestBody
 ): Promise<string | void> {
-  return submitTask(planName, planParams)
+  return submitTask(request)
     .then((res) => {
       if (res) {
         runTask(res);
