@@ -49,6 +49,25 @@ function PmacStagesState(props: StateBoxProps) {
           transformValue={parseNumericPv}
           decimals={4}
         />
+      </CardContent>
+    </Card>
+  );
+}
+
+function ScanStatus(props: StateBoxProps) {
+  return (
+    <Card variant="outlined" sx={{ minWidth: 300, bgcolor: props.bgColor }}>
+      <CardContent>
+        <Typography
+          variant="h1"
+          sx={{
+            color: props.titleColor,
+            fontSize: 18,
+            fontWeight: "fontWeightBold",
+          }}
+        >
+          {props.title}
+        </Typography>
         <PvComponent
           label="Scan Status"
           pv="ca://BL24I-MO-STEP-14:signal:P2401"
@@ -162,6 +181,11 @@ export function BeamlineStatsTabPanel() {
           <PmacStagesState
             bgColor={bgColor}
             title="Serial Fixed Target Stages"
+            titleColor={theme.palette.info.main}
+          />
+          <ScanStatus
+            bgColor={bgColor}
+            title="Scan Monitor"
             titleColor={theme.palette.info.main}
           />
         </Grid2>
