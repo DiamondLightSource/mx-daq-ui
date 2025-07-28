@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
+import { PvComponent } from "../pv/PvComponent";
+import { PvItem, PvDescription } from "../pv/types";
 import {
-  PvComponent,
-  PvItem,
-  PvDescription,
+  parseNumericPv,
+  pvIntArrayToString,
   useParsedPvConnection,
-} from "../pv/PvComponent";
-import { parseNumericPv, pvIntArrayToString } from "../pv/util";
+} from "../pv/util";
 import React from "react";
 
 export const useContainerDimensions = (
