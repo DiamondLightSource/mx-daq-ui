@@ -47,7 +47,7 @@ function StateCard(props: StateBoxProps) {
   );
 }
 
-function PmacStagesState(props: Omit<StateBoxProps, "children">) {
+function PmacStagesStatus(props: Omit<StateBoxProps, "children">) {
   return (
     <StateCard
       bgColor={props.bgColor}
@@ -136,7 +136,7 @@ function BeamlineInfo(props: Omit<StateBoxProps, "children">) {
   );
 }
 
-function ShuttersState(props: Omit<StateBoxProps, "children">) {
+function ShuttersStatus(props: Omit<StateBoxProps, "children">) {
   return (
     <StateCard
       bgColor={props.bgColor}
@@ -151,6 +151,27 @@ function ShuttersState(props: Omit<StateBoxProps, "children">) {
       <PvComponent
         label="Fast Shutter"
         pv="ca://BL24I-EA-SHTR-01:STA"
+        transformValue={forceString}
+      />
+    </StateCard>
+  );
+}
+
+function DetectorStatus(props: Omit<StateBoxProps, "children">) {
+  return (
+    <StateCard
+      bgColor={props.bgColor}
+      title={props.title}
+      titleColor={props.titleColor}
+    >
+      <PvComponent
+        label="Eiger 9M"
+        pv="ca://BL24I-EA-EIGER-01:CAM:DetectorState_RBV"
+        transformValue={forceString}
+      />
+      <PvComponent
+        label="Pilatus 6M"
+        pv="ca://BL24I-EA-PILAT-01:cam1:DetectorState_RBV"
         transformValue={forceString}
       />
     </StateCard>
@@ -174,12 +195,12 @@ export function BeamlineStatsTabPanel() {
             title="Beamline Status"
             titleColor={theme.palette.info.main}
           />
-          <ShuttersState
+          <ShuttersStatus
             bgColor={bgColor}
             title="Shutters"
             titleColor={theme.palette.info.main}
           />
-          <PmacStagesState
+          <PmacStagesStatus
             bgColor={bgColor}
             title="Serial Fixed Target Stages"
             titleColor={theme.palette.info.main}
@@ -187,6 +208,11 @@ export function BeamlineStatsTabPanel() {
           <ScanStatus
             bgColor={bgColor}
             title="Scan Monitor"
+            titleColor={theme.palette.info.main}
+          />
+          <DetectorStatus
+            bgColor={bgColor}
+            title="Detector Status"
             titleColor={theme.palette.info.main}
           />
         </Grid2>
