@@ -471,26 +471,6 @@ export function OavMover() {
           <CoordinateSystem />
           <hr />
           <SideDrawer />
-          <hr />
-          <CoordinateSystem />
-          <hr />
-          <SideDrawer />
-          <hr />
-          <CoordinateSystem />
-          <hr />
-          <SideDrawer />
-          <hr />
-          <CoordinateSystem />
-          <hr />
-          <SideDrawer />
-          <hr />
-          <CoordinateSystem />
-          <hr />
-          <SideDrawer />
-          <hr />
-          <CoordinateSystem />
-          <hr />
-          <SideDrawer />
         </Grid2>
       </Grid2>
     </div>
