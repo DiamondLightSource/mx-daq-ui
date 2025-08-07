@@ -446,7 +446,7 @@ export function OavMover() {
         <Grid2
           size={3}
           sx={{
-            height: "90vh",
+            height: "95vh",
             overflowY: "auto",
             padding: 2,
             boxSizing: "border-box",
@@ -467,6 +467,26 @@ export function OavMover() {
             label="zoom-level"
             pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
           />
+          <hr />
+          <CoordinateSystem />
+          <hr />
+          <SideDrawer />
+          <hr />
+          <CoordinateSystem />
+          <hr />
+          <SideDrawer />
+          <hr />
+          <CoordinateSystem />
+          <hr />
+          <SideDrawer />
+          <hr />
+          <CoordinateSystem />
+          <hr />
+          <SideDrawer />
+          <hr />
+          <CoordinateSystem />
+          <hr />
+          <SideDrawer />
           <hr />
           <CoordinateSystem />
           <hr />
