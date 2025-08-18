@@ -4,7 +4,6 @@ import { DetectorMotionTabPanel } from "./screens/DetectorMotion";
 import { BeamlineStatsTabPanel } from "./screens/BeamlineStats";
 import { OavMover } from "./screens/OavMover";
 import "./App.css";
-import { BlueApiInfo } from "./screens/BlueApiInfo";
 import { ParamsPanel } from "./screens/CollectionPanel";
 import {
   ColourSchemeButton,
@@ -64,15 +63,14 @@ function FixedTargetPanels() {
           textColor="secondary"
           centered
         >
-          <Tab label="BlueAPI info" {...a11yProps(0)} />
+          <Tab label="Beamline info" {...a11yProps(0)} />
           <Tab label="Detector position" {...a11yProps(1)} />
           <Tab label="OAV view" {...a11yProps(2)} />
-          <Tab label="Beamline stats" {...a11yProps(3)} />
-          <Tab label="Fixed Target Collection" {...a11yProps(4)} />
+          <Tab label="Fixed Target Collection" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <BlueApiInfo />
+        <BeamlineStatsTabPanel />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <DetectorMotionTabPanel />
@@ -81,9 +79,6 @@ function FixedTargetPanels() {
         <OavMover />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <BeamlineStatsTabPanel />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={4}>
         <ParamsPanel />
       </CustomTabPanel>
     </div>

@@ -1,48 +1,55 @@
-import { useConnection } from "@diamondlightsource/cs-web-lib";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
-import { RawValue } from "./util";
+import { PvComponentProps, PvDescription, PvItem } from "./types";
+import { useParsedPvConnection, forceString } from "./util";
 
-type Transformer = (value: RawValue) => string | number;
-export type PvDisplayTypes = string | number;
-export type PvItem = { label: string; value: RawValue | PvDisplayTypes };
-export type PvItemComponent = ({ label, value }: PvItem) => JSX.Element;
-export type PvItemHandler = ({ label, value }: PvItem) => void;
-export type PvDescription = {
-  label: string;
-  pv: string;
-};
-export type PvComponentProps = PvDescription & {
-  render: PvItemComponent;
-  transformValue?: Transformer;
-};
-
-export function useParsedPvConnection(
-  props: PvDescription & { transformValue?: Transformer }
-) {
-  const [_effectivePvName, connected, _readonly, latestValue] = useConnection(
-    props.label,
-    props.pv
+function defaultPvBox(label: string, value: number | string): JSX.Element {
+  return (
+    <Box>
+      <p>
+        <b>{label}:</b> {value}
+      </p>
+    </Box>
   );
-  const rawValue: RawValue = connected ? latestValue : "not connected";
-  const returnValue = props.transformValue
-    ? props.transformValue(rawValue)
-    : rawValue;
-  console.log(
-    `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`
-  );
-  return returnValue;
 }
 
-function WsPvComponent(props: PvComponentProps) {
+function WsPvComponent(props: PvComponentProps): JSX.Element {
   const latestValue = useParsedPvConnection(props);
-  return <Box>{props.render({ label: props.label, value: latestValue })}</Box>;
+  const renderedPvBox = props.render ? (
+    <Box>{props.render({ label: props.label, value: latestValue })}</Box>
+  ) : (
+    defaultPvBox(props.label, latestValue)
+  );
+  return renderedPvBox;
 }
 
 export function PvComponent(props: PvComponentProps) {
+  const theme = useTheme();
   return (
-    <ErrorBoundary fallback={<p>Error Connecting!</p>}>
+    <ErrorBoundary
+      fallback={
+        <Box color={theme.palette.error.main}>
+          <p>Error Connecting!</p>
+        </Box>
+      }
+    >
       {WsPvComponent(props)}
     </ErrorBoundary>
   );
+}
+
+export function RoPvBox(props: PvDescription) {
+  return PvComponent({
+    ...props,
+    transformValue: forceString,
+    render: (props: PvItem) => {
+      return (
+        <Box>
+          <p>
+            {props.label} : {props.value}
+          </p>
+        </Box>
+      );
+    },
+  });
 }
