@@ -443,7 +443,15 @@ export function OavMover() {
             />
           </Box>
         </Grid2>
-        <Grid2 size={3} height={3}>
+        <Grid2
+          size={3}
+          sx={{
+            height: "95vh", // Height set to 95vh to span height of screen but to also leave 5vh space for the top navigation header.
+            overflowY: "auto",
+            padding: 2,
+            boxSizing: "border-box",
+          }}
+        >
           <MoveArrows />
           <Grid2 size={3} padding={1} />
           <BeamCentre
