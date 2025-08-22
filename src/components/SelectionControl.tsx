@@ -26,7 +26,10 @@ export function SelectionWithPlanRunner(props: SelectionProps) {
 
   const handleChange = (newValue: typeof currentValue) => {
     updateVal(newValue);
-    submitAndRunPlanImmediately(props.plan_name, { position: newValue });
+    submitAndRunPlanImmediately({
+      planName: props.plan_name,
+      planParams: { position: newValue },
+    });
   };
 
   return (
