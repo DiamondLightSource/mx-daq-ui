@@ -72,21 +72,24 @@ function RunButtons(props: ParametersProps) {
             variant="outlined"
             color="custom"
             onClick={() =>
-              submitAndRunPlanImmediately("gui_run_chip_collection", {
-                sub_dir: props.subDir,
-                chip_name: props.chipName,
-                exp_time: props.expTime,
-                det_dist: props.detDist,
-                transmission: props.transFract,
-                n_shots: props.nShots,
-                chip_type: props.chipType,
-                map_type: props.mapType,
-                chip_format: props.chipFormat,
-                checker_pattern: props.checkerPattern,
-                pump_probe: props.pumpProbe,
-                laser_dwell: props.pumpInputs[0],
-                laser_delay: props.pumpInputs[1],
-                pre_pump: props.pumpInputs[2],
+              submitAndRunPlanImmediately({
+                planName: "gui_run_chip_collection",
+                planParams: {
+                  sub_dir: props.subDir,
+                  chip_name: props.chipName,
+                  exp_time: props.expTime,
+                  det_dist: props.detDist,
+                  transmission: props.transFract,
+                  n_shots: props.nShots,
+                  chip_type: props.chipType,
+                  map_type: props.mapType,
+                  chip_format: props.chipFormat,
+                  checker_pattern: props.checkerPattern,
+                  pump_probe: props.pumpProbe,
+                  laser_dwell: props.pumpInputs[0],
+                  laser_delay: props.pumpInputs[1],
+                  pre_pump: props.pumpInputs[2],
+                },
               })
             }
           >

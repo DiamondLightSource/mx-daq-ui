@@ -33,7 +33,10 @@ export function DetectorMotionTabPanel() {
             color="custom"
             variant="contained"
             onClick={() =>
-              submitAndRunPlanImmediately("gui_move_detector", { det: "eiger" })
+              submitAndRunPlanImmediately({
+                planName: "gui_move_detector",
+                planParams: { det: "eiger" },
+              })
             }
           >
             Move to Eiger!
@@ -42,8 +45,11 @@ export function DetectorMotionTabPanel() {
             color="custom"
             variant="contained"
             onClick={() =>
-              submitAndRunPlanImmediately("gui_move_detector", {
-                det: "pilatus",
+              submitAndRunPlanImmediately({
+                planName: "gui_move_detector",
+                planParams: {
+                  det: "pilatus",
+                },
               })
             }
           >

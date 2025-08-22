@@ -210,8 +210,11 @@ export function PresetMovements() {
           <Button
             style={buttonStyle}
             onClick={() =>
-              submitAndRunPlanImmediately("moveto_preset", {
-                place: "collect_position",
+              submitAndRunPlanImmediately({
+                planName: "moveto_preset",
+                planParams: {
+                  place: "collect_position",
+                },
               })
             }
           >
@@ -223,8 +226,11 @@ export function PresetMovements() {
           <Button
             style={buttonStyle}
             onClick={() =>
-              submitAndRunPlanImmediately("moveto_preset", {
-                place: "load_position",
+              submitAndRunPlanImmediately({
+                planName: "moveto_preset",
+                planParams: {
+                  place: "load_position",
+                },
               })
             }
           >
@@ -235,8 +241,11 @@ export function PresetMovements() {
           <Button
             style={buttonStyle}
             onClick={() =>
-              submitAndRunPlanImmediately("moveto_preset", {
-                place: "microdrop_position",
+              submitAndRunPlanImmediately({
+                planName: "moveto_preset",
+                planParams: {
+                  place: "microdrop_position",
+                },
               })
             }
           >
@@ -298,8 +307,11 @@ export function CoordinateSystem() {
             <Button
               style={buttonStyle}
               onClick={() =>
-                submitAndRunPlanImmediately("moveto", {
-                  place: "zero",
+                submitAndRunPlanImmediately({
+                  planName: "moveto",
+                  planParams: {
+                    place: "zero",
+                  },
                 })
               }
             >
@@ -310,8 +322,11 @@ export function CoordinateSystem() {
             <Button
               style={buttonStyle}
               onClick={() =>
-                submitAndRunPlanImmediately("moveto", {
-                  place: "f1",
+                submitAndRunPlanImmediately({
+                  planName: "moveto",
+                  planParams: {
+                    place: "f1",
+                  },
                 })
               }
             >
@@ -322,8 +337,11 @@ export function CoordinateSystem() {
             <Button
               style={buttonStyle}
               onClick={() =>
-                submitAndRunPlanImmediately("moveto", {
-                  place: "f2",
+                submitAndRunPlanImmediately({
+                  planName: "moveto",
+                  planParams: {
+                    place: "f2",
+                  },
                 })
               }
             >
@@ -337,8 +355,11 @@ export function CoordinateSystem() {
             <Button
               style={buttonStyle}
               onClick={() =>
-                submitAndRunPlanImmediately("fiducial", {
-                  point: "1",
+                submitAndRunPlanImmediately({
+                  planName: "fiducial",
+                  planParams: {
+                    point: "1",
+                  },
                 })
               }
             >
@@ -349,8 +370,11 @@ export function CoordinateSystem() {
             <Button
               style={buttonStyle}
               onClick={() =>
-                submitAndRunPlanImmediately("fiducial", {
-                  point: "2",
+                submitAndRunPlanImmediately({
+                  planName: "fiducial",
+                  planParams: {
+                    point: "2",
+                  },
                 })
               }
             >
@@ -360,7 +384,12 @@ export function CoordinateSystem() {
           <Grid2 size={6}>
             <Button
               style={buttonStyle}
-              onClick={() => submitAndRunPlanImmediately("cs_maker", {})}
+              onClick={() =>
+                submitAndRunPlanImmediately({
+                  planName: "cs_maker",
+                  planParams: {},
+                })
+              }
             >
               Make Coordinate System
             </Button>
@@ -368,7 +397,12 @@ export function CoordinateSystem() {
           <Grid2 size={6}>
             <Button
               style={buttonStyle}
-              onClick={() => submitAndRunPlanImmediately("block_check", {})}
+              onClick={() =>
+                submitAndRunPlanImmediately({
+                  planName: "block_check",
+                  planParams: {},
+                })
+              }
             >
               Block Check
             </Button>
@@ -435,8 +469,11 @@ export function OavMover() {
                     "Not submitting plan while disconnected from PVs!"
                   );
                 } else {
-                  submitAndRunPlanImmediately("gui_gonio_move_on_click", {
-                    position_px: [x_int, y_int],
+                  submitAndRunPlanImmediately({
+                    planName: "gui_gonio_move_on_click",
+                    planParams: {
+                      position_px: [x_int, y_int],
+                    },
                   });
                 }
               }}

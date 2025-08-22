@@ -6,6 +6,7 @@ type BlueApiRequestBody = {
   planName: string;
   planParams: object;
 };
+// @todo check if blueapi request still works if planParams optional (since some times there's none)
 
 export type BlueApiWorkerState =
   | "IDLE"
