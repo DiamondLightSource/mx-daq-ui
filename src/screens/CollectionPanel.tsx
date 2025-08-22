@@ -19,6 +19,7 @@ import {
 } from "../blueapi/blueapi";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 import { forceString } from "../pv/util";
+import { AbortButton } from "../blueapi/BlueapiComponents";
 
 /**
  * A couple of read-only boxes showing what the visit and detector in use are.
@@ -96,15 +97,7 @@ function RunButtons(props: ParametersProps) {
             Start!
           </Button>
         </Tooltip>
-        <Tooltip title="Abort current operation" placement="bottom">
-          <Button
-            color="custom"
-            variant="outlined"
-            onClick={() => abortCurrentPlan()}
-          >
-            Abort!
-          </Button>
-        </Tooltip>
+        <AbortButton />
       </Stack>
     </Grid2>
   );
