@@ -1,5 +1,5 @@
 import React from "react";
-import { abortCurrentPlan } from "./blueapi";
+import { abortCurrentPlan, submitAndRunPlanImmediately } from "./blueapi";
 import {
   Alert,
   Button,
@@ -8,7 +8,37 @@ import {
   Tooltip,
 } from "@mui/material";
 
-export function RunPlanButton() {}
+type PlanButtonProps = {
+  btnLabel: string;
+  planName: string;
+  planParams?: object;
+  title?: string;
+  //   btnColour?: string;
+  //   btnVariant?: string;
+};
+
+export function RunPlanButton(props: PlanButtonProps) {
+  const params = props.planParams ? props.planParams : {};
+
+  return (
+    <div>
+      <Tooltip title={props.title ? props.title : ""} placement="bottom">
+        <Button
+          variant="contained"
+          color="custom"
+          onClick={() =>
+            submitAndRunPlanImmediately({
+              planName: props.planName,
+              planParams: params,
+            })
+          }
+        >
+          {props.btnLabel}
+        </Button>
+      </Tooltip>
+    </div>
+  );
+}
 
 export function AbortButton() {
   const [openMsg, setOpenMsg] = React.useState<boolean>(false);

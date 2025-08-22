@@ -13,10 +13,7 @@ import {
 import { PvComponent } from "../pv/PvComponent";
 import React from "react";
 import { MapView, PumpProbeOptions } from "../components/CollectionComponents";
-import {
-  abortCurrentPlan,
-  submitAndRunPlanImmediately,
-} from "../blueapi/blueapi";
+import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 import { forceString } from "../pv/util";
 import { AbortButton } from "../blueapi/BlueapiComponents";
