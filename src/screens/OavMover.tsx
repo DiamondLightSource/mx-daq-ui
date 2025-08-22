@@ -48,13 +48,15 @@ function BacklightControl(props: PvDescription) {
       paddingTop={1}
       paddingBottom={1}
     >
-      <SelectionWithPlanRunner
-        pv={props.pv}
-        label={props.label}
-        id="Backlight"
-        plan_name="gui_move_backlight"
-        choices={BacklightPositions}
-      />
+      <Tooltip title={"Adjust the backlight"}>
+        <SelectionWithPlanRunner
+          pv={props.pv}
+          label={props.label}
+          id="Backlight"
+          plan_name="gui_move_backlight"
+          choices={BacklightPositions}
+        />
+      </Tooltip>
     </Box>
   );
 }
@@ -68,13 +70,15 @@ function ZoomControl(props: PvDescription) {
       paddingTop={1}
       paddingBottom={1}
     >
-      <SelectionWithPlanRunner
-        pv={props.pv}
-        label={props.label}
-        id="ZoomControl"
-        plan_name="gui_set_zoom_level"
-        choices={ZoomLevels}
-      />
+      <Tooltip title={"Adjust the zoom level"}>
+        <SelectionWithPlanRunner
+          pv={props.pv}
+          label={props.label}
+          id="ZoomControl"
+          plan_name="gui_set_zoom_level"
+          choices={ZoomLevels}
+        />
+      </Tooltip>
     </Box>
   );
 }
@@ -94,27 +98,35 @@ export function MoveArrows() {
         </Grid2>
         <Grid2 size={1} />{" "}
         <Grid2 size={1}>
-          <Button>
-            <ArrowUpwardRounded />
-          </Button>
+          <Tooltip title={"Nudge Up"}>
+            <Button>
+              <ArrowUpwardRounded />
+            </Button>
+          </Tooltip>
         </Grid2>{" "}
         <Grid2 size={1} />
         <Grid2 size={1}>
-          <Button>
-            <ArrowBackRounded />
-          </Button>
+          <Tooltip title={"Nudge Left"}>
+            <Button>
+              <ArrowBackRounded />
+            </Button>
+          </Tooltip>
         </Grid2>{" "}
         <Grid2 size={1} />
         <Grid2 size={1}>
-          <Button>
-            <ArrowForwardRounded />
-          </Button>
+          <Tooltip title={"Nudge Right"}>
+            <Button>
+              <ArrowForwardRounded />
+            </Button>
+          </Tooltip>
         </Grid2>{" "}
         <Grid2 size={1} />{" "}
         <Grid2 size={1}>
-          <Button>
-            <ArrowDownwardRounded />
-          </Button>
+          <Tooltip title={"Nudge Down"}>
+            <Button>
+              <ArrowDownwardRounded />
+            </Button>
+          </Tooltip>
         </Grid2>{" "}
         <Grid2 size={1} />
       </Grid2>
@@ -256,9 +268,11 @@ export function SideDrawer() {
 
   return (
     <>
-      <Button style={buttonStyle} onClick={toggleDrawer(true)}>
-        Preset Positions
-      </Button>
+      <Tooltip title={"Show available preset hardware positions"}>
+        <Button style={buttonStyle} onClick={toggleDrawer(true)}>
+          Preset Positions
+        </Button>
+      </Tooltip>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         <PresetMovements />
       </Drawer>
@@ -292,7 +306,16 @@ export function CoordinateSystem() {
             <b>Co-ordinate System Setup</b>
           </Grid2>
           <Grid2>
-            <Help onClick={handleClickOpen} />
+            <Tooltip title={"Help"}>
+              <Help
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": { color: "#555" },
+                  "&:active": { color: "#808080" },
+                }}
+                onClick={handleClickOpen}
+              />
+            </Tooltip>
           </Grid2>
           <Grid2 size={4}>
             <Button
@@ -331,47 +354,77 @@ export function CoordinateSystem() {
             </Button>
           </Grid2>
           <Grid2 size={4}>
-            <Button style={buttonStyle}>Set Fiducial 0</Button>
-          </Grid2>
-          <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately("fiducial", {
-                  point: "1",
-                })
+            <Tooltip
+              title={
+                "Mark current position as Fiducial 0 (top-left corner of chip)"
               }
             >
-              Set Fiducial 1
-            </Button>
+              <Button style={buttonStyle}>Set Fiducial 0</Button>
+            </Tooltip>
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately("fiducial", {
-                  point: "2",
-                })
+            <Tooltip
+              title={
+                "Mark current position as Fiducial 1 (top-right corner of chip)"
               }
             >
-              Set Fiducial 2
-            </Button>
+              <Button
+                style={buttonStyle}
+                onClick={() =>
+                  submitAndRunPlanImmediately("fiducial", {
+                    point: "1",
+                  })
+                }
+              >
+                Set Fiducial 1
+              </Button>
+            </Tooltip>
+          </Grid2>
+          <Grid2 size={4}>
+            <Tooltip
+              title={
+                "Mark current position as Fiducial 2 (bottom-left corner of chip)"
+              }
+            >
+              <Button
+                style={buttonStyle}
+                onClick={() =>
+                  submitAndRunPlanImmediately("fiducial", {
+                    point: "2",
+                  })
+                }
+              >
+                Set Fiducial 2
+              </Button>
+            </Tooltip>
           </Grid2>
           <Grid2 size={6}>
-            <Button
-              style={buttonStyle}
-              onClick={() => submitAndRunPlanImmediately("cs_maker", {})}
+            <Tooltip
+              title={
+                "Calculate coordinate system from selected fiducial points"
+              }
             >
-              Make Coordinate System
-            </Button>
+              <Button
+                style={buttonStyle}
+                onClick={() => submitAndRunPlanImmediately("cs_maker", {})}
+              >
+                Make Coordinate System
+              </Button>
+            </Tooltip>
           </Grid2>
           <Grid2 size={6}>
-            <Button
-              style={buttonStyle}
-              onClick={() => submitAndRunPlanImmediately("block_check", {})}
+            <Tooltip
+              title={
+                "Verify that the defined coordinate system is valid and complete"
+              }
             >
-              Block Check
-            </Button>
+              <Button
+                style={buttonStyle}
+                onClick={() => submitAndRunPlanImmediately("block_check", {})}
+              >
+                Block Check
+              </Button>
+            </Tooltip>
           </Grid2>
         </Grid2>
       </Box>
