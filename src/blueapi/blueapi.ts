@@ -44,13 +44,12 @@ export function useBlueApiCall(
   pollRateMillis?: number,
   queryKey?: string
 ) {
-  return useQuery(
-    queryKey ?? "BlueApiCall",
-    async () => await blueApiCall(endpoint, method, body),
-    {
-      refetchInterval: pollRateMillis ?? 500,
-    }
-  );
+  const fetchCall = async () => {
+    return await blueApiCall(endpoint, method, body);
+  };
+  return useQuery(queryKey ?? "BlueApiCall", fetchCall, {
+    refetchInterval: pollRateMillis ?? 500,
+  });
 }
 
 export function processUseBlueApiCall(
