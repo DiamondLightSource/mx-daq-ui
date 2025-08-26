@@ -8,23 +8,26 @@ import {
   Tooltip,
 } from "@mui/material";
 
+type VariantChoice = "outlined" | "contained";
+
 type PlanButtonProps = {
   btnLabel: string;
   planName: string;
   planParams?: object;
   title?: string;
   //   btnColour?: string;
-  //   btnVariant?: string;
+  btnVariant?: VariantChoice;
 };
 
 export function RunPlanButton(props: PlanButtonProps) {
   const params = props.planParams ? props.planParams : {};
+  const variant = props.btnVariant ? props.btnVariant : "outlined";
 
   return (
     <div>
       <Tooltip title={props.title ? props.title : ""} placement="bottom">
         <Button
-          variant="contained"
+          variant={variant}
           color="custom"
           onClick={() =>
             submitAndRunPlanImmediately({
