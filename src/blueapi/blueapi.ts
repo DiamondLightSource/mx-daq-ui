@@ -80,7 +80,7 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
   }).then((res) => {
     if (!res.ok) {
       throw new Error(
-        `Unable to POST request, response error ${res.statusText}`
+        `Unable to POST request, response error ${res.status} ${res.statusText}`
       );
     }
     res.json().then((res) => res["task_id"]);
@@ -90,7 +90,9 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
 function runTask(taskId: string): Promise<string | void> {
   return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
     if (!res.ok) {
-      throw new Error(`Unable to run task, response error ${res.statusText}`);
+      throw new Error(
+        `Unable to run task, response error ${res.status} ${res.statusText}`
+      );
     }
     res.json().then((res) => res["task_id"]);
   });
@@ -105,7 +107,7 @@ export function submitAndRunPlanImmediately(
         runTask(res);
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log(`NOPE ${error}`));
 }
 
 export function abortCurrentPlan(): Promise<BlueApiWorkerState> {
