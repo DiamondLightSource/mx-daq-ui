@@ -5,11 +5,7 @@ import { BeamlineStatsTabPanel } from "./screens/BeamlineStats";
 import { OavMover } from "./screens/OavMover";
 import "./App.css";
 import { ParamsPanel } from "./screens/CollectionPanel";
-import {
-  ColourSchemeButton,
-  Footer,
-  FooterLinks,
-} from "@diamondlightsource/sci-react-ui";
+import { ColourSchemeButton, Footer } from "@diamondlightsource/sci-react-ui";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -102,12 +98,12 @@ function App() {
       ]}
     >
       <FixedTargetPanels />
-      <Footer logo={theme.logos?.short} color={theme.palette.primary.main}>
-        {/* <Footer logo={theme.logos.normal} color={theme.palette.primary.main}> */}
-        <FooterLinks>
-          <ColourSchemeButton sx={{ marginLeft: "1px", marginTop: "2px" }} />
-        </FooterLinks>
-      </Footer>
+      <Footer
+        logo={theme.logos?.short}
+        color={theme.palette.primary.main}
+        leftSlot={<ColourSchemeButton />}
+        containerWidth={false}
+      />
     </Box>
   );
 }
