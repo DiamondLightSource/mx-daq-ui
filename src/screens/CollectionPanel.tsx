@@ -9,6 +9,7 @@ import {
   Stack,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { PvComponent } from "../pv/PvComponent";
 import React from "react";
@@ -71,6 +72,7 @@ function RunButtons(props: ParametersProps) {
           <Button
             variant="outlined"
             color="custom"
+            size="large"
             onClick={() =>
               submitAndRunPlanImmediately({
                 planName: "gui_run_chip_collection",
@@ -93,16 +95,29 @@ function RunButtons(props: ParametersProps) {
               })
             }
           >
-            Start!
+            <Typography
+              variant="button"
+              fontWeight="fontWeightBold"
+              sx={{ display: "block" }}
+            >
+              Start!
+            </Typography>
           </Button>
         </Tooltip>
         <Tooltip title="Abort current operation" placement="bottom">
           <Button
             color="custom"
             variant="outlined"
+            size="large"
             onClick={() => abortCurrentPlan()}
           >
-            Abort!
+            <Typography
+              variant="button"
+              fontWeight="fontWeightBold"
+              sx={{ display: "block" }}
+            >
+              Abort!
+            </Typography>
           </Button>
         </Tooltip>
       </Stack>
