@@ -6,6 +6,7 @@ import {
   Snackbar,
   SnackbarCloseReason,
   Tooltip,
+  Typography,
 } from "@mui/material";
 
 type VariantChoice = "outlined" | "contained";
@@ -65,8 +66,19 @@ export function AbortButton() {
   return (
     <div>
       <Tooltip title="Abort current blueapi operation" placement="bottom">
-        <Button color="custom" variant="outlined" onClick={handleClick}>
-          Abort!
+        <Button
+          color="custom"
+          variant="outlined"
+          size="large"
+          onClick={handleClick}
+        >
+          <Typography
+            variant="button"
+            fontWeight="fontWeightBold"
+            sx={{ display: "block" }}
+          >
+            Abort!
+          </Typography>
         </Button>
       </Tooltip>
       <Snackbar
