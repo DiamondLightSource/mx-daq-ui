@@ -41,25 +41,27 @@ export function BeamlineI24() {
     setValue(newValue);
   };
   return (
-    <Box
-      component="section"
-      sx={{
-        borderBottom: 1,
-        borderColor: "divider",
-        color: theme.palette.text.secondary,
-      }}
-    >
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="basic tabs example"
-        textColor="secondary"
-        centered
+    <Box>
+      <Box
+        component="section"
+        sx={{
+          borderBottom: 1,
+          borderColor: "divider",
+          color: theme.palette.text.secondary,
+        }}
       >
-        <Tab label="Beamline info" {...a11yProps(0)} />
-        <Tab label="Detector position" {...a11yProps(1)} />
-        <Tab label="OAV view" {...a11yProps(2)} />
-      </Tabs>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+          textColor="secondary"
+          centered
+        >
+          <Tab label="Beamline info" {...a11yProps(0)} />
+          <Tab label="Detector position" {...a11yProps(1)} />
+          <Tab label="OAV view" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
       <CustomTabPanel value={value} index={0}>
         <BeamlineStatsTabPanel />
       </CustomTabPanel>
