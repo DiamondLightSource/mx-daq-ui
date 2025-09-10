@@ -7,8 +7,6 @@ import {
 import { Link } from "react-router-dom";
 import i24ssx from "../assets/i24ssx.svg";
 
-// import { i24ssx } from "../assets/i24ssx.svg";
-
 const ssxLogo: ImageColourSchemeSwitchType = {
   src: i24ssx,
   srcDark: i24ssx,
