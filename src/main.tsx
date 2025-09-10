@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "@diamondlightsource/cs-web-lib";
+import { BrowserRouter } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@diamondlightsource/sci-react-ui";
@@ -19,7 +20,9 @@ createRoot(document.getElementById("root")!).render(
     <ThemeProvider theme={I24DiamondTheme}>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </QueryClientProvider>
       </Provider>
     </ThemeProvider>
