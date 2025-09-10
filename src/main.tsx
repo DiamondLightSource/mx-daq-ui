@@ -20,7 +20,7 @@ createRoot(document.getElementById("root")!).render(
     <ThemeProvider theme={I24DiamondTheme}>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
+          <BrowserRouter basename="/mx-daq-ui/">
             <App />
           </BrowserRouter>
         </QueryClientProvider>
