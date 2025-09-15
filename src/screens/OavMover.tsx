@@ -21,6 +21,7 @@ import {
   ArrowUpwardRounded,
   Close,
   Help,
+  Padding,
 } from "@mui/icons-material";
 import { useState } from "react";
 
@@ -31,6 +32,7 @@ import { PvDescription } from "../pv/types";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 import oxfordChipDiagram from "../assets/Oxford Chip Diagram.excalidraw.svg";
+import { RunPlanButton } from "../blueapi/BlueapiComponents";
 
 const buttonStyle = {
   color: "white",
@@ -205,59 +207,34 @@ export function PresetMovements() {
       <p>
         <b>Preset Positions</b>
       </p>
-      <Grid2>
-        <Tooltip title={"Move into position for collection"}>
-          <Button
-            style={buttonStyle}
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "moveto_preset",
-                planParams: {
-                  place: "collect_position",
-                },
-              })
-            }
-          >
-            Collect Position
-          </Button>
-        </Tooltip>
-
-        <Tooltip title={"Move hardware for sample loading"}>
-          <Button
-            style={buttonStyle}
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "moveto_preset",
-                planParams: {
-                  place: "load_position",
-                },
-              })
-            }
-          >
-            Load Position
-          </Button>
-        </Tooltip>
-        <Tooltip title={"Align microdrop"}>
-          <Button
-            style={buttonStyle}
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "moveto_preset",
-                planParams: {
-                  place: "microdrop_position",
-                },
-              })
-            }
-          >
-            Microdrop Align
-          </Button>
-        </Tooltip>
-      </Grid2>
+      <Stack padding={"20px"} margin={"10px"} spacing={1}>
+        <RunPlanButton
+          btnLabel="Collect Position"
+          planName="moveto_preset"
+          planParams={{ place: "collect_position" }}
+          title="Move into position for collection"
+          btnSize="small"
+        />
+        <RunPlanButton
+          btnLabel="Load Position"
+          planName="moveto_preset"
+          planParams={{ place: "load_position" }}
+          title="Move hardware for sample loading"
+          btnSize="small"
+        />
+        <RunPlanButton
+          btnLabel="Microdrop align"
+          planName="moveto_preset"
+          planParams={{ place: "microdrop_position" }}
+          title="Align microdrop"
+          btnSize="small"
+        />
+      </Stack>
     </Box>
   );
 }
 
-export function SideDrawer() {
+export function PresetPositionsSideDrawer() {
   const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -507,7 +484,7 @@ export function OavMover() {
           <hr />
           <CoordinateSystem />
           <hr />
-          <SideDrawer />
+          <PresetPositionsSideDrawer />
         </Grid2>
       </Grid2>
     </div>

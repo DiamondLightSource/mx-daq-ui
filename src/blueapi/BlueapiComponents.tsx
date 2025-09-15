@@ -5,6 +5,7 @@ import {
   Button,
   Snackbar,
   SnackbarCloseReason,
+  styled,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -21,6 +22,15 @@ type RunPlanButtonProps = {
   btnVariant?: VariantChoice;
   btnSize?: ButtonSize;
 };
+
+// const CustomRunButton = styled(Button)({
+//   width: "100%",
+//   height: "85%",
+//   color: "var(--color)",
+//   backgroundColor: "var(--backgroundColor)",
+//   padding: "var(--padding)",
+//   margin: "var(--margin)",
+// });
 
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
