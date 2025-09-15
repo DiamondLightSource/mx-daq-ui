@@ -23,6 +23,8 @@ type RunPlanButtonProps = {
   btnSize?: ButtonSize;
 };
 
+// @{todo} Ideally we should be able to set up the stylings for
+// a custom button in the proper way by doing something like:
 // const CustomRunButton = styled(Button)({
 //   width: "100%",
 //   height: "85%",
@@ -31,6 +33,7 @@ type RunPlanButtonProps = {
 //   padding: "var(--padding)",
 //   margin: "var(--margin)",
 // });
+// This will be another PR (link to come)
 
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);

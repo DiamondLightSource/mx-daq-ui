@@ -11,7 +11,6 @@ import {
   Typography,
   useTheme,
   Drawer,
-  Tooltip,
 } from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
@@ -21,7 +20,6 @@ import {
   ArrowUpwardRounded,
   Close,
   Help,
-  Padding,
 } from "@mui/icons-material";
 import { useState } from "react";
 
