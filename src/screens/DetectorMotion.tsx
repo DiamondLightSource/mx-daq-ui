@@ -1,6 +1,5 @@
-import { Button, Stack, Box, useTheme } from "@mui/material";
+import { Stack, Box, useTheme } from "@mui/material";
 import { RoPvBox } from "../pv/PvComponent";
-import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { RunPlanButton } from "../blueapi/BlueapiComponents";
 
 function DetectorState() {
