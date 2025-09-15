@@ -102,13 +102,11 @@ function runTask(taskId: string): Promise<string | void> {
 export function submitAndRunPlanImmediately(
   request: BlueApiRequestBody
 ): Promise<string | void> {
-  return submitTask(request)
-    .then((res) => {
-      if (res) {
-        runTask(res);
-      }
-    })
-    .catch((error) => console.log(`NOPE ${error}`));
+  return submitTask(request).then((res) => {
+    if (res) {
+      runTask(res);
+    }
+  });
 }
 
 export function abortCurrentPlan(): Promise<BlueApiWorkerState> {

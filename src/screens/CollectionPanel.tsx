@@ -17,7 +17,7 @@ import { MapView, PumpProbeOptions } from "../components/CollectionComponents";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 import { forceString } from "../pv/util";
-import { AbortButton } from "../blueapi/BlueapiComponents";
+import { AbortButton, RunPlanButton } from "../blueapi/BlueapiComponents";
 
 /**
  * A couple of read-only boxes showing what the visit and detector in use are.
@@ -64,44 +64,28 @@ function RunButtons(props: ParametersProps) {
   return (
     <Grid2 size={12}>
       <Stack direction={"row"} spacing={8} justifyContent={"center"}>
-        {/* See
-          https://github.com/DiamondLightSource/mx-daq-ui/issues/3?issue=DiamondLightSource%7Cmx-daq-ui%7C18 */}
-        <Tooltip title="Start fixed target collection" placement="bottom">
-          <Button
-            variant="outlined"
-            color="custom"
-            size="large"
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "gui_run_chip_collection",
-                planParams: {
-                  sub_dir: props.subDir,
-                  chip_name: props.chipName,
-                  exp_time: props.expTime,
-                  det_dist: props.detDist,
-                  transmission: props.transFract,
-                  n_shots: props.nShots,
-                  chip_type: props.chipType,
-                  map_type: props.mapType,
-                  chip_format: props.chipFormat,
-                  checker_pattern: props.checkerPattern,
-                  pump_probe: props.pumpProbe,
-                  laser_dwell: props.pumpInputs[0],
-                  laser_delay: props.pumpInputs[1],
-                  pre_pump: props.pumpInputs[2],
-                },
-              })
-            }
-          >
-            <Typography
-              variant="button"
-              fontWeight="fontWeightBold"
-              sx={{ display: "block" }}
-            >
-              Start!
-            </Typography>
-          </Button>
-        </Tooltip>
+        <RunPlanButton
+          btnLabel="Start!"
+          planName="gui_run_chip_collection"
+          planParams={{
+            sub_dir: props.subDir,
+            chip_name: props.chipName,
+            exp_time: props.expTime,
+            det_dist: props.detDist,
+            transmission: props.transFract,
+            n_shots: props.nShots,
+            chip_type: props.chipType,
+            map_type: props.mapType,
+            chip_format: props.chipFormat,
+            checker_pattern: props.checkerPattern,
+            pump_probe: props.pumpProbe,
+            laser_dwell: props.pumpInputs[0],
+            laser_delay: props.pumpInputs[1],
+            pre_pump: props.pumpInputs[2],
+          }}
+          title="Start fixed target collection"
+          btnSize="large"
+        />
         <AbortButton />
       </Stack>
     </Grid2>

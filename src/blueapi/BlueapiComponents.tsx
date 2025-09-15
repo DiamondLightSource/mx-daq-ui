@@ -9,20 +9,52 @@ import {
   Typography,
 } from "@mui/material";
 
+type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
+type ButtonSize = "small" | "medium" | "large";
 
-type PlanButtonProps = {
+type RunPlanButtonProps = {
   btnLabel: string;
   planName: string;
   planParams?: object;
   title?: string;
-  //   btnColour?: string;
   btnVariant?: VariantChoice;
+  btnSize?: ButtonSize;
 };
 
-export function RunPlanButton(props: PlanButtonProps) {
+export function RunPlanButton(props: RunPlanButtonProps) {
+  const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
+  const [msg, setMsg] = React.useState<string>("Running plan...");
+  const [severity, setSeverity] = React.useState<SeverityLevel>("info");
+
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
+  const size = props.btnSize ? props.btnSize : "medium";
+
+  const handleClick = () => {
+    setOpenSnackbar(true);
+    submitAndRunPlanImmediately({
+      planName: props.planName,
+      planParams: params,
+    }).catch((error) => {
+      setSeverity("error");
+      setMsg(
+        `Failed to run plan ${props.planName}, see console and logs for full error`
+      );
+      console.log(`${msg}. Reason: ${error}`);
+    });
+  };
+
+  const handleSnackbarClose = (
+    _event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
 
   return (
     <div>
@@ -30,16 +62,28 @@ export function RunPlanButton(props: PlanButtonProps) {
         <Button
           variant={variant}
           color="custom"
-          onClick={() =>
-            submitAndRunPlanImmediately({
-              planName: props.planName,
-              planParams: params,
-            })
-          }
+          size={size}
+          onClick={handleClick}
         >
-          {props.btnLabel}
+          <Typography
+            variant="button"
+            fontWeight="fontWeightBold"
+            sx={{ display: "block" }}
+          >
+            {props.btnLabel}
+          </Typography>
         </Button>
       </Tooltip>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={severity}>
+          {msg}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
