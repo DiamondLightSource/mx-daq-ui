@@ -273,7 +273,7 @@ export function CoordinateSystem() {
   return (
     <>
       <Box>
-        <Grid2 container rowSpacing={0} spacing={1}>
+        <Grid2 container alignItems={"center"} rowSpacing={1} spacing={0.5}>
           <Grid2 size={10}>
             <b>Co-ordinate System Setup</b>
           </Grid2>
@@ -281,108 +281,73 @@ export function CoordinateSystem() {
             <Help onClick={handleClickOpen} />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "moveto",
-                  planParams: {
-                    place: "zero",
-                  },
-                })
-              }
-            >
-              Go to Origin
-            </Button>
+            <RunPlanButton
+              btnLabel="Go to origin"
+              planName="moveto"
+              planParams={{ place: "zero" }}
+              title="Go to Fiducial 0"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "moveto",
-                  planParams: {
-                    place: "f1",
-                  },
-                })
-              }
-            >
-              Go to Fiducial 1
-            </Button>
+            <RunPlanButton
+              btnLabel="Go to Fiducial1"
+              planName="moveto"
+              planParams={{ place: "f1" }}
+              title="Go to Fiducial 1"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "moveto",
-                  planParams: {
-                    place: "f2",
-                  },
-                })
-              }
-            >
-              Go to Fiducial 2
-            </Button>
+            <RunPlanButton
+              btnLabel="Go to Fiducial2"
+              planName="moveto"
+              planParams={{ place: "f2" }}
+              title="Go to Fiducial 2"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button style={buttonStyle}>Set Fiducial 0</Button>
+            <RunPlanButton
+              btnLabel="Set Fiducial0"
+              planName="gui_set_fiducial_0"
+              title="Set Fiducial 0"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "fiducial",
-                  planParams: {
-                    point: "1",
-                  },
-                })
-              }
-            >
-              Set Fiducial 1
-            </Button>
+            <RunPlanButton
+              btnLabel="Set Fiducial1"
+              planName="fiducial"
+              planParams={{ point: "1" }}
+              title="Set Fiducial 1"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "fiducial",
-                  planParams: {
-                    point: "2",
-                  },
-                })
-              }
-            >
-              Set Fiducial 2
-            </Button>
+            <RunPlanButton
+              btnLabel="Set Fiducial2"
+              planName="fiducial"
+              planParams={{ point: "2" }}
+              title="Set Fiducial 2"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={6}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "cs_maker",
-                  planParams: {},
-                })
-              }
-            >
-              Make Coordinate System
-            </Button>
+            <RunPlanButton
+              btnLabel="Make Coord System"
+              planName="cs_maker"
+              title="Create the coordinate system on the pmac."
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={6}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "block_check",
-                  planParams: {},
-                })
-              }
-            >
-              Block Check
-            </Button>
+            <RunPlanButton
+              btnLabel="Run block check"
+              planName="block_check"
+              title="Check the coordinate system was set up correctly."
+              btnVariant="contained"
+            />
           </Grid2>
         </Grid2>
       </Box>
