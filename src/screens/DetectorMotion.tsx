@@ -1,6 +1,7 @@
 import { Button, Stack, Box, useTheme } from "@mui/material";
 import { RoPvBox } from "../pv/PvComponent";
 import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
+import { RunPlanButton } from "../blueapi/BlueapiComponents";
 
 function DetectorState() {
   const theme = useTheme();
@@ -29,32 +30,20 @@ export function DetectorMotionTabPanel() {
           pv="ca://BL24I-EA-DET-01:Z"
         />
         <Stack direction={"row"} spacing={5} justifyContent={"center"}>
-          <Button
-            color="custom"
-            variant="contained"
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "gui_move_detector",
-                planParams: { det: "eiger" },
-              })
-            }
-          >
-            Move to Eiger!
-          </Button>
-          <Button
-            color="custom"
-            variant="contained"
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "gui_move_detector",
-                planParams: {
-                  det: "pilatus",
-                },
-              })
-            }
-          >
-            Move to Pilatus!
-          </Button>
+          <RunPlanButton
+            btnLabel="Move to Eiger!"
+            planName="gui_move_detector"
+            planParams={{ det: "eiger" }}
+            title="Move the detector stage for Eiger collection"
+            btnVariant="contained"
+          />
+          <RunPlanButton
+            btnLabel="Move to Pilatus!"
+            planName="gui_move_detector"
+            planParams={{ det: "pilatus" }}
+            title="Move the detector stage for Pilatus collection"
+            btnVariant="contained"
+          />
         </Stack>
         <DetectorState />
       </Stack>
