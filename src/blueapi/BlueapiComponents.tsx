@@ -33,7 +33,8 @@ type RunPlanButtonProps = {
 //   padding: "var(--padding)",
 //   margin: "var(--margin)",
 // });
-// This will be another PR (link to come)
+// This will be another PR
+// See https://github.com/DiamondLightSource/mx-daq-ui/issues/71
 
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
