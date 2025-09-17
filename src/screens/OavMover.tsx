@@ -285,6 +285,7 @@ export function CoordinateSystem() {
               planParams={{ place: "zero" }}
               title="Go to Fiducial 0"
               btnVariant="contained"
+              btnSize="large"
             />
           </Grid2>
           <Grid2 size={4}>
@@ -294,6 +295,7 @@ export function CoordinateSystem() {
               planParams={{ place: "f1" }}
               title="Go to Fiducial 1"
               btnVariant="contained"
+              btnSize="large"
             />
           </Grid2>
           <Grid2 size={4}>
@@ -303,6 +305,7 @@ export function CoordinateSystem() {
               planParams={{ place: "f2" }}
               title="Go to Fiducial 2"
               btnVariant="contained"
+              btnSize="large"
             />
           </Grid2>
           <Grid2 size={4}>
