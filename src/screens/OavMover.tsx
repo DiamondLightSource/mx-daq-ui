@@ -11,7 +11,6 @@ import {
   Typography,
   useTheme,
   Drawer,
-  Tooltip,
 } from "@mui/material";
 import { OavVideoStream } from "../components/OavVideoStream";
 import {
@@ -31,6 +30,7 @@ import { PvDescription } from "../pv/types";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 import oxfordChipDiagram from "../assets/Oxford Chip Diagram.excalidraw.svg";
+import { RunPlanButton } from "../blueapi/BlueapiComponents";
 
 const buttonStyle = {
   color: "white",
@@ -205,59 +205,34 @@ export function PresetMovements() {
       <p>
         <b>Preset Positions</b>
       </p>
-      <Grid2>
-        <Tooltip title={"Move into position for collection"}>
-          <Button
-            style={buttonStyle}
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "moveto_preset",
-                planParams: {
-                  place: "collect_position",
-                },
-              })
-            }
-          >
-            Collect Position
-          </Button>
-        </Tooltip>
-
-        <Tooltip title={"Move hardware for sample loading"}>
-          <Button
-            style={buttonStyle}
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "moveto_preset",
-                planParams: {
-                  place: "load_position",
-                },
-              })
-            }
-          >
-            Load Position
-          </Button>
-        </Tooltip>
-        <Tooltip title={"Align microdrop"}>
-          <Button
-            style={buttonStyle}
-            onClick={() =>
-              submitAndRunPlanImmediately({
-                planName: "moveto_preset",
-                planParams: {
-                  place: "microdrop_position",
-                },
-              })
-            }
-          >
-            Microdrop Align
-          </Button>
-        </Tooltip>
-      </Grid2>
+      <Stack padding={"20px"} margin={"10px"} spacing={1}>
+        <RunPlanButton
+          btnLabel="Collect Position"
+          planName="moveto_preset"
+          planParams={{ place: "collect_position" }}
+          title="Move into position for collection"
+          btnSize="small"
+        />
+        <RunPlanButton
+          btnLabel="Load Position"
+          planName="moveto_preset"
+          planParams={{ place: "load_position" }}
+          title="Move hardware for sample loading"
+          btnSize="small"
+        />
+        <RunPlanButton
+          btnLabel="Microdrop align"
+          planName="moveto_preset"
+          planParams={{ place: "microdrop_position" }}
+          title="Align microdrop"
+          btnSize="small"
+        />
+      </Stack>
     </Box>
   );
 }
 
-export function SideDrawer() {
+export function PresetPositionsSideDrawer() {
   const [open, setOpen] = useState(false);
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -296,7 +271,7 @@ export function CoordinateSystem() {
   return (
     <>
       <Box>
-        <Grid2 container rowSpacing={0} spacing={1}>
+        <Grid2 container alignItems={"center"} rowSpacing={1} spacing={0.5}>
           <Grid2 size={10}>
             <b>Co-ordinate System Setup</b>
           </Grid2>
@@ -304,108 +279,76 @@ export function CoordinateSystem() {
             <Help onClick={handleClickOpen} />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "moveto",
-                  planParams: {
-                    place: "zero",
-                  },
-                })
-              }
-            >
-              Go to Origin
-            </Button>
+            <RunPlanButton
+              btnLabel="Go to origin"
+              planName="moveto"
+              planParams={{ place: "zero" }}
+              title="Go to Fiducial 0"
+              btnVariant="contained"
+              btnSize="large"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "moveto",
-                  planParams: {
-                    place: "f1",
-                  },
-                })
-              }
-            >
-              Go to Fiducial 1
-            </Button>
+            <RunPlanButton
+              btnLabel="Go to Fiducial1"
+              planName="moveto"
+              planParams={{ place: "f1" }}
+              title="Go to Fiducial 1"
+              btnVariant="contained"
+              btnSize="large"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "moveto",
-                  planParams: {
-                    place: "f2",
-                  },
-                })
-              }
-            >
-              Go to Fiducial 2
-            </Button>
+            <RunPlanButton
+              btnLabel="Go to Fiducial2"
+              planName="moveto"
+              planParams={{ place: "f2" }}
+              title="Go to Fiducial 2"
+              btnVariant="contained"
+              btnSize="large"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button style={buttonStyle}>Set Fiducial 0</Button>
+            <RunPlanButton
+              btnLabel="Set Fiducial0"
+              planName="gui_set_fiducial_0"
+              title="Set Fiducial 0"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "fiducial",
-                  planParams: {
-                    point: "1",
-                  },
-                })
-              }
-            >
-              Set Fiducial 1
-            </Button>
+            <RunPlanButton
+              btnLabel="Set Fiducial1"
+              planName="fiducial"
+              planParams={{ point: "1" }}
+              title="Set Fiducial 1"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={4}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "fiducial",
-                  planParams: {
-                    point: "2",
-                  },
-                })
-              }
-            >
-              Set Fiducial 2
-            </Button>
+            <RunPlanButton
+              btnLabel="Set Fiducial2"
+              planName="fiducial"
+              planParams={{ point: "2" }}
+              title="Set Fiducial 2"
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={6}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "cs_maker",
-                  planParams: {},
-                })
-              }
-            >
-              Make Coordinate System
-            </Button>
+            <RunPlanButton
+              btnLabel="Make Coord System"
+              planName="cs_maker"
+              title="Create the coordinate system on the pmac."
+              btnVariant="contained"
+            />
           </Grid2>
           <Grid2 size={6}>
-            <Button
-              style={buttonStyle}
-              onClick={() =>
-                submitAndRunPlanImmediately({
-                  planName: "block_check",
-                  planParams: {},
-                })
-              }
-            >
-              Block Check
-            </Button>
+            <RunPlanButton
+              btnLabel="Run block check"
+              planName="block_check"
+              title="Check the coordinate system was set up correctly."
+              btnVariant="contained"
+            />
           </Grid2>
         </Grid2>
       </Box>
@@ -507,7 +450,7 @@ export function OavMover() {
           <hr />
           <CoordinateSystem />
           <hr />
-          <SideDrawer />
+          <PresetPositionsSideDrawer />
         </Grid2>
       </Grid2>
     </div>

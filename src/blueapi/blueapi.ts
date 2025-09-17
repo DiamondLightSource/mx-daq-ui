@@ -5,7 +5,9 @@ const BLUEAPI_SOCKET: string = import.meta.env.VITE_BLUEAPI_SOCKET;
 type BlueApiRequestBody = {
   planName: string;
   planParams: object;
+  // instrumentSession: string;
 };
+// Update to latest blueapi (> 1.0.0), See https://github.com/DiamondLightSource/mx-daq-ui/issues/72
 // @todo check if blueapi request still works if planParams optional (since some times there's none)
 
 export type BlueApiWorkerState =
@@ -44,13 +46,12 @@ export function useBlueApiCall(
   pollRateMillis?: number,
   queryKey?: string
 ) {
-  return useQuery(
-    queryKey ?? "BlueApiCall",
-    async () => await blueApiCall(endpoint, method, body),
-    {
-      refetchInterval: pollRateMillis ?? 500,
-    }
-  );
+  const fetchCall = async () => {
+    return await blueApiCall(endpoint, method, body);
+  };
+  return useQuery(queryKey ?? "BlueApiCall", fetchCall, {
+    refetchInterval: pollRateMillis ?? 500,
+  });
 }
 
 export function processUseBlueApiCall(
@@ -81,7 +82,7 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
   }).then((res) => {
     if (!res.ok) {
       throw new Error(
-        `Unable to POST request, response error ${res.statusText}`
+        `Unable to POST request, response error ${res.status} ${res.statusText}`
       );
     }
     res.json().then((res) => res["task_id"]);
@@ -91,7 +92,9 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
 function runTask(taskId: string): Promise<string | void> {
   return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
     if (!res.ok) {
-      throw new Error(`Unable to run task, response error ${res.statusText}`);
+      throw new Error(
+        `Unable to run task, response error ${res.status} ${res.statusText}`
+      );
     }
     res.json().then((res) => res["task_id"]);
   });
@@ -100,13 +103,11 @@ function runTask(taskId: string): Promise<string | void> {
 export function submitAndRunPlanImmediately(
   request: BlueApiRequestBody
 ): Promise<string | void> {
-  return submitTask(request)
-    .then((res) => {
-      if (res) {
-        runTask(res);
-      }
-    })
-    .catch((error) => console.log(error));
+  return submitTask(request).then((res) => {
+    if (res) {
+      runTask(res);
+    }
+  });
 }
 
 export function abortCurrentPlan(): Promise<BlueApiWorkerState> {
