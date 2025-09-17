@@ -5,10 +5,11 @@ import {
   Button,
   Snackbar,
   SnackbarCloseReason,
-  styled,
   Tooltip,
   Typography,
 } from "@mui/material";
+import { ReadPvRawValue } from "../pv/util";
+import { RawValue } from "../pv/types";
 
 type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
@@ -36,10 +37,34 @@ type RunPlanButtonProps = {
 // This will be another PR
 // See https://github.com/DiamondLightSource/mx-daq-ui/issues/71
 
+function readInstrumentSessionFromVisitPv(): string {
+  const fullVisitPath: RawValue = ReadPvRawValue({
+    label: "visit",
+    pv: "ca://ME14E-MO-IOC-01:GP100",
+  });
+  let visitString: string;
+  if (fullVisitPath === "not connected" || !fullVisitPath) {
+    const msg: string =
+      "Unable to run plan as instrument session not set. Please check visit PV.";
+    console.log(msg);
+    // throw new Error(msg);
+  } else {
+    visitString = fullVisitPath.toString();
+  }
+  const instrumentSession = visitString.toString().split("/").at(-1);
+  if (!instrumentSession) {
+    console.log("Something seems to be wrong with visit path");
+    // throw new Error("Something seems to be wrong with visit path");
+  }
+  return instrumentSession;
+}
+
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
   const [msg, setMsg] = React.useState<string>("Running plan...");
   const [severity, setSeverity] = React.useState<SeverityLevel>("info");
+
+  const instrumentSession = readInstrumentSessionFromVisitPv();
 
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
@@ -50,6 +75,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
     submitAndRunPlanImmediately({
       planName: props.planName,
       planParams: params,
+      instrumentSession: instrumentSession,
     }).catch((error) => {
       setSeverity("error");
       setMsg(
