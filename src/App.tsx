@@ -10,7 +10,14 @@ function App() {
   const theme = useTheme();
   return (
     <Box
-      sx={[
+      sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+          minHeight: "100vh",
+          minWidth: "320px",
+          margin: 0,
+      }}
         () => ({
           display: "flex",
           justifyContent: "space-between",
