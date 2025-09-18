@@ -260,14 +260,6 @@ export function CoordinateSystem() {
     setOpen(false);
   };
 
-  const buttonStyle = {
-    color: "white",
-    padding: "12px",
-    backgroundColor: "#1c2025",
-    width: "100%",
-    height: "85%",
-  };
-
   return (
     <>
       <Box>
@@ -414,9 +406,7 @@ export function OavMover() {
                 } else {
                   submitAndRunPlanImmediately({
                     planName: "gui_gonio_move_on_click",
-                    planParams: {
-                      position_px: [x_int, y_int],
-                    },
+                    planParams: { position_px: [x_int, y_int] },
                   });
                 }
               }}
