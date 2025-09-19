@@ -169,11 +169,6 @@ function DetectorStatus(props: Omit<StateBoxProps, "children">) {
         pv="ca://BL24I-EA-EIGER-01:CAM:DetectorState_RBV"
         transformValue={forceString}
       />
-      <PvComponent
-        label="Pilatus 6M"
-        pv="ca://BL24I-EA-PILAT-01:cam1:DetectorState_RBV"
-        transformValue={forceString}
-      />
     </StateCard>
   );
 }
