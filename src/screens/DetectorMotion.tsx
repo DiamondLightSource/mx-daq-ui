@@ -9,7 +9,6 @@ function DetectorState() {
       <Box color={theme.palette.info.main}>
         <p>Detector State</p>
       </Box>
-      <RoPvBox label="P6M" pv="ca://BL24I-EA-PILAT-01:cam1:DetectorState_RBV" />
       <RoPvBox label="E9M" pv="ca://BL24I-EA-EIGER-01:CAM:DetectorState_RBV" />
     </Stack>
   );
@@ -34,13 +33,6 @@ export function DetectorMotionTabPanel() {
             planName="gui_move_detector"
             planParams={{ det: "eiger" }}
             title="Move the detector stage for Eiger collection"
-            btnVariant="contained"
-          />
-          <RunPlanButton
-            btnLabel="Move to Pilatus!"
-            planName="gui_move_detector"
-            planParams={{ det: "pilatus" }}
-            title="Move the detector stage for Pilatus collection"
             btnVariant="contained"
           />
         </Stack>
