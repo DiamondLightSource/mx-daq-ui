@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { ParamsPanel } from "../screens/CollectionPanel";
+import { ReadOnlyInputs } from "../components/ReadOnlyInputs";
 
 export function FixedTarget() {
   const theme = useTheme();
@@ -15,6 +16,10 @@ export function FixedTarget() {
       >
         Fixed Target Data Collection Setup
       </Typography>
+      <ReadOnlyInputs
+        visit="ca://BL24I-MO-IOC-13:GP100"
+        detector="ca://BL24I-MO-IOC-13:GP101"
+      />
       <ParamsPanel />
     </Box>
   );

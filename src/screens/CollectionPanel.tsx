@@ -9,33 +9,11 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import { PvComponent } from "../pv/PvComponent";
 import React from "react";
 import { PumpProbeOptions } from "../components/FixedTarget/PumpProbeComponents";
 import { MapView } from "../components/FixedTarget/FixedTargetMapComponents";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
-import { forceString } from "../pv/util";
 import { AbortButton, RunPlanButton } from "../blueapi/BlueapiComponents";
-
-/**
- * A couple of read-only boxes showing what the visit and detector in use are.
- */
-function FixedInputs() {
-  return (
-    <Grid2 size={12}>
-      <PvComponent
-        label="Visit"
-        pv="ca://ME14E-MO-IOC-01:GP100"
-        transformValue={forceString}
-      />
-      <PvComponent
-        label="Detector in use"
-        pv="ca://ME14E-MO-IOC-01:GP101"
-        transformValue={forceString}
-      />
-    </Grid2>
-  );
-}
 
 type ParametersProps = {
   subDir: string;
@@ -111,7 +89,6 @@ function CollectionInput() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid2 container spacing={2}>
-        <FixedInputs />
         <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
             <Tooltip

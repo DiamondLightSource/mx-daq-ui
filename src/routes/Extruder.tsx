@@ -1,4 +1,5 @@
 import { Box, Typography, useTheme } from "@mui/material";
+import { ReadOnlyInputs } from "../components/ReadOnlyInputs";
 
 export function Extruder() {
   const theme = useTheme();
@@ -14,6 +15,10 @@ export function Extruder() {
       >
         Extruder Data Collection Setup
       </Typography>
+      <ReadOnlyInputs
+        visit="ca://BL24I-MO-IOC-13:GP1"
+        detector="ca://BL24I-MO-IOC-13:GP15"
+      />
     </Box>
   );
 }
