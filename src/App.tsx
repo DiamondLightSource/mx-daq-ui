@@ -11,16 +11,14 @@ function App() {
   const theme = useTheme();
   return (
     <Box
-      sx={[
-        () => ({
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "column",
-          minHeight: "100vh",
-          minWidth: "320px",
-          margin: 0,
-        }),
-      ]}
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        minHeight: "100vh",
+        minWidth: "320px",
+        margin: 0,
+      }}
     >
       <SerialNavBar />
       <Switch>

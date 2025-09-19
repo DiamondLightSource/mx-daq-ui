@@ -35,10 +35,10 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export function BeamlineI24() {
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [tab, setTab] = React.useState(0);
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+  const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
+    setTab(newTab);
   };
   return (
     <Box>
@@ -51,7 +51,7 @@ export function BeamlineI24() {
         }}
       >
         <Tabs
-          value={value}
+          value={tab}
           onChange={handleChange}
           aria-label="basic tabs example"
           textColor="secondary"
@@ -62,13 +62,13 @@ export function BeamlineI24() {
           <Tab label="OAV view" {...a11yProps(2)} />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
+      <CustomTabPanel value={tab} index={0}>
         <BeamlineStatsTabPanel />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      <CustomTabPanel value={tab} index={1}>
         <DetectorMotionTabPanel />
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
+      <CustomTabPanel value={tab} index={2}>
         <OavMover />
       </CustomTabPanel>
     </Box>

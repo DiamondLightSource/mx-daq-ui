@@ -16,7 +16,7 @@ const ssxLogo: ImageColourSchemeSwitchType = {
 
 export function SerialNavBar() {
   return (
-    <Navbar logo={ssxLogo} containerWidth={false}>
+    <Navbar logo={ssxLogo} containerWidth={false} linkComponent={Link}>
       <NavLinks>
         <NavLink linkComponent={Link} to="/">
           Home
