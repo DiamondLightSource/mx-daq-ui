@@ -42,7 +42,7 @@ function readInstrumentSessionFromVisitPv(): string {
     label: "visit",
     pv: "ca://ME14E-MO-IOC-01:GP100",
   });
-  let visitString: string;
+  let visitString: string = "";
   if (fullVisitPath === "not connected" || !fullVisitPath) {
     const msg: string =
       "Unable to run plan as instrument session not set. Please check visit PV.";
