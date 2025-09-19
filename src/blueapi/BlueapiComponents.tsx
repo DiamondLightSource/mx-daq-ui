@@ -8,7 +8,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { ReadPvRawValue } from "../pv/util";
+import { forceString, ReadPvRawValue } from "../pv/util";
 import { RawValue } from "../pv/types";
 
 type SeverityLevel = "success" | "info" | "warning" | "error";
@@ -40,21 +40,25 @@ type RunPlanButtonProps = {
 function readInstrumentSessionFromVisitPv(): string {
   const fullVisitPath: RawValue = ReadPvRawValue({
     label: "visit",
-    pv: "ca://ME14E-MO-IOC-01:GP100",
+    pv: "ca://BL24I-MO-IOC-13:GP100",
   });
-  let visitString: string = "";
-  if (fullVisitPath === "not connected" || !fullVisitPath) {
+  const visitString: string = forceString(fullVisitPath);
+  let instrumentSession: string | undefined = "";
+  if (visitString === "not connected" || !visitString) {
     const msg: string =
       "Unable to run plan as instrument session not set. Please check visit PV.";
     console.log(msg);
     // throw new Error(msg);
   } else {
-    visitString = fullVisitPath.toString();
-  }
-  const instrumentSession = visitString.toString().split("/").at(-1);
-  if (!instrumentSession) {
-    console.log("Something seems to be wrong with visit path");
-    // throw new Error("Something seems to be wrong with visit path");
+    if (visitString.endsWith("/")) {
+      instrumentSession = visitString.split("/").at(-2);
+    } else {
+      instrumentSession = visitString.split("/").at(-1);
+    }
+    if (!instrumentSession) {
+      console.log("NOPE");
+      throw new Error("Something is wrong with visit path");
+    }
   }
   return instrumentSession;
 }
