@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import { PvComponent } from "../pv/PvComponent";
 import React from "react";
-import { MapView, PumpProbeOptions } from "../components/CollectionComponents";
+import { PumpProbeOptions } from "../components/FixedTarget/PumpProbeComponents";
+import { MapView } from "../components/FixedTarget/FixedTargetMapComponents";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 import { forceString } from "../pv/util";
 import { AbortButton, RunPlanButton } from "../blueapi/BlueapiComponents";
