@@ -37,6 +37,10 @@ type RunPlanButtonProps = {
 // This will be another PR
 // See https://github.com/DiamondLightSource/mx-daq-ui/issues/71
 
+/**
+ * Read the full visit path from the visit PV set by the beamline staff.
+ * @returns {string} the full visit pV /dls/i24/data/{year}/{visit}
+ */
 function readVisitFromPv(): string {
   const fullVisitPath: RawValue = ReadPvRawValue({
     label: "visit",
@@ -46,6 +50,13 @@ function readVisitFromPv(): string {
   return visitString;
 }
 
+/**
+ * Parse the full visit path and return only the instrument session.
+ * An error will be raised if the instrument session value is undefined or
+ * if the PV is not connected.
+ * @param {string} visit The full visit path
+ * @returns {string} Only the instrument session part of the visit path
+ */
 function parseInstrumentSession(visit: string): string {
   let instrumentSession: string | undefined;
   if (visit === "not connected" || visit === "undefined") {
