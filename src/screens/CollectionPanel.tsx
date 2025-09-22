@@ -24,12 +24,12 @@ function FixedInputs() {
     <Grid2 size={12}>
       <PvComponent
         label="Visit"
-        pv="ca://ME14E-MO-IOC-01:GP100"
+        pv="ca://BL24I-MO-IOC-13:GP100"
         transformValue={forceString}
       />
       <PvComponent
         label="Detector in use"
-        pv="ca://ME14E-MO-IOC-01:GP101"
+        pv="ca://BL24I-MO-IOC-13:GP101"
         transformValue={forceString}
       />
     </Grid2>

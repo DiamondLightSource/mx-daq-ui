@@ -5,10 +5,11 @@ import {
   Button,
   Snackbar,
   SnackbarCloseReason,
-  styled,
   Tooltip,
   Typography,
 } from "@mui/material";
+import { forceString, ReadPvRawValue } from "../pv/util";
+import { RawValue } from "../pv/types";
 
 type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
@@ -36,10 +37,50 @@ type RunPlanButtonProps = {
 // This will be another PR
 // See https://github.com/DiamondLightSource/mx-daq-ui/issues/71
 
+/**
+ * Read the full visit path from the visit PV set by the beamline staff.
+ * @returns {string} the full visit pV /dls/i24/data/{year}/{visit}
+ */
+function readVisitFromPv(): string {
+  const fullVisitPath: RawValue = ReadPvRawValue({
+    label: "visit",
+    pv: "ca://BL24I-MO-IOC-13:GP100",
+  });
+  const visitString: string = forceString(fullVisitPath);
+  return visitString;
+}
+
+/**
+ * Parse the full visit path and return only the instrument session.
+ * An error will be raised if the instrument session value is undefined or
+ * if the PV is not connected.
+ * @param {string} visit The full visit path
+ * @returns {string} Only the instrument session part of the visit path
+ */
+function parseInstrumentSession(visit: string): string {
+  let instrumentSession: string | undefined;
+  if (visit === "not connected" || visit === "undefined") {
+    const msg =
+      "Unable to run plan as instrument session not set. Please check visit PV.";
+    throw new Error(msg);
+  } else {
+    instrumentSession = visit.split("/").filter(Boolean).at(-1);
+    if (!instrumentSession) {
+      throw new Error(
+        "Unable to run plan as something appears to be wrong with visit path"
+      );
+    }
+  }
+  return instrumentSession;
+}
+
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
   const [msg, setMsg] = React.useState<string>("Running plan...");
   const [severity, setSeverity] = React.useState<SeverityLevel>("info");
+
+  const fullVisit = readVisitFromPv();
+  let instrumentSession: string;
 
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
@@ -47,16 +88,26 @@ export function RunPlanButton(props: RunPlanButtonProps) {
 
   const handleClick = () => {
     setOpenSnackbar(true);
-    submitAndRunPlanImmediately({
-      planName: props.planName,
-      planParams: params,
-    }).catch((error) => {
+    try {
+      instrumentSession = parseInstrumentSession(fullVisit);
+      submitAndRunPlanImmediately({
+        planName: props.planName,
+        planParams: params,
+        instrumentSession: instrumentSession,
+      }).catch((error) => {
+        setSeverity("error");
+        setMsg(
+          `Failed to run plan ${props.planName}, see console and logs for full error`
+        );
+        console.log(`${msg}. Reason: ${error}`);
+      });
+    } catch (error) {
       setSeverity("error");
       setMsg(
-        `Failed to run plan ${props.planName}, see console and logs for full error`
+        `Failed to run plan ${props.planName}, please check visit PV is set.`
       );
-      console.log(`${msg}. Reason: ${error}`);
-    });
+      console.log(`An error occurred ${error}`);
+    }
   };
 
   const handleSnackbarClose = (
