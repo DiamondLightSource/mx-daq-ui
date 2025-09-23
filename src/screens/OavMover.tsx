@@ -30,7 +30,11 @@ import { PvDescription } from "../pv/types";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 import oxfordChipDiagram from "../assets/Oxford Chip Diagram.excalidraw.svg";
-import { RunPlanButton } from "../blueapi/BlueapiComponents";
+import {
+  parseInstrumentSession,
+  readVisitFromPv,
+  RunPlanButton,
+} from "../blueapi/BlueapiComponents";
 
 const buttonStyle = {
   color: "white",
@@ -391,6 +395,9 @@ export function OavMover() {
   const [pixelsPerMicron, setPixelsPerMicron] = useState<number>(1.25);
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
+
+  const fullVisit = readVisitFromPv();
+
   return (
     <div>
       <Grid2 container spacing={2} columns={12}>
@@ -412,11 +419,15 @@ export function OavMover() {
                     "Not submitting plan while disconnected from PVs!"
                   );
                 } else {
+                  // This is an example but not useful for actual production use.
                   submitAndRunPlanImmediately({
                     planName: "gui_gonio_move_on_click",
-                    planParams: {
-                      position_px: [x_int, y_int],
-                    },
+                    planParams: { position_px: [x_int, y_int] },
+                    instrumentSession: parseInstrumentSession(fullVisit),
+                  }).catch((error) => {
+                    console.log(
+                      `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`
+                    );
                   });
                 }
               }}

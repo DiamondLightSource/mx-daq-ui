@@ -41,7 +41,7 @@ type RunPlanButtonProps = {
  * Read the full visit path from the visit PV set by the beamline staff.
  * @returns {string} the full visit pV /dls/i24/data/{year}/{visit}
  */
-function readVisitFromPv(): string {
+export function readVisitFromPv(): string {
   const fullVisitPath: RawValue = ReadPvRawValue({
     label: "visit",
     pv: "ca://BL24I-MO-IOC-13:GP100",
@@ -57,7 +57,7 @@ function readVisitFromPv(): string {
  * @param {string} visit The full visit path
  * @returns {string} Only the instrument session part of the visit path
  */
-function parseInstrumentSession(visit: string): string {
+export function parseInstrumentSession(visit: string): string {
   let instrumentSession: string | undefined;
   if (visit === "not connected" || visit === "undefined") {
     const msg =
