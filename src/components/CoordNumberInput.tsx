@@ -8,7 +8,7 @@ import React from "react";
 
 export const CoordNumberInput = React.forwardRef(function CustomNumberInput(
   props: NumberInputProps,
-  ref: React.ForwardedRef<HTMLDivElement>
+  ref: React.ForwardedRef<HTMLDivElement>,
 ) {
   return (
     <NumberInput
@@ -87,7 +87,7 @@ const StyledInputRoot = styled("div")(
   &:focus-visible {
     outline: 0;
   }
-`
+`,
 );
 
 const StyledInputElement = styled("input")(
@@ -104,7 +104,7 @@ const StyledInputElement = styled("input")(
   border-radius: inherit;
   padding: 8px 12px;
   outline: 0;
-`
+`,
 );
 
 const StyledButton = styled("button")(
@@ -178,5 +178,5 @@ const StyledButton = styled("button")(
   & .arrow {
     transform: translateY(-1px);
   }
-`
+`,
 );

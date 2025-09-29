@@ -234,7 +234,7 @@ function OxfordMapSelection({
 
   const handleBlocks = (
     _event: React.MouseEvent<HTMLElement>,
-    newBlocks: number[]
+    newBlocks: number[],
   ) => {
     setChipMap(newBlocks);
   };

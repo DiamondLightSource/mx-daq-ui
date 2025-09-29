@@ -18,18 +18,18 @@ export type PvComponentProps = PvDescription & {
 };
 
 export function useParsedPvConnection(
-  props: PvDescription & { transformValue?: Transformer }
+  props: PvDescription & { transformValue?: Transformer },
 ) {
   const [_effectivePvName, connected, _readonly, latestValue] = useConnection(
     props.label,
-    props.pv
+    props.pv,
   );
   const rawValue: RawValue = connected ? latestValue : "not connected";
   const returnValue = props.transformValue
     ? props.transformValue(rawValue)
     : rawValue;
   console.log(
-    `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`
+    `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`,
   );
   return returnValue;
 }

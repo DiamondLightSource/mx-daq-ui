@@ -20,7 +20,7 @@ export function forceString(value: RawValue | string | number): string {
 export function parseNumericPv(
   value: string | number | DType | undefined,
   decimals?: number,
-  scaleFactor?: number
+  scaleFactor?: number,
 ) {
   const decimalsToUse = decimals ? decimals : 2;
   const scaleFactorToUse = scaleFactor ? scaleFactor : 1;
