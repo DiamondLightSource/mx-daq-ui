@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/_lint.yaml
 
   test:
-    uses: ./.github/workflows/testing-workflow.yaml
+    uses: ./.github/workflows/_tests.yaml
 
   accessibility:
     runs-on: ubuntu-latest
