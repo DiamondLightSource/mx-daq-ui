@@ -21,3 +21,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
+
+      - name: Run TypeScript Compiler
+        run: npm run tscheck
