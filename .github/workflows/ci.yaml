@@ -7,3 +7,36 @@ on:
 jobs:
   lint:
     uses: ./.github/workflows/_lint.yaml
+
+  test:
+    uses: ./.github/workflows/testing-workflow.yaml
+
+  accessibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder for accessibility tests
+        run: echo "Accessibility tests would run here"
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder for end-to-end tests
+        run: echo "End-to-end and browser tests would run here"
+
+  visual-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder for visual regression tests
+        run: echo "Visual regression tests would run here"
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder for documentation generation
+        run: echo "Documentation generation like storybook would run here"
+
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder for performance tests
+        run: echo "Performance and bundle size tests would run here"
