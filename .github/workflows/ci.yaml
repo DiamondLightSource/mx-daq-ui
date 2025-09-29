@@ -11,23 +11,11 @@ jobs:
   test:
     uses: ./.github/workflows/_tests.yaml
 
-  accessibility:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Placeholder for accessibility tests
-        run: echo "Accessibility tests would run here"
-
   e2e:
     runs-on: ubuntu-latest
     steps:
       - name: Placeholder for end-to-end tests
         run: echo "End-to-end and browser tests would run here"
-
-  visual-regression:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Placeholder for visual regression tests
-        run: echo "Visual regression tests would run here"
 
   docs:
     runs-on: ubuntu-latest
