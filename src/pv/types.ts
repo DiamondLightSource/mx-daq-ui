@@ -7,7 +7,7 @@ type TransformString = (value: RawValue) => string | number;
 type TransformNumeric = (
   value: RawValue,
   decimals?: number,
-  scaleFactor?: number
+  scaleFactor?: number,
 ) => string | number;
 export type PvTransformer = TransformString | TransformNumeric;
 

@@ -21,7 +21,7 @@ export function forceString(value: RawValue | string | number): string {
 export function parseNumericPv(
   value: string | number | DType | undefined,
   decimals?: number,
-  scaleFactor?: number
+  scaleFactor?: number,
 ): string {
   const decimalsToUse = decimals ? decimals : 2;
   const scaleFactorToUse = scaleFactor ? scaleFactor : 1;
@@ -62,7 +62,7 @@ export function pvIntArrayToString(value: RawValue): string {
 export function ReadPvRawValue(props: PvDescription): RawValue {
   const [_effectivePvName, connected, _readonly, latestValue] = useConnection(
     props.label,
-    props.pv
+    props.pv,
   );
   const rawValue: RawValue = connected ? latestValue : "not connected";
   return rawValue;
@@ -88,7 +88,7 @@ export function useParsedPvConnection(props: ParsePvProps): number | string {
   }
 
   console.log(
-    `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`
+    `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`,
   );
   return returnValue;
 }

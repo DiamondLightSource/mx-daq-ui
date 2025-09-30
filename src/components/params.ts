@@ -32,7 +32,7 @@ export type EavaRequest = {
 export function calculateEAVA(
   laserDwell: number,
   expTime: number,
-  factor: number
+  factor: number,
 ): number {
   const movetime: number = 0.008;
   const windowsPerRow: number = 20;

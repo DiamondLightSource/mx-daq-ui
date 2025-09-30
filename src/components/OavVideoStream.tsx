@@ -9,7 +9,7 @@ import {
 import React from "react";
 
 export const useContainerDimensions = (
-  ref: React.MutableRefObject<HTMLHeadingElement | null>
+  ref: React.MutableRefObject<HTMLHeadingElement | null>,
 ) => {
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
   React.useEffect(() => {
@@ -41,7 +41,7 @@ export function OavVideoStream(
     crosshairX: number;
     crosshairY: number;
     onCoordClick: (x: number, y: number) => void; // handler for clicking on the OAV: x and y are the pixels on the original OAV stream
-  }
+  },
 ) {
   const [crosshairX, crosshairY] = [props.crosshairX, props.crosshairY];
   const onCoordClick = props.onCoordClick;
@@ -52,14 +52,14 @@ export function OavVideoStream(
       pv: props.pv + "MJPG:ArraySize1_RBV",
       label: "OAV MJPG stream x size",
       transformValue: parseNumericPv,
-    })
+    }),
   );
   const yDim = Number(
     useParsedPvConnection({
       pv: props.pv + "MJPG:ArraySize2_RBV",
       label: "OAV MJPG stream x size",
       transformValue: parseNumericPv,
-    })
+    }),
   );
   console.log(`original stream size ${[xDim, yDim]}`);
   const [streamUrl, setStreamUrl] = React.useState<string>("not connected");
@@ -95,7 +95,7 @@ export function OavVideoStream(
 function drawCanvas(
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>,
   crosshairX: number,
-  crosshairY: number
+  crosshairY: number,
 ) {
   const context = canvasRef.current?.getContext("2d");
   if (context) {
@@ -103,7 +103,7 @@ function drawCanvas(
       0,
       0,
       canvasRef.current?.width as number,
-      canvasRef.current?.height as number
+      canvasRef.current?.height as number,
     );
     context.strokeStyle = "red";
     context.font = "50px sans-serif";
@@ -137,17 +137,13 @@ function VideoBoxWithOverlay(props: {
         height={width}
         width={height}
         style={{ position: "relative", zIndex: 0 }}
+        alt="OAV video stream"
       />
       <canvas
         width={width}
         height="auto"
         ref={canvasRef}
-        style={{
-          top: 0,
-          left: 0,
-          position: "absolute",
-          zIndex: 1,
-        }}
+        style={{ top: 0, left: 0, position: "absolute", zIndex: 1 }}
         onMouseDown={(e) => {
           if (props.onCoordClick) {
             const canvas = canvasRef.current;

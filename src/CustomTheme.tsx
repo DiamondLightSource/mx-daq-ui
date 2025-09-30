@@ -61,7 +61,7 @@ const I24DiamondThemeOptions = mergeThemeOptions(
       },
     },
   },
-  DiamondThemeOptions
+  DiamondThemeOptions,
 );
 
 export const I24DiamondTheme: Theme = createTheme(I24DiamondThemeOptions);
