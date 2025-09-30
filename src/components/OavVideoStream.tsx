@@ -137,17 +137,13 @@ function VideoBoxWithOverlay(props: {
         height={width}
         width={height}
         style={{ position: "relative", zIndex: 0 }}
+        alt="OAV video stream"
       />
       <canvas
         width={width}
         height="auto"
         ref={canvasRef}
-        style={{
-          top: 0,
-          left: 0,
-          position: "absolute",
-          zIndex: 1,
-        }}
+        style={{ top: 0, left: 0, position: "absolute", zIndex: 1 }}
         onMouseDown={(e) => {
           if (props.onCoordClick) {
             const canvas = canvasRef.current;
