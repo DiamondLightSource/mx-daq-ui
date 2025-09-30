@@ -27,4 +27,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Placeholder for performance tests
-        run: echo "Performance and bundle size tests would run here"
+        run: echo "Performance like Lighthouse tests would run here"
