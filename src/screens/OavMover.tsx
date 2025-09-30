@@ -264,13 +264,13 @@ export function CoordinateSystem() {
     setOpen(false);
   };
 
-  const buttonStyle = {
-    color: "white",
-    padding: "12px",
-    backgroundColor: "#1c2025",
-    width: "100%",
-    height: "85%",
-  };
+  // const buttonStyle = {
+  //   color: "white",
+  //   padding: "12px",
+  //   backgroundColor: "#1c2025",
+  //   width: "100%",
+  //   height: "85%",
+  // };
 
   return (
     <>
@@ -426,7 +426,7 @@ export function OavMover() {
                     instrumentSession: parseInstrumentSession(fullVisit),
                   }).catch((error) => {
                     console.log(
-                      `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`
+                      `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`,
                     );
                   });
                 }
