@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { CollectionSetupFt } from "../components/FixedTarget/CollectionSetupFt";
+import { CollectionSetupEx } from "../components/Extruder/CollectionSetupEx";
 
 type ExptType = {
   expt: "extruder" | "fixed-target";
@@ -20,6 +21,7 @@ export function ParamsPanel(expt: ExptType) {
     case "fixed-target":
       return <CollectionSetupFt />;
     case "extruder":
+      return <CollectionSetupEx />;
     default:
       return <FallbackScreen />;
   }

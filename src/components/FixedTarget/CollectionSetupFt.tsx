@@ -144,9 +144,9 @@ export function CollectionSetupFt() {
                   label="Pump Probe"
                   onChange={(e) => setPumpProbe(String(e.target.value))}
                 >
-                  {pumpProbeMode.map((pumpProbe) => (
-                    <MenuItem key={pumpProbe} value={pumpProbe}>
-                      {pumpProbe}
+                  {pumpProbeMode.map((ppChoice) => (
+                    <MenuItem key={ppChoice} value={ppChoice}>
+                      {ppChoice}
                     </MenuItem>
                   ))}
                 </Select>
