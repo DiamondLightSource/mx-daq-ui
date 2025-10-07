@@ -59,7 +59,7 @@ export function pvIntArrayToString(value: RawValue): string {
   }
 }
 
-function ReadPvRawValue(props: PvDescription): RawValue {
+export function ReadPvRawValue(props: PvDescription): RawValue {
   const [_effectivePvName, connected, _readonly, latestValue] = useConnection(
     props.label,
     props.pv

@@ -5,7 +5,7 @@ const BLUEAPI_SOCKET: string = import.meta.env.VITE_BLUEAPI_SOCKET;
 type BlueApiRequestBody = {
   planName: string;
   planParams: object;
-  // instrumentSession: string;
+  instrumentSession: string;
 };
 // Update to latest blueapi (> 1.0.0), See https://github.com/DiamondLightSource/mx-daq-ui/issues/72
 // @todo check if blueapi request still works if planParams optional (since some times there's none)

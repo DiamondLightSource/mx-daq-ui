@@ -18,7 +18,7 @@ export function DetectorMotionTabPanel() {
   return (
     <Box>
       <Stack spacing={2} alignItems={"center"}>
-        <RoPvBox label="Selected detector" pv="ca://ME14E-MO-IOC-01:GP101" />
+        <RoPvBox label="Selected detector" pv="ca://BL24I-MO-IOC-13:GP101" />
         <RoPvBox
           label="Detector stage y position"
           pv="ca://BL24I-EA-DET-01:Y"
