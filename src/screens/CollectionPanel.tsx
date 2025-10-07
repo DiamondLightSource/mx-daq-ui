@@ -6,7 +6,6 @@ import {
   MenuItem,
   Select,
   Stack,
-  TextField,
   Tooltip,
 } from "@mui/material";
 import React from "react";
@@ -14,6 +13,7 @@ import { PumpProbeOptions } from "../components/FixedTarget/PumpProbeComponents"
 import { MapView } from "../components/FixedTarget/FixedTargetMapComponents";
 import { chipTypes, MapTypes, pumpProbeMode } from "../components/params";
 import { AbortButton, RunPlanButton } from "../blueapi/BlueapiComponents";
+import { ParameterInput } from "../components/ParameterInputs";
 
 type ParametersProps = {
   subDir: string;
@@ -91,78 +91,42 @@ function CollectionInput() {
       <Grid2 container spacing={2}>
         <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
-            <Tooltip
-              title="Location inside visit directory to save data"
-              placement="left"
-            >
-              <TextField
-                size="small"
-                label="Sub-directory"
-                defaultValue={subDir}
-                onChange={(e) => setSubDir(String(e.target.value))}
-                style={{ width: 180 }}
-              />
-            </Tooltip>
-            <Tooltip
-              title="Chip identifier, this will be used as filename"
-              placement="left"
-            >
-              <TextField
-                size="small"
-                label="Chip Name"
-                defaultValue={chipName}
-                onChange={(e) => setChipName(String(e.target.value))}
-                style={{ width: 180 }}
-              />
-            </Tooltip>
-            <Tooltip
-              title="How many consecutive times each window should be collected."
-              placement="left"
-            >
-              <TextField
-                size="small"
-                label="Shots Per Aperture"
-                defaultValue={shots}
-                onChange={(e) => setShots(Number(e.target.value))}
-                style={{ width: 180 }}
-              />
-            </Tooltip>
-            <Tooltip
-              title="Exposure time for each window, in seconds"
-              placement="left"
-            >
-              <TextField
-                size="small"
-                label="Exposure Time (s)"
-                defaultValue={expTime}
-                onChange={(e) => setExpTime(Number(e.target.value))}
-                style={{ width: 180 }}
-              />
-            </Tooltip>
-            <Tooltip
-              title="Request transmission for collection, expressed as a fraction"
-              placement="left"
-            >
-              <TextField
-                size="small"
-                label="Transmission (fraction)"
-                defaultValue={trans}
-                onChange={(e) => setTrans(Number(e.target.value))}
-                style={{ width: 180 }}
-              />
-            </Tooltip>
-            <Tooltip
-              title="Distance to move the detector y stage to, in millimeters"
-              placement="left"
-            >
-              <TextField
-                size="small"
-                label="Detector Distance (mm)"
-                defaultValue={detDist}
-                onChange={(e) => setDetDist(Number(e.target.value))}
-                style={{ width: 180 }}
-              />
-            </Tooltip>
+            <ParameterInput
+              value={subDir}
+              onSet={setSubDir}
+              label="Sub-directory"
+              tooltip="Location inside visit directory to save data"
+            />
+            <ParameterInput
+              value={chipName}
+              onSet={setChipName}
+              label="Chip Name"
+              tooltip="Chip identifier, this will be used as filename"
+            />
+            <ParameterInput
+              value={shots}
+              onSet={setShots}
+              label="Shots Per Aperture"
+              tooltip="How many consecutive times each window should be collected"
+            />
+            <ParameterInput
+              value={expTime}
+              onSet={setExpTime}
+              label="Exposure Time (s)"
+              tooltip="Exposure time for each window, in seconds"
+            />
+            <ParameterInput
+              value={trans}
+              onSet={setTrans}
+              label="Transmission (fraction)"
+              tooltip="Request transmission for collection, expressed as a fraction"
+            />
+            <ParameterInput
+              value={detDist}
+              onSet={setDetDist}
+              label="Detector Distance (mm)"
+              tooltip="Distance to move the detector y stage to, in millimeters"
+            />
           </Stack>
         </Grid2>
         <Grid2 size={3}>
