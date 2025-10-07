@@ -138,7 +138,7 @@ export function PumpProbeOptions({
           label="Laser Dwell (s)"
           defaultValue={laserDwell}
           onChange={(e) => setLaserDwell(Number(e.target.value))}
-          style={{ width: 150 }}
+          style={{ width: 180 }}
         />
       </Tooltip>
       <Tooltip
@@ -150,7 +150,7 @@ export function PumpProbeOptions({
           label="Laser Delay (s)"
           defaultValue={0.0}
           onChange={(e) => setLaserDelay(Number(e.target.value))}
-          style={{ width: 150 }}
+          style={{ width: 180 }}
         />
       </Tooltip>
       <Tooltip
@@ -162,7 +162,7 @@ export function PumpProbeOptions({
           label="Pre-Pump Exposure Time (s)"
           defaultValue={0.0}
           onChange={(e) => setPrePumpExp(Number(e.target.value))}
-          style={{ width: 150 }}
+          style={{ width: 180 }}
         />
       </Tooltip>
       <Tooltip

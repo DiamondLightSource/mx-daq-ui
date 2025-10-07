@@ -68,7 +68,7 @@ function RunButtons(props: ParametersProps) {
   );
 }
 
-/**Main collection input window for the panel. */
+/**Main collection input window for the fixed target panel. */
 export function CollectionSetupFt() {
   const [subDir, setSubDir] = React.useState<string>("path/to/dir");
   const [chipName, setChipName] = React.useState<string>("test");
@@ -87,7 +87,7 @@ export function CollectionSetupFt() {
   const [chipFormat, setChipFormat] = React.useState<number[]>([]);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, marginRight: 10, marginLeft: 10 }}>
       <Grid2 container spacing={2}>
         <Grid2 size={4.5}>
           <Stack direction={"column"} spacing={1} alignItems={"center"}>
@@ -130,12 +130,12 @@ export function CollectionSetupFt() {
           </Stack>
         </Grid2>
         <Grid2 size={3}>
-          <Stack spacing={1} direction={"column"}>
+          <Stack spacing={1} direction={"column"} alignItems={"center"}>
             <Tooltip
               title="Is this a pump probe experiment? Choose the setting."
               placement="right"
             >
-              <FormControl size="small" style={{ width: 150 }}>
+              <FormControl size="small" style={{ width: 180 }}>
                 <InputLabel id="pp-label">Pump Probe</InputLabel>
                 <Select
                   labelId="pp-label"
