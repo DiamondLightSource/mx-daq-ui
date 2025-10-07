@@ -6,8 +6,6 @@ import {
   Tooltip,
 } from "@mui/material";
 
-// NOTE THIS DOESN'T WORK BECAUSE IT DOES NOT LIKE BOOLEANS!!!
-// TODO LOTS OF CASTING
 export function PumpProbeSelection({
   pumpProbe,
   setPumpProbe,
@@ -15,12 +13,14 @@ export function PumpProbeSelection({
   pumpProbe: boolean;
   setPumpProbe: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const handleChange = (choice: string | boolean) => {
-    const ppVal = String(pumpProbe);
-    console.log(ppVal);
-    console.log(choice);
-    console.log(Boolean(choice));
-    setPumpProbe(Boolean(choice));
+  const handleChange = (choice: string) => {
+    let newValue: boolean;
+    if (choice.toLowerCase() === "true") {
+      newValue = true;
+    } else {
+      newValue = false;
+    }
+    setPumpProbe(newValue);
   };
   return (
     <Tooltip title="Is this a pump probe experiment?" placement="right">
@@ -29,7 +29,7 @@ export function PumpProbeSelection({
         <Select
           labelId="pp-ex"
           id="pp"
-          value={pumpProbe}
+          value={String(pumpProbe)}
           label="Pump Probe"
           onChange={(e) => handleChange(e.target.value)}
         >
