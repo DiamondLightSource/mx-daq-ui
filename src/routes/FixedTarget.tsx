@@ -20,7 +20,7 @@ export function FixedTarget() {
         visit="ca://BL24I-MO-IOC-13:GP100"
         detector="ca://BL24I-MO-IOC-13:GP101"
       />
-      <ParamsPanel />
+      <ParamsPanel expt="fixed-target" />
     </Box>
   );
 }

@@ -1,5 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { ReadOnlyInputs } from "../components/ReadOnlyInputs";
+import { ParamsPanel } from "../screens/CollectionPanel";
 
 export function Extruder() {
   const theme = useTheme();
@@ -19,6 +20,7 @@ export function Extruder() {
         visit="ca://BL24I-MO-IOC-13:GP1"
         detector="ca://BL24I-MO-IOC-13:GP15"
       />
+      <ParamsPanel expt="extruder" />
     </Box>
   );
 }
