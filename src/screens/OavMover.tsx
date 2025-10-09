@@ -30,11 +30,8 @@ import { PvDescription } from "../pv/types";
 import { SelectionWithPlanRunner } from "../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 import oxfordChipDiagram from "../assets/Oxford Chip Diagram.excalidraw.svg";
-import {
-  parseInstrumentSession,
-  readVisitFromPv,
-  RunPlanButton,
-} from "../blueapi/BlueapiComponents";
+import { RunPlanButton } from "../blueapi/BlueapiComponents";
+import { parseInstrumentSession, readVisitFromPv } from "../blueapi/visit";
 
 const buttonStyle = {
   color: "white",
