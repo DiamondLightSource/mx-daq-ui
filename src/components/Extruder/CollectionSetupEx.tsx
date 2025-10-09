@@ -6,6 +6,8 @@ import {
   PumpProbeSelection,
   PumpProbeSetup,
 } from "./PumpProbeSelection";
+import { AbortButton, RunPlanButton } from "../../blueapi/BlueapiComponents";
+import { DetailsRounded } from "@mui/icons-material";
 
 /**Main collection input window for the extruderpanel. */
 export function CollectionSetupEx() {
@@ -78,7 +80,44 @@ export function CollectionSetupEx() {
             <LaserCheckButtons />
           </Stack>
         </Grid2>
-        <Grid2 size={4.5}></Grid2>
+        <Grid2 size={4.5}>
+          <Stack direction={"column"} spacing={1} alignItems={"center"}>
+            <RunPlanButton
+              btnLabel="Initialise on Start"
+              planName="initialise_extruder"
+              title="Initialise parameters for extruder"
+              btnSize="large"
+            />
+            <RunPlanButton
+              btnLabel="Enter hutch"
+              planName="enter_hutch"
+              title="Move detector stage before entering hutch"
+              btnSize="large"
+            />
+          </Stack>
+        </Grid2>
+        <Grid2 size={12}>
+          <Stack direction={"row"} spacing={8} justifyContent={"center"}>
+            <RunPlanButton
+              btnLabel="Start!"
+              planName="gui_run_extruder_collection"
+              planParams={{
+                sub_dir: subDir,
+                file_name: fileName,
+                exp_time: expTime,
+                det_dist: detDist,
+                transmission: trans,
+                num_images: numImages,
+                pump_probe: pumpProbe,
+                laser_dwell: laserDwell,
+                laser_delay: laserDelay,
+              }}
+              title="Start extruder collection"
+              btnSize="large"
+            />
+            <AbortButton />
+          </Stack>
+        </Grid2>
       </Grid2>
     </Box>
   );
