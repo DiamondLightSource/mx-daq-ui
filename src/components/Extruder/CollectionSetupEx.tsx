@@ -1,7 +1,11 @@
-import { Box, Grid2, Stack } from "@mui/material";
+import { Box, Button, Grid2, Stack } from "@mui/material";
 import React from "react";
 import { ParameterInput } from "../ParameterInputs";
-import { PumpProbeSelection } from "./PumpProbeSelection";
+import {
+  LaserCheckButtons,
+  PumpProbeSelection,
+  PumpProbeSetup,
+} from "./PumpProbeSelection";
 
 /**Main collection input window for the extruderpanel. */
 export function CollectionSetupEx() {
@@ -12,6 +16,8 @@ export function CollectionSetupEx() {
   const [trans, setTrans] = React.useState<number>(0.3);
   const [detDist, setDetDist] = React.useState<number>(1350);
   const [pumpProbe, setPumpProbe] = React.useState<boolean>(false);
+  const [laserDwell, setLaserDwell] = React.useState<number>(0);
+  const [laserDelay, setLaserDelay] = React.useState<number>(0);
 
   return (
     <Box sx={{ flexGrow: 1, marginRight: 10, marginLeft: 10 }}>
@@ -62,6 +68,14 @@ export function CollectionSetupEx() {
               pumpProbe={pumpProbe}
               setPumpProbe={setPumpProbe}
             />
+            <PumpProbeSetup
+              dwell={laserDwell}
+              delay={laserDelay}
+              render={pumpProbe}
+              setDwell={setLaserDwell}
+              setDelay={setLaserDelay}
+            />
+            <LaserCheckButtons />
           </Stack>
         </Grid2>
         <Grid2 size={4.5}></Grid2>
