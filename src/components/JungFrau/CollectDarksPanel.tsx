@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   CardContent,
   Stack,
@@ -16,7 +15,7 @@ export function CollectDarksPanel() {
   const [expTime, setExpTime] = React.useState<number>(0.001);
   const [pedestalFrames, setPedestalFrames] = React.useState<number>(20);
   const [pedestalLoops, setPedestalLoops] = React.useState<number>(200);
-  //   const [filePath, setFilePath] = React.useState<string>("");
+
   return (
     <Box sx={{ flexGrow: 1, marginLeft: 15, marginRight: 5 }}>
       <Card variant="outlined" sx={{ minWidth: 300, minHeight: 600 }}>
