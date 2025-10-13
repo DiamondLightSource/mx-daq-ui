@@ -3,7 +3,7 @@ import { CollectionSetupFt } from "../components/FixedTarget/CollectionSetupFt";
 import { CollectionSetupEx } from "../components/Extruder/CollectionSetupEx";
 
 type ExptType = {
-  expt: "extruder" | "fixed-target";
+  expt: "extruder" | "fixed-target" | "jf";
 };
 
 function FallbackScreen() {
@@ -22,6 +22,7 @@ export function ParamsPanel(expt: ExptType) {
       return <CollectionSetupFt />;
     case "extruder":
       return <CollectionSetupEx />;
+    case "jf":
     default:
       return <FallbackScreen />;
   }
