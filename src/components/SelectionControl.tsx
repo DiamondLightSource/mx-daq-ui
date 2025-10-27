@@ -19,7 +19,7 @@ export function SelectionWithPlanRunner(props: SelectionProps) {
       pv: props.pv,
       label: props.label,
       transformValue: forceString,
-    })
+    }),
   );
   console.log(`${props.id} current value: ${currentValue}`);
   const [_, updateVal] = React.useState<string>(currentValue.toString());
@@ -29,6 +29,7 @@ export function SelectionWithPlanRunner(props: SelectionProps) {
     submitAndRunPlanImmediately({
       planName: props.plan_name,
       planParams: { position: newValue },
+      instrumentSession: "", // FIXME, temporary
     });
   };
 

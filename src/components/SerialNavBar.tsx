@@ -24,6 +24,9 @@ export function SerialNavBar() {
         <NavLink linkComponent={Link} to="/fixed-target">
           Fixed Target
         </NavLink>
+        <NavLink linkComponent={Link} to="/extruder">
+          Extruder
+        </NavLink>
       </NavLinks>
     </Navbar>
   );
