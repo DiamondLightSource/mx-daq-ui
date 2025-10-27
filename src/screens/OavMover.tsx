@@ -261,13 +261,13 @@ export function CoordinateSystem() {
     setOpen(false);
   };
 
-  const buttonStyle = {
-    color: "white",
-    padding: "12px",
-    backgroundColor: "#1c2025",
-    width: "100%",
-    height: "85%",
-  };
+  // const buttonStyle = {
+  //   color: "white",
+  //   padding: "12px",
+  //   backgroundColor: "#1c2025",
+  //   width: "100%",
+  //   height: "85%",
+  // };
 
   return (
     <>
