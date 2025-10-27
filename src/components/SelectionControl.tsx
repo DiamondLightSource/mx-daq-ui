@@ -29,6 +29,7 @@ export function SelectionWithPlanRunner(props: SelectionProps) {
     submitAndRunPlanImmediately({
       planName: props.plan_name,
       planParams: { position: newValue },
+      instrumentSession: "", // FIXME, temporary
     });
   };
 
