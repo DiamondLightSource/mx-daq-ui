@@ -15,8 +15,8 @@ export const pumpProbeMode = [
 ];
 
 export type EavaRequest = {
-  laserDwell: number;
-  expTime: number;
+  laserDwell: number; // Laser exposure time, in s
+  expTime: number; // Collection exposure time, in s
 };
 
 /**
