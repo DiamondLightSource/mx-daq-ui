@@ -21,6 +21,9 @@ type RunPlanButtonProps = {
   title?: string;
   btnVariant?: VariantChoice;
   btnSize?: ButtonSize;
+  sx?: object;
+  tooltipSx?: object;
+  typographySx?: object;
 };
 
 // @{todo} Ideally we should be able to set up the stylings for
@@ -47,6 +50,8 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
   const size = props.btnSize ? props.btnSize : "medium";
+  const sx = props.sx ? props.sx : {};
+  const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
     setOpenSnackbar(true);
@@ -85,12 +90,18 @@ export function RunPlanButton(props: RunPlanButtonProps) {
 
   return (
     <div>
-      <Tooltip title={props.title ? props.title : ""} placement="bottom">
+      <Tooltip
+        title={props.title ? props.title : ""}
+        placement="bottom"
+        sx={tooltipSx}
+        arrow
+      >
         <Button
           variant={variant}
           color="custom"
           size={size}
           onClick={handleClick}
+          sx={sx}
         >
           <Typography
             variant="button"
