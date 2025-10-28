@@ -13,6 +13,7 @@ import { parseInstrumentSession, readVisitFromPv } from "./visit";
 type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
 type ButtonSize = "small" | "medium" | "large";
+type ButtonColor = "primary" | "secondary" | "custom";
 
 type RunPlanButtonProps = {
   btnLabel: string;
@@ -21,6 +22,8 @@ type RunPlanButtonProps = {
   title?: string;
   btnVariant?: VariantChoice;
   btnSize?: ButtonSize;
+  btnColor?: ButtonColor;
+  disabled?: boolean;
   sx?: object;
   tooltipSx?: object;
   typographySx?: object;
@@ -50,7 +53,9 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
   const size = props.btnSize ? props.btnSize : "medium";
-  const sx = props.sx ? props.sx : {}; // Style for the button component
+  const color = props.btnColor ? props.btnColor : "primary";
+  const disabled = props.disabled ? props.disabled : false;
+  const sx = props.sx ? props.sx : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
@@ -98,8 +103,9 @@ export function RunPlanButton(props: RunPlanButtonProps) {
       >
         <Button
           variant={variant}
-          color="custom"
+          color={color}
           size={size}
+          disabled={disabled}
           onClick={handleClick}
           sx={sx}
         >
