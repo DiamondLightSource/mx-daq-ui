@@ -50,7 +50,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
   const size = props.btnSize ? props.btnSize : "medium";
-  const sx = props.sx ? props.sx : {};
+  const sx = props.sx ? props.sx : {}; // Style for the button component
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
@@ -103,11 +103,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
           onClick={handleClick}
           sx={sx}
         >
-          <Typography
-            variant="button"
-            fontWeight="fontWeightBold"
-            sx={{ display: "block" }}
-          >
+          <Typography variant="button" fontWeight="fontWeightBold">
             {props.btnLabel}
           </Typography>
         </Button>
