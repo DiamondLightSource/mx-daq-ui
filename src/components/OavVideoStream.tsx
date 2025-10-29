@@ -7,30 +7,7 @@ import {
   useParsedPvConnection,
 } from "../pv/util";
 import React from "react";
-
-export const useContainerDimensions = (
-  ref: React.MutableRefObject<HTMLHeadingElement | null>,
-) => {
-  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
-  React.useEffect(() => {
-    const getDimensions = () => ({
-      width: ref.current?.offsetWidth || 0,
-      height: ref.current?.offsetWidth || 0,
-    });
-    const handleResize = () => {
-      setDimensions(getDimensions());
-    };
-    if (ref.current) {
-      setDimensions(getDimensions());
-    }
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [ref]);
-
-  return dimensions;
-};
+import { useContainerDimensions } from "./OavVideoStreamHelper";
 
 /*
  * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)
