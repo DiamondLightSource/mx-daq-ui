@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import { CollectionSetupFt } from "../components/FixedTarget/CollectionSetupFt";
-import { CollectionSetupEx } from "../components/Extruder/CollectionSetupEx";
+import { CollectionSetupFt } from "components/FixedTarget/CollectionSetupFt";
+import { CollectionSetupEx } from "components/Extruder/CollectionSetupEx";
 
 type ExptType = {
   expt: "extruder" | "fixed-target";

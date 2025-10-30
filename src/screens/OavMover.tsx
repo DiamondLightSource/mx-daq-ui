@@ -12,7 +12,7 @@ import {
   useTheme,
   Drawer,
 } from "@mui/material";
-import { OavVideoStream } from "../components/OavVideoStream";
+import { OavVideoStream } from "components/OavVideoStream";
 import {
   ArrowBackRounded,
   ArrowDownwardRounded,
@@ -24,14 +24,14 @@ import {
 import { useState } from "react";
 
 import React from "react";
-import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
-import { CoordNumberInput } from "../components/CoordNumberInput";
-import { PvDescription } from "../pv/types";
-import { SelectionWithPlanRunner } from "../components/SelectionControl";
-import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
-import oxfordChipDiagram from "../assets/Oxford Chip Diagram.excalidraw.svg";
-import { RunPlanButton } from "../blueapi/BlueapiComponents";
-import { parseInstrumentSession, readVisitFromPv } from "../blueapi/visit";
+import { submitAndRunPlanImmediately } from "blueapi/blueapi";
+import { CoordNumberInput } from "components/CoordNumberInput";
+import { PvDescription } from "pv/types";
+import { SelectionWithPlanRunner } from "components/SelectionControl";
+import { BacklightPositions, ZoomLevels } from "pv/enumPvValues";
+import oxfordChipDiagram from "assets/Oxford Chip Diagram.excalidraw.svg";
+import { RunPlanButton } from "blueapi/BlueapiComponents";
+import { parseInstrumentSession, readVisitFromPv } from "blueapi/visit";
 
 const buttonStyle = {
   color: "white",

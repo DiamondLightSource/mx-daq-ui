@@ -11,9 +11,9 @@ import {
 import React from "react";
 import { PumpProbeOptions } from "./PumpProbeComponents";
 import { MapView } from "./FixedTargetMapComponents";
-import { chipTypes, MapTypes, pumpProbeMode } from "../params";
-import { AbortButton, RunPlanButton } from "../../blueapi/BlueapiComponents";
-import { ParameterInput } from "../ParameterInputs";
+import { RunPlanButton, AbortButton } from "blueapi/BlueapiComponents";
+import { ParameterInput } from "components/ParameterInputs";
+import { pumpProbeMode, chipTypes, MapTypes } from "components/params";
 
 type ParametersProps = {
   subDir: string;
