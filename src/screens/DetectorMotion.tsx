@@ -1,6 +1,6 @@
 import { Stack, Box, useTheme } from "@mui/material";
-import { RoPvBox } from "../pv/PvComponent";
-import { RunPlanButton } from "../blueapi/BlueapiComponents";
+import { RoPvBox } from "pv/PvComponent";
+import { RunPlanButton } from "blueapi/BlueapiComponents";
 
 function DetectorState() {
   const theme = useTheme();

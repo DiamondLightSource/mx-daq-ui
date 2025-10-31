@@ -1,12 +1,12 @@
 import { Box, Grid2, Stack } from "@mui/material";
 import React from "react";
-import { ParameterInput } from "../ParameterInputs";
 import {
   LaserCheckButtons,
   PumpProbeSelection,
   PumpProbeSetup,
 } from "./PumpProbeSelection";
-import { AbortButton, RunPlanButton } from "../../blueapi/BlueapiComponents";
+import { ParameterInput } from "components/ParameterInputs";
+import { AbortButton, RunPlanButton } from "blueapi/BlueapiComponents";
 
 /**Main collection input window for the extruderpanel. */
 export function CollectionSetupEx() {

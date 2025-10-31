@@ -1,36 +1,13 @@
 import { Box } from "@mui/material";
-import { PvComponent } from "../pv/PvComponent";
-import { PvItem, PvDescription } from "../pv/types";
+import React from "react";
+import { useContainerDimensions } from "./OavVideoStreamHelper";
+import { PvComponent } from "pv/PvComponent";
+import { PvDescription, PvItem } from "pv/types";
 import {
+  useParsedPvConnection,
   parseNumericPv,
   pvIntArrayToString,
-  useParsedPvConnection,
-} from "../pv/util";
-import React from "react";
-
-export const useContainerDimensions = (
-  ref: React.MutableRefObject<HTMLHeadingElement | null>,
-) => {
-  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
-  React.useEffect(() => {
-    const getDimensions = () => ({
-      width: ref.current?.offsetWidth || 0,
-      height: ref.current?.offsetWidth || 0,
-    });
-    const handleResize = () => {
-      setDimensions(getDimensions());
-    };
-    if (ref.current) {
-      setDimensions(getDimensions());
-    }
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [ref]);
-
-  return dimensions;
-};
+} from "pv/util";
 
 /*
  * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)

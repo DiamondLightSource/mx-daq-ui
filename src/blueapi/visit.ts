@@ -1,5 +1,5 @@
-import { RawValue } from "../pv/types";
-import { forceString, ReadPvRawValue } from "../pv/util";
+import { RawValue } from "pv/types";
+import { forceString, ReadPvRawValue } from "pv/util";
 
 /**
  * Read the full visit path from the visit PV set by the beamline staff.
