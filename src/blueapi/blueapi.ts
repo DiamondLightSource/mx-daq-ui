@@ -25,7 +25,7 @@ export type BlueApiWorkerState =
 function blueApiCall(
   endpoint: string,
   method?: string,
-  body?: object
+  body?: object,
 ): Promise<Response> {
   const _method = method ?? "GET";
   const fullUrl = BLUEAPI_SOCKET + endpoint;
@@ -44,7 +44,7 @@ export function useBlueApiCall(
   method?: string,
   body?: object,
   pollRateMillis?: number,
-  queryKey?: string
+  queryKey?: string,
 ) {
   const fetchCall = async () => {
     return await blueApiCall(endpoint, method, body);
@@ -56,7 +56,7 @@ export function useBlueApiCall(
 
 export function processUseBlueApiCall(
   request: UseQueryResult<Response, unknown>,
-  onSuccess: (data: Response) => string
+  onSuccess: (data: Response) => string,
 ) {
   if (request.status === "error") {
     return "Error fetching query!";
@@ -82,7 +82,7 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
   }).then((res) => {
     if (!res.ok) {
       throw new Error(
-        `Unable to POST request, response error ${res.status} ${res.statusText}`
+        `Unable to POST request, response error ${res.status} ${res.statusText}`,
       );
     }
     res.json().then((res) => res["task_id"]);
@@ -93,7 +93,7 @@ function runTask(taskId: string): Promise<string | void> {
   return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
     if (!res.ok) {
       throw new Error(
-        `Unable to run task, response error ${res.status} ${res.statusText}`
+        `Unable to run task, response error ${res.status} ${res.statusText}`,
       );
     }
     res.json().then((res) => res["task_id"]);
@@ -101,7 +101,7 @@ function runTask(taskId: string): Promise<string | void> {
 }
 
 export function submitAndRunPlanImmediately(
-  request: BlueApiRequestBody
+  request: BlueApiRequestBody,
 ): Promise<string | void> {
   return submitTask(request).then((res) => {
     if (res) {

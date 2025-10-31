@@ -59,14 +59,14 @@ export function RunPlanButton(props: RunPlanButtonProps) {
       }).catch((error) => {
         setSeverity("error");
         setMsg(
-          `Failed to run plan ${props.planName}, see console and logs for full error`
+          `Failed to run plan ${props.planName}, see console and logs for full error`,
         );
         console.log(`${msg}. Reason: ${error}`);
       });
     } catch (error) {
       setSeverity("error");
       setMsg(
-        `Failed to run plan ${props.planName}, please check visit PV is set.`
+        `Failed to run plan ${props.planName}, please check visit PV is set.`,
       );
       console.log(`An error occurred ${error}`);
     }
@@ -74,7 +74,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
 
   const handleSnackbarClose = (
     _event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
+    reason?: SnackbarCloseReason,
   ) => {
     if (reason === "clickaway") {
       return;
@@ -125,7 +125,7 @@ export function AbortButton() {
 
   const handleMsgClose = (
     _event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
+    reason?: SnackbarCloseReason,
   ) => {
     if (reason === "clickaway") {
       return;

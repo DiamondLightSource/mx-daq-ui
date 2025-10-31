@@ -187,7 +187,7 @@ export function PixelsToMicrons({
               label="Pixels per micron"
               onChange={(e) =>
                 setPixelsPerMicron(
-                  Number(e.target.value) ? Number(e.target.value) : 0
+                  Number(e.target.value) ? Number(e.target.value) : 0,
                 )
               }
               defaultValue={1.25}
@@ -408,12 +408,12 @@ export function OavMover() {
               onCoordClick={(x: number, y: number) => {
                 const [x_um, y_um] = [x / pixelsPerMicron, y / pixelsPerMicron];
                 console.log(
-                  `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`
+                  `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`,
                 );
                 const [x_int, y_int] = [Math.round(x), Math.round(y)];
                 if (Number.isNaN(x_um) || Number.isNaN(y_um)) {
                   console.log(
-                    "Not submitting plan while disconnected from PVs!"
+                    "Not submitting plan while disconnected from PVs!",
                   );
                 } else {
                   // This is an example but not useful for actual production use.
@@ -423,7 +423,7 @@ export function OavMover() {
                     instrumentSession: parseInstrumentSession(fullVisit),
                   }).catch((error) => {
                     console.log(
-                      `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`
+                      `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`,
                     );
                   });
                 }

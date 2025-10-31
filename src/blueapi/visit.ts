@@ -31,7 +31,7 @@ export function parseInstrumentSession(visit: string): string {
     instrumentSession = visit.split("/").filter(Boolean).at(-1);
     if (!instrumentSession) {
       throw new Error(
-        "Unable to run plan as something appears to be wrong with visit path"
+        "Unable to run plan as something appears to be wrong with visit path",
       );
     }
   }
