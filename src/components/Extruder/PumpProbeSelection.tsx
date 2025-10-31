@@ -5,9 +5,9 @@ import {
   Select,
   Tooltip,
 } from "@mui/material";
-import { ParameterInput } from "../ParameterInputs";
+import { RunPlanButton } from "blueapi/BlueapiComponents";
+import { ParameterInput } from "components/ParameterInputs";
 import React from "react";
-import { RunPlanButton } from "../../blueapi/BlueapiComponents";
 
 export function PumpProbeSelection({
   pumpProbe,

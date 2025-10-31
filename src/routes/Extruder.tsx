@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
-import { ReadOnlyInputs } from "../components/ReadOnlyInputs";
-import { ParamsPanel } from "../screens/CollectionPanel";
+import { ReadOnlyInputs } from "components/ReadOnlyInputs";
+import { ParamsPanel } from "screens/CollectionPanel";
 
 export function Extruder() {
   const theme = useTheme();

@@ -7,10 +7,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { PvItem } from "../pv/types";
-import { PvComponent } from "../pv/PvComponent";
-import { forceString, parseNumericPv } from "../pv/util";
-import { WorkerStatus } from "../components/WorkerStatus";
+import { PvItem } from "pv/types";
+import { PvComponent } from "pv/PvComponent";
+import { forceString, parseNumericPv } from "pv/util";
+import { WorkerStatus } from "components/WorkerStatus";
 
 type StateBoxProps = {
   children: React.ReactNode;
