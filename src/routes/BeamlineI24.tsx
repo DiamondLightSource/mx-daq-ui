@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs, useTheme } from "@mui/material";
-import { BeamlineStatsTabPanel } from "../screens/BeamlineStats";
-import { DetectorMotionTabPanel } from "../screens/DetectorMotion";
-import { OavMover } from "../screens/OavMover";
+import { BeamlineStatsTabPanel } from "screens/BeamlineStats";
+import { DetectorMotionTabPanel } from "screens/DetectorMotion";
+import { OavMover } from "screens/OavMover/OavMover";
 import React from "react";
 
 interface TabPanelProps {

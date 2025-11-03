@@ -1,8 +1,8 @@
 import React from "react";
-import { PvDescription } from "../pv/types";
-import { submitAndRunPlanImmediately } from "../blueapi/blueapi";
+import { PvDescription } from "pv/types";
+import { submitAndRunPlanImmediately } from "blueapi/blueapi";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { forceString, useParsedPvConnection } from "../pv/util";
+import { forceString, useParsedPvConnection } from "pv/util";
 
 type SelectionProps = PvDescription & {
   id: string;

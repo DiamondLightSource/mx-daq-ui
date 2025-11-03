@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
-import { ParamsPanel } from "../screens/CollectionPanel";
-import { ReadOnlyInputs } from "../components/ReadOnlyInputs";
+import { ParamsPanel } from "screens/CollectionPanel";
+import { ReadOnlyInputs } from "components/ReadOnlyInputs";
 
 export function FixedTarget() {
   const theme = useTheme();

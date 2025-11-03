@@ -11,8 +11,8 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
+import { EavaRequest, calculateEAVA } from "components/params";
 import React from "react";
-import { calculateEAVA, EavaRequest } from "../params";
 
 /**
  * Opens a dilog showing the calculated laser delay to set for each EAVA setting, given the laser
