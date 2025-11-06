@@ -63,7 +63,7 @@ export function PixelsToMicrons({
               label="Pixels per micron"
               onChange={(e) =>
                 setPixelsPerMicron(
-                  Number(e.target.value) ? Number(e.target.value) : 0
+                  Number(e.target.value) ? Number(e.target.value) : 0,
                 )
               }
               defaultValue={1.25}
