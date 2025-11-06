@@ -1,14 +1,12 @@
 import { Box, Grid2, Stack, TextField, useTheme } from "@mui/material";
 import { CoordNumberInput } from "../../components/CoordNumberInput";
+import { useContext } from "react";
+import { crosshairContext } from "./OavMover";
 
-export function BeamCentre({
-  setCrosshairX,
-  setCrosshairY,
-}: {
-  setCrosshairX: React.Dispatch<React.SetStateAction<number>>;
-  setCrosshairY: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export function BeamCentre() {
   const theme = useTheme();
+  const ctx = useContext(crosshairContext);
+  if (!ctx) throw new Error("BeamCentre must be used within OavMover");
   return (
     <Box
       bgcolor={theme.palette.background.paper}
@@ -24,16 +22,16 @@ export function BeamCentre({
           <Stack direction="row" spacing={2} padding={2}>
             <CoordNumberInput
               placeholder="x"
-              onChange={(_e, val) => setCrosshairX(val ? val : 0)}
-              defaultValue={200}
+              onChange={(_e, val) => ctx.setCrosshairX(val ? val : 0)}
+              defaultValue={ctx.crosshairX}
               min={0}
               max={1000}
               aria-label="X"
             />
             <CoordNumberInput
               placeholder="y"
-              onChange={(_e, val) => setCrosshairY(val ? val : 0)}
-              defaultValue={200}
+              onChange={(_e, val) => ctx.setCrosshairY(val ? val : 0)}
+              defaultValue={ctx.crosshairY}
               min={0}
               max={750}
               aria-label="Y"
@@ -65,7 +63,7 @@ export function PixelsToMicrons({
               label="Pixels per micron"
               onChange={(e) =>
                 setPixelsPerMicron(
-                  Number(e.target.value) ? Number(e.target.value) : 0,
+                  Number(e.target.value) ? Number(e.target.value) : 0
                 )
               }
               defaultValue={1.25}
