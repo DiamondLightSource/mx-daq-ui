@@ -1,6 +1,6 @@
 import { Box, Grid2, useTheme } from "@mui/material";
 import { OavVideoStream } from "../../components/OavVideoStream";
-import { useState } from "react";
+import { useState, createContext } from "react";
 
 import { submitAndRunPlanImmediately } from "../../blueapi/blueapi";
 import { parseInstrumentSession, readVisitFromPv } from "../../blueapi/visit";
@@ -8,6 +8,17 @@ import { BeamCentre, PixelsToMicrons } from "./OavControlHelper";
 import { CoordinateSystem } from "./CoordinateSystem";
 import { PresetPositionsSideDrawer } from "./PresetDrawer";
 import { BacklightControl, MoveArrows, ZoomControl } from "./OavSideBar";
+
+interface CrosshairContextType {
+  crosshairX: number;
+  crosshairY: number;
+  setCrosshairX: React.Dispatch<React.SetStateAction<number>>;
+  setCrosshairY: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const crosshairContext = createContext<CrosshairContextType | null>(
+  null,
+);
 
 export function OavMover() {
   const [crosshairX, setCrosshairX] = useState<number>(200);
@@ -65,10 +76,11 @@ export function OavMover() {
         >
           <MoveArrows />
           <Grid2 size={3} padding={1} />
-          <BeamCentre
-            setCrosshairX={setCrosshairX}
-            setCrosshairY={setCrosshairY}
-          />
+          <crosshairContext.Provider
+            value={{ crosshairX, crosshairY, setCrosshairX, setCrosshairY }}
+          >
+            <BeamCentre />
+          </crosshairContext.Provider>
           <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
           <BacklightControl
             label="backlight-pos"
