@@ -18,9 +18,29 @@ export function MoveArrows() {
       paddingTop={1}
       paddingBottom={1}
     >
+      Movement
       <Grid2 container spacing={0} columns={3}>
         <Grid2 size={3}>
-          <b>Nudge sample:</b>
+          <b>Block Move</b>
+        </Grid2>
+        <Grid2 size={1} />{" "}
+        <Grid2 size={1}>
+          <Button style={{ backgroundColor: "red" }}>Y-Y</Button>
+        </Grid2>{" "}
+        <Grid2 size={1} />
+        <Grid2 size={1}>
+          <Button style={{ backgroundColor: "red" }}>X-X</Button>
+        </Grid2>{" "}
+        <Grid2 size={1} />
+        <Grid2 size={1}>
+          <Button style={{ backgroundColor: "red" }}>X+X</Button>
+        </Grid2>{" "}
+        <Grid2 size={1} />{" "}
+        <Grid2 size={1}>
+          <Button style={{ backgroundColor: "red" }}>Y+Y</Button>
+        </Grid2>{" "}
+        <Grid2 size={3}>
+          <b>Window Move</b>
         </Grid2>
         <Grid2 size={1} />{" "}
         <Grid2 size={1}>
@@ -46,7 +66,33 @@ export function MoveArrows() {
             <ArrowDownwardRounded />
           </Button>
         </Grid2>{" "}
+        <Grid2 size={3}>
+          <b>Nudge Move</b>
+        </Grid2>
+        <Grid2 size={1} />{" "}
+        <Grid2 size={1}>
+          <Button>
+            <ArrowUpwardRounded />
+          </Button>
+        </Grid2>{" "}
         <Grid2 size={1} />
+        <Grid2 size={1}>
+          <Button>
+            <ArrowBackRounded />
+          </Button>
+        </Grid2>{" "}
+        <Grid2 size={1} />
+        <Grid2 size={1}>
+          <Button>
+            <ArrowForwardRounded />
+          </Button>
+        </Grid2>{" "}
+        <Grid2 size={1} />{" "}
+        <Grid2 size={1}>
+          <Button>
+            <ArrowDownwardRounded />
+          </Button>
+        </Grid2>{" "}
       </Grid2>
     </Box>
   );
