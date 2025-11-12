@@ -6,6 +6,7 @@ import { BeamlineI24 } from "./routes/BeamlineI24";
 import { FixedTarget } from "./routes/FixedTarget";
 import { SerialNavBar } from "./components/SerialNavBar";
 import { Extruder } from "./routes/Extruder";
+import { JfRotation } from "./routes/JungfrauRotation";
 
 function App() {
   const theme = useTheme();
@@ -30,6 +31,9 @@ function App() {
         </Route>
         <Route path="/extruder">
           <Extruder />
+        </Route>
+        <Route path="/jungfrau">
+          <JfRotation />
         </Route>
       </Switch>
       <Footer
