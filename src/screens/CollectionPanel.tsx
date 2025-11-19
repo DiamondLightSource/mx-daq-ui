@@ -1,14 +1,15 @@
 import { Box, Typography } from "@mui/material";
 import { CollectionSetupFt } from "components/FixedTarget/CollectionSetupFt";
 import { CollectionSetupEx } from "components/Extruder/CollectionSetupEx";
-
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 type ExptType = {
   expt: "extruder" | "fixed-target" | "jf";
 };
 
 function FallbackScreen() {
   return (
-    <Box>
+    <Box alignContent={"center"}>
+      <ErrorOutlineIcon color="error" fontSize="large" />
       <Typography component="h1" variant="h4">
         Page currently unavailable
       </Typography>
