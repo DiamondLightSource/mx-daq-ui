@@ -26,5 +26,5 @@ export type JungfrauRotationContextType = {
 
 export const JungfrauRotationContext =
   createContext<JungfrauRotationContextType>(
-    null as unknown as JungfrauRotationContextType
+    null as unknown as JungfrauRotationContextType,
   );
