@@ -8,7 +8,7 @@ import {
   KeyboardDoubleArrowDown,
   KeyboardDoubleArrowRight,
 } from "@mui/icons-material";
-import { Box, Grid2, Button, useTheme, Tab, Tabs } from "@mui/material";
+import { Box, Button, useTheme, Tab, Tabs } from "@mui/material";
 import { SelectionWithPlanRunner } from "../../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../../pv/enumPvValues";
 import { PvDescription } from "../../pv/types";
@@ -20,30 +20,38 @@ interface TabPanelProps {
   value: number;
 }
 
+const arrowsBoxStyle = {
+  maxWidth: 400,
+  mx: "auto",
+  display: "grid",
+  gridTemplateColumns: "repeat(5, 1fr)",
+  gap: "10px",
+};
+
 const buttonStyle = {
   color: "white",
   border: "2px solid #423a3aff",
+  height: "100%",
+  width: "100%",
+  minHeight: 0,
+  minWidth: 0,
 };
 
 function BlockMove(props: TabPanelProps) {
   if (props.value !== props.index) return null;
 
   return (
-    <Grid2 container spacing={0} columns={5}>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>Y-Y</Button>
-      </Grid2>
-      <Grid2 size={2} />
-      <Grid2 size={1} offset={1}>
-        <Button sx={buttonStyle}>X-X</Button>
-      </Grid2>
-      <Grid2 size={1} offset={1}>
-        <Button sx={buttonStyle}>X+X</Button>
-      </Grid2>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>Y+Y</Button>
-      </Grid2>
-    </Grid2>
+    <Box sx={arrowsBoxStyle}>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>Y - Y</Button>
+      <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>X - X</Button>
+      <Box />
+      <Button sx={buttonStyle}>X + X</Button>
+      <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>Y + Y</Button>
+      <Box /> <Box />
+    </Box>
   );
 }
 
@@ -51,49 +59,38 @@ function NudgeMove(props: TabPanelProps) {
   if (props.value !== props.index) return null;
 
   return (
-    <Grid2 container spacing={0} columns={5}>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowUp />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowUp />
-        </Button>
-      </Grid2>
-      <Grid2 size={2} />
-      <Grid2 size={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowLeft />
-        </Button>
-      </Grid2>
-      <Grid2 size={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowLeft />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowRight />
-        </Button>
-      </Grid2>
-      <Grid2 size={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowRight />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowDown />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowDown />
-        </Button>
-      </Grid2>
-    </Grid2>
+    <Box sx={arrowsBoxStyle}>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowUp />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowUp />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowLeft />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardArrowLeft />
+      </Button>
+      <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowRight />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowRight />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowDown />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowDown />
+      </Button>
+    </Box>
   );
 }
 
@@ -101,49 +98,38 @@ function WindowMove(props: TabPanelProps) {
   if (props.value !== props.index) return null;
 
   return (
-    <Grid2 container spacing={0} columns={5}>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowUp />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowUp />
-        </Button>
-      </Grid2>
-      <Grid2 size={2} />
-      <Grid2 size={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowLeft />
-        </Button>
-      </Grid2>
-      <Grid2 size={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowLeft />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowRight />
-        </Button>
-      </Grid2>
-      <Grid2 size={1}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowRight />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardArrowDown />
-        </Button>
-      </Grid2>
-      <Grid2 size={1} offset={2}>
-        <Button sx={buttonStyle}>
-          <KeyboardDoubleArrowDown />
-        </Button>
-      </Grid2>
-    </Grid2>
+    <Box sx={arrowsBoxStyle}>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowUp />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowUp />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowLeft />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardArrowLeft />
+      </Button>
+      <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowRight />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowRight />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowDown />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowDown />
+      </Button>
+    </Box>
   );
 }
 
@@ -170,8 +156,11 @@ export function MoveArrows() {
           value={value}
           onChange={handleChange}
           sx={{
-            "& .Mui-selected": {
+            "& .MuiTab-root.Mui-selected": {
               color: theme.palette.secondary.main,
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: theme.palette.secondary.dark,
             },
           }}
           centered
