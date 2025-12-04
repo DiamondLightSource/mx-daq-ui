@@ -29,18 +29,13 @@ type RunPlanButtonProps = {
   typographySx?: object;
 };
 
-// @{todo} Ideally we should be able to set up the stylings for
-// a custom button in the proper way by doing something like:
-// const CustomRunButton = styled(Button)({
-//   width: "100%",
-//   height: "85%",
-//   color: "var(--color)",
-//   backgroundColor: "var(--backgroundColor)",
-//   padding: "var(--padding)",
-//   margin: "var(--margin)",
-// });
-// This will be another PR
-// See https://github.com/DiamondLightSource/mx-daq-ui/issues/71
+const buttonStyles = {
+  color: "white",
+  padding: "12px",
+  backgroundColor: "#1c2025",
+  width: "90%",
+  height: "85%",
+};
 
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
@@ -55,7 +50,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const size = props.btnSize ? props.btnSize : "medium";
   const color = props.btnColor ? props.btnColor : "primary";
   const disabled = props.disabled ? props.disabled : false;
-  const sx = props.sx ? props.sx : {}; // Style for the button component which is the most likely to be customised
+  const sx = props.sx ? { ...buttonStyles, ...props.sx } : buttonStyles; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
