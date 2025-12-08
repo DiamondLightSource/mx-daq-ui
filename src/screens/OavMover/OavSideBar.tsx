@@ -1,16 +1,147 @@
 import {
-  ArrowUpwardRounded,
-  ArrowBackRounded,
-  ArrowForwardRounded,
-  ArrowDownwardRounded,
+  KeyboardDoubleArrowLeft,
+  KeyboardArrowLeft,
+  KeyboardDoubleArrowUp,
+  KeyboardArrowUp,
+  KeyboardArrowRight,
+  KeyboardArrowDown,
+  KeyboardDoubleArrowDown,
+  KeyboardDoubleArrowRight,
 } from "@mui/icons-material";
-import { Box, Grid2, Button, useTheme } from "@mui/material";
+import { Box, Button, useTheme, Tab, Tabs } from "@mui/material";
 import { SelectionWithPlanRunner } from "../../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../../pv/enumPvValues";
 import { PvDescription } from "../../pv/types";
+import { useState } from "react";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const arrowsBoxStyle = {
+  maxWidth: 400,
+  mx: "auto",
+  display: "grid",
+  gridTemplateColumns: "repeat(5, 1fr)",
+  gap: "10px",
+};
+
+const buttonStyle = {
+  color: "white",
+  border: "2px solid #423a3aff",
+  height: "100%",
+  width: "100%",
+  minHeight: 0,
+  minWidth: 0,
+};
+
+function BlockMove(props: TabPanelProps) {
+  if (props.value !== props.index) return null;
+
+  return (
+    <Box sx={arrowsBoxStyle}>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>Y - Y</Button>
+      <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>X - X</Button>
+      <Box />
+      <Button sx={buttonStyle}>X + X</Button>
+      <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>Y + Y</Button>
+      <Box /> <Box />
+    </Box>
+  );
+}
+
+function NudgeMove(props: TabPanelProps) {
+  if (props.value !== props.index) return null;
+
+  return (
+    <Box sx={arrowsBoxStyle}>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowUp />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowUp />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowLeft />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardArrowLeft />
+      </Button>
+      <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowRight />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowRight />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowDown />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowDown />
+      </Button>
+    </Box>
+  );
+}
+
+function WindowMove(props: TabPanelProps) {
+  if (props.value !== props.index) return null;
+
+  return (
+    <Box sx={arrowsBoxStyle}>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowUp />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowUp />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowLeft />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardArrowLeft />
+      </Button>
+      <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowRight />
+      </Button>
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowRight />
+      </Button>
+      <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardArrowDown />
+      </Button>
+      <Box /> <Box /> <Box /> <Box />
+      <Button sx={buttonStyle}>
+        <KeyboardDoubleArrowDown />
+      </Button>
+    </Box>
+  );
+}
 
 export function MoveArrows() {
   const theme = useTheme();
+
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <Box
       bgcolor={theme.palette.background.paper}
@@ -18,36 +149,28 @@ export function MoveArrows() {
       paddingTop={1}
       paddingBottom={1}
     >
-      <Grid2 container spacing={0} columns={3}>
-        <Grid2 size={3}>
-          <b>Nudge sample:</b>
-        </Grid2>
-        <Grid2 size={1} />{" "}
-        <Grid2 size={1}>
-          <Button>
-            <ArrowUpwardRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />
-        <Grid2 size={1}>
-          <Button>
-            <ArrowBackRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />
-        <Grid2 size={1}>
-          <Button>
-            <ArrowForwardRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />{" "}
-        <Grid2 size={1}>
-          <Button>
-            <ArrowDownwardRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />
-      </Grid2>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          sx={{
+            "& .MuiTab-root.Mui-selected": {
+              color: theme.palette.secondary.main,
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: theme.palette.secondary.dark,
+            },
+          }}
+          centered
+        >
+          <Tab label="Nudge" />
+          <Tab label="Window" />
+          <Tab label="Block" />
+        </Tabs>
+      </Box>
+      <NudgeMove value={value} index={0} />
+      <WindowMove value={value} index={1} />
+      <BlockMove value={value} index={2} />
     </Box>
   );
 }
