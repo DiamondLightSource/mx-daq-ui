@@ -13,6 +13,7 @@ import { SelectionWithPlanRunner } from "../../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../../pv/enumPvValues";
 import { PvDescription } from "../../pv/types";
 import { useState } from "react";
+import { RunPlanButton } from "blueapi/BlueapiComponents";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -43,13 +44,33 @@ function BlockMove(props: TabPanelProps) {
   return (
     <Box sx={arrowsBoxStyle}>
       <Box /> <Box />
-      <Button sx={buttonStyle}>Y - Y</Button>
+      <RunPlanButton
+        btnLabel={"Y - Y"}
+        planName={"move_block_on_arrow_click"}
+        planParams={{ direction: "up" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box /> <Box />
-      <Button sx={buttonStyle}>X - X</Button>
+      <RunPlanButton
+        btnLabel={"X - X"}
+        planName={"move_block_on_arrow_click"}
+        planParams={{ direction: "left" }}
+        btnVariant="outlined"
+      />
       <Box />
-      <Button sx={buttonStyle}>X + X</Button>
+      <RunPlanButton
+        btnLabel={"X + X"}
+        planName={"move_block_on_arrow_click"}
+        planParams={{ direction: "right" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box /> <Box />
-      <Button sx={buttonStyle}>Y + Y</Button>
+      <RunPlanButton
+        btnLabel={"Y + Y"}
+        planName={"move_block_on_arrow_click"}
+        planParams={{ direction: "down" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box />
     </Box>
   );
@@ -61,6 +82,12 @@ function NudgeMove(props: TabPanelProps) {
   return (
     <Box sx={arrowsBoxStyle}>
       <Box /> <Box />
+      <RunPlanButton
+        btnLabel={"Y + Y"}
+        planName={"move_block_on_arrow_click"}
+        planParams={{ direction: "down" }}
+        btnVariant="outlined"
+      />
       <Button sx={buttonStyle}>
         <KeyboardDoubleArrowUp />
       </Button>
