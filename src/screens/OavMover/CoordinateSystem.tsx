@@ -41,7 +41,6 @@ export function CoordinateSystem() {
               title="Go to Fiducial 0"
               btnVariant="contained"
               btnSize="large"
-              sx={buttonStyle}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -52,7 +51,6 @@ export function CoordinateSystem() {
               title="Go to Fiducial 1"
               btnVariant="contained"
               btnSize="large"
-              sx={buttonStyle}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -63,7 +61,6 @@ export function CoordinateSystem() {
               title="Go to Fiducial 2"
               btnVariant="contained"
               btnSize="large"
-              sx={buttonStyle}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -72,7 +69,6 @@ export function CoordinateSystem() {
               planName="gui_set_fiducial_0"
               title="Set Fiducial 0"
               btnVariant="contained"
-              sx={buttonStyle}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -82,7 +78,6 @@ export function CoordinateSystem() {
               planParams={{ point: "1" }}
               title="Set Fiducial 1"
               btnVariant="contained"
-              sx={buttonStyle}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -92,7 +87,6 @@ export function CoordinateSystem() {
               planParams={{ point: "2" }}
               title="Set Fiducial 2"
               btnVariant="contained"
-              sx={buttonStyle}
             />
           </Grid2>
           <Grid2 size={6}>
@@ -101,7 +95,6 @@ export function CoordinateSystem() {
               planName="cs_maker"
               title="Create the coordinate system on the pmac."
               btnVariant="contained"
-              sx={buttonStyle}
             />
           </Grid2>
           <Grid2 size={6}>
@@ -110,7 +103,6 @@ export function CoordinateSystem() {
               planName="block_check"
               title="Check the coordinate system was set up correctly."
               btnVariant="contained"
-              sx={buttonStyle}
             />
           </Grid2>
         </Grid2>

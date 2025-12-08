@@ -29,6 +29,30 @@ type RunPlanButtonProps = {
   typographySx?: object;
 };
 
+const containedButtonStyles = {
+  color: "white",
+  padding: "12px",
+  backgroundColor: "#1c2025",
+  width: "90%",
+  height: "85%",
+};
+
+const outlinedButtonStyles = {
+  color: "white",
+  border: "2px solid #423a3aff",
+  height: "100%",
+  width: "100%",
+  padding: "12px",
+};
+
+function _calculateButtonVariantStyling(variant: VariantChoice) {
+  if (variant === "contained") {
+    return containedButtonStyles;
+  } else if (variant === "outlined") {
+    return outlinedButtonStyles;
+  }
+}
+
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
   const [msg, setMsg] = React.useState<string>("Running plan...");
@@ -42,6 +66,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const size = props.btnSize ? props.btnSize : "medium";
   const color = props.btnColor ? props.btnColor : "custom";
   const disabled = props.disabled ? props.disabled : false;
+  const buttonStyles = _calculateButtonVariantStyling(variant);
   const sx = props.sx ? props.sx : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
@@ -56,14 +81,14 @@ export function RunPlanButton(props: RunPlanButtonProps) {
       }).catch((error) => {
         setSeverity("error");
         setMsg(
-          `Failed to run plan ${props.planName}, see console and logs for full error`,
+          `Failed to run plan ${props.planName}, see console and logs for full error`
         );
         console.log(`${msg}. Reason: ${error}`);
       });
     } catch (error) {
       setSeverity("error");
       setMsg(
-        `Failed to run plan ${props.planName}, please check visit PV is set.`,
+        `Failed to run plan ${props.planName}, please check visit PV is set.`
       );
       console.log(`An error occurred ${error}`);
     }
@@ -71,7 +96,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
 
   const handleSnackbarClose = (
     _event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
+    reason?: SnackbarCloseReason
   ) => {
     if (reason === "clickaway") {
       return;
@@ -129,7 +154,7 @@ export function AbortButton() {
 
   const handleMsgClose = (
     _event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
+    reason?: SnackbarCloseReason
   ) => {
     if (reason === "clickaway") {
       return;
