@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { abortCurrentPlan, submitAndRunPlanImmediately } from "./blueapi";
 import {
   Alert,
@@ -16,7 +16,7 @@ type ButtonSize = "small" | "medium" | "large";
 type ButtonColor = "primary" | "secondary" | "custom";
 
 type RunPlanButtonProps = {
-  btnLabel: string;
+  btnLabel: string | ReactNode;
   planName: string;
   planParams?: object;
   title?: string;

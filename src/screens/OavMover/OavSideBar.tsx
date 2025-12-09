@@ -8,7 +8,7 @@ import {
   KeyboardDoubleArrowDown,
   KeyboardDoubleArrowRight,
 } from "@mui/icons-material";
-import { Box, Button, useTheme, Tab, Tabs } from "@mui/material";
+import { Box, useTheme, Tab, Tabs } from "@mui/material";
 import { SelectionWithPlanRunner } from "../../components/SelectionControl";
 import { BacklightPositions, ZoomLevels } from "../../pv/enumPvValues";
 import { PvDescription } from "../../pv/types";
@@ -27,15 +27,6 @@ const arrowsBoxStyle = {
   display: "grid",
   gridTemplateColumns: "repeat(5, 1fr)",
   gap: "10px",
-};
-
-const buttonStyle = {
-  color: "white",
-  border: "2px solid #423a3aff",
-  height: "100%",
-  width: "100%",
-  minHeight: 0,
-  minWidth: 0,
 };
 
 function BlockMove(props: TabPanelProps) {
@@ -83,40 +74,58 @@ function NudgeMove(props: TabPanelProps) {
     <Box sx={arrowsBoxStyle}>
       <Box /> <Box />
       <RunPlanButton
-        btnLabel={"Y + Y"}
-        planName={"move_block_on_arrow_click"}
-        planParams={{ direction: "down" }}
+        btnLabel={<KeyboardDoubleArrowUp />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "up", size_of_move: "big" }}
         btnVariant="outlined"
       />
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowUp />
-      </Button>
       <Box /> <Box /> <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardArrowUp />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardArrowUp />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "up", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowLeft />
-      </Button>
-      <Button sx={buttonStyle}>
-        <KeyboardArrowLeft />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardDoubleArrowLeft />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "left", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
+      <RunPlanButton
+        btnLabel={<KeyboardArrowLeft />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "left", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
       <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardArrowRight />
-      </Button>
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowRight />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardArrowRight />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "right", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
+      <RunPlanButton
+        btnLabel={<KeyboardDoubleArrowRight />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "right", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardArrowDown />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardArrowDown />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "down", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box /> <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowDown />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardDoubleArrowDown />}
+        planName={"move_nudge_on_arrow_click"}
+        planParams={{ direction: "down", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
     </Box>
   );
 }
@@ -127,35 +136,59 @@ function WindowMove(props: TabPanelProps) {
   return (
     <Box sx={arrowsBoxStyle}>
       <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowUp />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardDoubleArrowUp />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "up", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box /> <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardArrowUp />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardArrowUp />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "up", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowLeft />
-      </Button>
-      <Button sx={buttonStyle}>
-        <KeyboardArrowLeft />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardDoubleArrowLeft />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "left", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
+      <RunPlanButton
+        btnLabel={<KeyboardArrowLeft />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "left", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
       <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardArrowRight />
-      </Button>
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowRight />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardArrowRight />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "right", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
+      <RunPlanButton
+        btnLabel={<KeyboardDoubleArrowRight />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "right", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardArrowDown />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardArrowDown />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "down", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
       <Box /> <Box /> <Box /> <Box />
-      <Button sx={buttonStyle}>
-        <KeyboardDoubleArrowDown />
-      </Button>
+      <RunPlanButton
+        btnLabel={<KeyboardDoubleArrowDown />}
+        planName={"move_window_on_arrow_click"}
+        planParams={{ direction: "down", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
     </Box>
   );
 }
