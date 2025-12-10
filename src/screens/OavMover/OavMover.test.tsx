@@ -4,11 +4,12 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "@diamondlightsource/cs-web-lib";
 import "@testing-library/jest-dom/vitest";
+import { usePvwsConfig } from "../../config.ts";
 
 describe("OavMover Components", () => {
   it("should display all of the various components ", () => {
     render(
-      <Provider store={store}>
+      <Provider store={store(usePvwsConfig)}>
         <OavMover />
       </Provider>,
     );

@@ -4,25 +4,62 @@ import "./index.css";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import { store } from "@diamondlightsource/cs-web-lib";
-import { BrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// import { loadConfig } from "./config.ts";
+import { usePvwsConfig } from "./config.ts";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@diamondlightsource/sci-react-ui";
 import { I24DiamondTheme } from "./CustomTheme.tsx";
+import { BeamlineI24 } from "routes/BeamlineI24.tsx";
+import { FixedTarget } from "routes/FixedTarget.tsx";
+import { Extruder } from "routes/Extruder.tsx";
 
 const queryClient = new QueryClient();
 
 const container = document.getElementById("root");
 if (!container) throw new Error("Failed to find the root element");
 
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+      children: [
+        {
+          index: true,
+          element: <BeamlineI24 />,
+        },
+        {
+          path: "fixed-target",
+          element: <FixedTarget />,
+        },
+        {
+          path: "extruder",
+          element: <Extruder />,
+        },
+      ],
+    },
+  ],
+  { basename: "/mx-daq-ui/" },
+);
+
+// const usePvwsConfig = () => {
+//   const [config, setConfig] = useState<CsWebLibConfig | null>(null);
+//   useEffect(() => {
+//     loadConfig().then((config) => {
+//       setConfig(config);
+//     });
+//   }, []);
+//   return config;
+// };
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={I24DiamondTheme}>
-      <Provider store={store}>
+      <Provider store={store(usePvwsConfig)}>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter basename="/mx-daq-ui/">
-            <App />
-          </BrowserRouter>
+          <RouterProvider router={router} />
         </QueryClientProvider>
       </Provider>
     </ThemeProvider>
