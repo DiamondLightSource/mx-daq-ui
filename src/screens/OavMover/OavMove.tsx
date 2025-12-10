@@ -190,6 +190,41 @@ function WindowMove(props: TabPanelProps) {
   );
 }
 
+function FocusMove(props: TabPanelProps) {
+  if (props.value !== props.index) return null;
+
+  return (
+    <Box
+      sx={{ ...arrowsBoxStyle, py: 2, gridTemplateColumns: "repeat(4, 1fr)" }}
+    >
+      <RunPlanButton
+        btnLabel={"IN x3"}
+        planName={"focus_on_oav_view"}
+        planParams={{ direction: "in", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
+      <RunPlanButton
+        btnLabel={"IN"}
+        planName={"focus_on_oav_view"}
+        planParams={{ direction: "in", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
+      <RunPlanButton
+        btnLabel={"OUT"}
+        planName={"focus_on_oav_view"}
+        planParams={{ direction: "out", size_of_move: "small" }}
+        btnVariant="outlined"
+      />
+      <RunPlanButton
+        btnLabel={"OUT x3"}
+        planName={"focus_on_oav_view"}
+        planParams={{ direction: "out", size_of_move: "big" }}
+        btnVariant="outlined"
+      />
+    </Box>
+  );
+}
+
 export function MoveArrows() {
   const theme = useTheme();
 
@@ -223,11 +258,13 @@ export function MoveArrows() {
           <Tab label="Nudge" />
           <Tab label="Window" />
           <Tab label="Block" />
+          <Tab label="Focus" />
         </Tabs>
       </Box>
       <NudgeMove value={value} index={0} />
       <WindowMove value={value} index={1} />
       <BlockMove value={value} index={2} />
+      <FocusMove value={value} index={3} />
     </Box>
   );
 }
