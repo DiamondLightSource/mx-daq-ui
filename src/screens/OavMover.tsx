@@ -32,6 +32,7 @@ import { BacklightPositions, ZoomLevels } from "../pv/enumPvValues";
 import oxfordChipDiagram from "../assets/Oxford Chip Diagram.excalidraw.svg";
 import { RunPlanButton } from "../blueapi/BlueapiComponents";
 import { parseInstrumentSession, readVisitFromPv } from "../blueapi/visit";
+import { buttonStyles } from "../blueapi/BlueapiComponentStyling";
 
 function BacklightControl(props: PvDescription) {
   const theme = useTheme();
@@ -206,6 +207,8 @@ export function PresetMovements() {
           planParams={{ place: "collect_position" }}
           title="Move into position for collection"
           btnSize="small"
+          btnVariant="contained"
+          sx={buttonStyles}
         />
         <RunPlanButton
           btnLabel="Load Position"
@@ -213,6 +216,8 @@ export function PresetMovements() {
           planParams={{ place: "load_position" }}
           title="Move hardware for sample loading"
           btnSize="small"
+          btnVariant="contained"
+          sx={buttonStyles}
         />
         <RunPlanButton
           btnLabel="Microdrop align"
@@ -220,6 +225,8 @@ export function PresetMovements() {
           planParams={{ place: "microdrop_position" }}
           title="Align microdrop"
           btnSize="small"
+          btnVariant="contained"
+          sx={buttonStyles}
         />
       </Stack>
     </Box>
@@ -280,6 +287,7 @@ export function CoordinateSystem() {
               title="Go to Fiducial 0"
               btnVariant="contained"
               btnSize="large"
+              sx={buttonStyles}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -290,6 +298,7 @@ export function CoordinateSystem() {
               title="Go to Fiducial 1"
               btnVariant="contained"
               btnSize="large"
+              sx={buttonStyles}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -300,6 +309,7 @@ export function CoordinateSystem() {
               title="Go to Fiducial 2"
               btnVariant="contained"
               btnSize="large"
+              sx={buttonStyles}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -308,6 +318,7 @@ export function CoordinateSystem() {
               planName="gui_set_fiducial_0"
               title="Set Fiducial 0"
               btnVariant="contained"
+              sx={buttonStyles}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -317,6 +328,7 @@ export function CoordinateSystem() {
               planParams={{ point: "1" }}
               title="Set Fiducial 1"
               btnVariant="contained"
+              sx={buttonStyles}
             />
           </Grid2>
           <Grid2 size={4}>
@@ -326,6 +338,7 @@ export function CoordinateSystem() {
               planParams={{ point: "2" }}
               title="Set Fiducial 2"
               btnVariant="contained"
+              sx={buttonStyles}
             />
           </Grid2>
           <Grid2 size={6}>
@@ -334,6 +347,7 @@ export function CoordinateSystem() {
               planName="cs_maker"
               title="Create the coordinate system on the pmac."
               btnVariant="contained"
+              sx={buttonStyles}
             />
           </Grid2>
           <Grid2 size={6}>
@@ -342,6 +356,7 @@ export function CoordinateSystem() {
               planName="block_check"
               title="Check the coordinate system was set up correctly."
               btnVariant="contained"
+              sx={buttonStyles}
             />
           </Grid2>
         </Grid2>

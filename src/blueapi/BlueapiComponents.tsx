@@ -29,14 +29,6 @@ type RunPlanButtonProps = {
   typographySx?: object;
 };
 
-const buttonStyles = {
-  color: "white",
-  padding: "12px",
-  backgroundColor: "#1c2025",
-  width: "90%",
-  height: "85%",
-};
-
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
   const [msg, setMsg] = React.useState<string>("Running plan...");
@@ -48,9 +40,9 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
   const size = props.btnSize ? props.btnSize : "medium";
-  const color = props.btnColor ? props.btnColor : "primary";
+  const color = props.btnColor ? props.btnColor : "custom";
   const disabled = props.disabled ? props.disabled : false;
-  const sx = props.sx ? { ...buttonStyles, ...props.sx } : buttonStyles; // Style for the button component which is the most likely to be customised
+  const sx = props.sx ? props.sx : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
