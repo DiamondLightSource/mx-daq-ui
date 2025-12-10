@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { abortCurrentPlan, submitAndRunPlanImmediately } from "./blueapi";
 import {
   Alert,
@@ -13,28 +13,45 @@ import { parseInstrumentSession, readVisitFromPv } from "./visit";
 type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
 type ButtonSize = "small" | "medium" | "large";
+type ButtonColor = "primary" | "secondary" | "custom";
 
 type RunPlanButtonProps = {
-  btnLabel: string;
+  btnLabel: string | ReactNode;
   planName: string;
   planParams?: object;
   title?: string;
   btnVariant?: VariantChoice;
   btnSize?: ButtonSize;
+  btnColor?: ButtonColor;
+  disabled?: boolean;
+  sx?: object;
+  tooltipSx?: object;
+  typographySx?: object;
 };
 
-// @{todo} Ideally we should be able to set up the stylings for
-// a custom button in the proper way by doing something like:
-// const CustomRunButton = styled(Button)({
-//   width: "100%",
-//   height: "85%",
-//   color: "var(--color)",
-//   backgroundColor: "var(--backgroundColor)",
-//   padding: "var(--padding)",
-//   margin: "var(--margin)",
-// });
-// This will be another PR
-// See https://github.com/DiamondLightSource/mx-daq-ui/issues/71
+const containedButtonStyles = {
+  color: "white",
+  padding: "12px",
+  backgroundColor: "#1c2025",
+  width: "90%",
+  height: "85%",
+};
+
+const outlinedButtonStyles = {
+  color: "white",
+  border: "2px solid #423a3aff",
+  height: "100%",
+  width: "100%",
+  padding: "12px",
+};
+
+function _calculateButtonVariantStyling(variant: VariantChoice) {
+  if (variant === "contained") {
+    return containedButtonStyles;
+  } else if (variant === "outlined") {
+    return outlinedButtonStyles;
+  }
+}
 
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
@@ -47,6 +64,12 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
   const size = props.btnSize ? props.btnSize : "medium";
+  const color = props.btnColor ? props.btnColor : "primary";
+  const disabled = props.disabled ? props.disabled : false;
+
+  const buttonStyles = _calculateButtonVariantStyling(variant);
+  const sx = props.sx ? { ...buttonStyles, ...props.sx } : buttonStyles; // Style for the button component which is the most likely to be customised
+  const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
     setOpenSnackbar(true);
@@ -85,18 +108,25 @@ export function RunPlanButton(props: RunPlanButtonProps) {
 
   return (
     <div>
-      <Tooltip title={props.title ? props.title : ""} placement="bottom">
+      <Tooltip
+        title={props.title ? props.title : ""}
+        placement="bottom"
+        slotProps={{
+          tooltip: {
+            sx: tooltipSx,
+          },
+        }}
+        arrow
+      >
         <Button
           variant={variant}
-          color="custom"
+          color={color}
           size={size}
+          disabled={disabled}
           onClick={handleClick}
+          sx={sx}
         >
-          <Typography
-            variant="button"
-            fontWeight="fontWeightBold"
-            sx={{ display: "block" }}
-          >
+          <Typography variant="button" fontWeight="fontWeightBold">
             {props.btnLabel}
           </Typography>
         </Button>

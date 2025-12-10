@@ -1,93 +1,34 @@
-import {
-  ArrowUpwardRounded,
-  ArrowBackRounded,
-  ArrowForwardRounded,
-  ArrowDownwardRounded,
-} from "@mui/icons-material";
-import { Box, Grid2, Button, useTheme } from "@mui/material";
-import { SelectionWithPlanRunner } from "../../components/SelectionControl";
-import { BacklightPositions, ZoomLevels } from "../../pv/enumPvValues";
-import { PvDescription } from "../../pv/types";
+import { Grid2 } from "@mui/material";
+import { CoordinateSystem } from "./CoordinateSystem";
+import { PresetPositionsSideDrawer } from "./PresetDrawer";
+import { MoveArrows } from "./OavMove";
+import { BacklightControl, ZoomControl } from "./OavController";
 
-export function MoveArrows() {
-  const theme = useTheme();
+export function OAVSideBar() {
   return (
-    <Box
-      bgcolor={theme.palette.background.paper}
-      borderRadius={5}
-      paddingTop={1}
-      paddingBottom={1}
+    <Grid2
+      size={3}
+      sx={{
+        height: "95vh", // Height set to 95vh to span height of screen but to also leave 5vh space for the top navigation header.
+        overflowY: "auto",
+        padding: 2,
+        boxSizing: "border-box",
+      }}
     >
-      <Grid2 container spacing={0} columns={3}>
-        <Grid2 size={3}>
-          <b>Nudge sample:</b>
-        </Grid2>
-        <Grid2 size={1} />{" "}
-        <Grid2 size={1}>
-          <Button>
-            <ArrowUpwardRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />
-        <Grid2 size={1}>
-          <Button>
-            <ArrowBackRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />
-        <Grid2 size={1}>
-          <Button>
-            <ArrowForwardRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />{" "}
-        <Grid2 size={1}>
-          <Button>
-            <ArrowDownwardRounded />
-          </Button>
-        </Grid2>{" "}
-        <Grid2 size={1} />
-      </Grid2>
-    </Box>
-  );
-}
-
-export function BacklightControl(props: PvDescription) {
-  const theme = useTheme();
-  return (
-    <Box
-      bgcolor={theme.palette.background.paper}
-      borderRadius={5}
-      paddingTop={1}
-      paddingBottom={1}
-    >
-      <SelectionWithPlanRunner
-        pv={props.pv}
-        label={props.label}
-        id="Backlight"
-        plan_name="gui_move_backlight"
-        choices={BacklightPositions}
+      <MoveArrows />
+      <Grid2 size={3} padding={1} />
+      <BacklightControl
+        label="backlight-pos"
+        pv="ca://BL24I-MO-BL-01:MP:SELECT"
       />
-    </Box>
-  );
-}
-
-export function ZoomControl(props: PvDescription) {
-  const theme = useTheme();
-  return (
-    <Box
-      bgcolor={theme.palette.background.paper}
-      borderRadius={5}
-      paddingTop={1}
-      paddingBottom={1}
-    >
-      <SelectionWithPlanRunner
-        pv={props.pv}
-        label={props.label}
-        id="ZoomControl"
-        plan_name="gui_set_zoom_level"
-        choices={ZoomLevels}
+      <ZoomControl
+        label="zoom-level"
+        pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
       />
-    </Box>
+      <hr />
+      <CoordinateSystem />
+      <hr />
+      <PresetPositionsSideDrawer />
+    </Grid2>
   );
 }
