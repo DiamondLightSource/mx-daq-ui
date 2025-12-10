@@ -1,8 +1,8 @@
 import { Grid2 } from "@mui/material";
-import { CoordinateSystem } from "./CoordinateSystem";
-import { PresetPositionsSideDrawer } from "./PresetDrawer";
-import { MoveArrows } from "./OavMove";
-import { BacklightControl, ZoomControl } from "./OavController";
+import { CoordinateSystem } from "./OAVCoordinateSystem";
+import { PresetPositionsSideDrawer } from "./OAVPresetDrawer";
+import { MoveArrows } from "./OAVMoveController";
+import { BacklightControl, ZoomControl } from "./OAVDeviceSettings";
 
 export function OAVSideBar() {
   return (

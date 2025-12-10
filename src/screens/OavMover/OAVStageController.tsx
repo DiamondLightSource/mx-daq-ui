@@ -3,9 +3,10 @@ import { OavVideoStream } from "../../components/OavVideoStream";
 
 import { submitAndRunPlanImmediately } from "../../blueapi/blueapi";
 import { parseInstrumentSession, readVisitFromPv } from "../../blueapi/visit";
-import { OAVSideBar } from "./OavSideBar";
+import { OAVSideBar } from "./OAVSideBar";
 
 export function OavMover() {
+  // #Issue 86: Remove these constants
   const crosshairX = 200;
   const crosshairY = 200;
   const pixelsPerMicron = 1.25;
