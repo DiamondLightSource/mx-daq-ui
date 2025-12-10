@@ -29,6 +29,16 @@ const arrowsBoxStyle = {
   gap: "10px",
 };
 
+const arrowsScreenSizing = {
+  minWidth: {
+    lg: "32px",
+    xl: "64px",
+  },
+  width: {
+    lg: "32px",
+  },
+};
+
 function BlockMove(props: TabPanelProps) {
   if (props.value !== props.index) return null;
 
@@ -78,6 +88,7 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -85,6 +96,7 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -92,12 +104,14 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardArrowLeft />}
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box />
       <RunPlanButton
@@ -105,12 +119,14 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardDoubleArrowRight />}
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -118,6 +134,7 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -125,6 +142,7 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
     </Box>
   );
@@ -141,6 +159,7 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -148,6 +167,7 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -155,12 +175,14 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardArrowLeft />}
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box />
       <RunPlanButton
@@ -168,12 +190,14 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardDoubleArrowRight />}
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -181,6 +205,7 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "small" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -188,6 +213,7 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "big" }}
         btnVariant="outlined"
+        sx={arrowsScreenSizing}
       />
     </Box>
   );

@@ -14,6 +14,7 @@ type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
 type ButtonSize = "small" | "medium" | "large";
 type ButtonColor = "primary" | "secondary" | "custom";
+type ButtonStyleTemplates = "containedButtonStyles" | "outlinedButtonStyles";
 
 type RunPlanButtonProps = {
   btnLabel: string | ReactNode;
@@ -24,34 +25,11 @@ type RunPlanButtonProps = {
   btnSize?: ButtonSize;
   btnColor?: ButtonColor;
   disabled?: boolean;
+  styleTemplate?: ButtonStyleTemplates;
   sx?: object;
   tooltipSx?: object;
   typographySx?: object;
 };
-
-const containedButtonStyles = {
-  color: "white",
-  padding: "12px",
-  backgroundColor: "#1c2025",
-  width: "90%",
-  height: "85%",
-};
-
-const outlinedButtonStyles = {
-  color: "white",
-  border: "2px solid #423a3aff",
-  height: "100%",
-  width: "100%",
-  padding: "12px",
-};
-
-function _calculateButtonVariantStyling(variant: VariantChoice) {
-  if (variant === "contained") {
-    return containedButtonStyles;
-  } else if (variant === "outlined") {
-    return outlinedButtonStyles;
-  }
-}
 
 export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
@@ -66,8 +44,8 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const size = props.btnSize ? props.btnSize : "medium";
   const color = props.btnColor ? props.btnColor : "custom";
   const disabled = props.disabled ? props.disabled : false;
-  // const buttonStyles = _calculateButtonVariantStyling(variant);
-  const sx = props.sx ? props.sx : {}; // Style for the button component which is the most likely to be customised
+  const buttonStyles = props.styleTemplate ? props.styleTemplate : {};
+  const sx = props.sx ? { ...buttonStyles, ...props.sx } : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
