@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { RunPlanButton } from "../../blueapi/BlueapiComponents";
 import oxfordChipDiagram from "../../assets/Oxford Chip Diagram.excalidraw.svg";
+import { buttonStyle } from "blueapi/BlueapiComponentsStyling";
 
 export function CoordinateSystem() {
   const [open, setOpen] = React.useState(false);
@@ -20,14 +21,6 @@ export function CoordinateSystem() {
   };
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const buttonStyle = {
-    color: "white",
-    padding: "12px",
-    backgroundColor: "#1c2025",
-    width: "90%",
-    height: "85%",
   };
 
   return (
