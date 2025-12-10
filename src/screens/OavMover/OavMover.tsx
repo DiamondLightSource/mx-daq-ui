@@ -1,18 +1,14 @@
 import { Box, Grid2, useTheme } from "@mui/material";
 import { OavVideoStream } from "../../components/OavVideoStream";
-import { useState } from "react";
 
 import { submitAndRunPlanImmediately } from "../../blueapi/blueapi";
 import { parseInstrumentSession, readVisitFromPv } from "../../blueapi/visit";
-import { BeamCentre, PixelsToMicrons } from "./OavControlHelper";
-import { CoordinateSystem } from "./CoordinateSystem";
-import { PresetPositionsSideDrawer } from "./PresetDrawer";
-import { BacklightControl, MoveArrows, ZoomControl } from "./OavSideBar";
+import { OAVSideBar } from "./OavSideBar";
 
 export function OavMover() {
-  const [crosshairX, setCrosshairX] = useState<number>(200);
-  const [crosshairY, setCrosshairY] = useState<number>(200);
-  const [pixelsPerMicron, setPixelsPerMicron] = useState<number>(1.25);
+  const crosshairX = 200;
+  const crosshairY = 200;
+  const pixelsPerMicron = 1.25;
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
 
@@ -54,35 +50,7 @@ export function OavMover() {
             />
           </Box>
         </Grid2>
-        <Grid2
-          size={3}
-          sx={{
-            height: "95vh", // Height set to 95vh to span height of screen but to also leave 5vh space for the top navigation header.
-            overflowY: "auto",
-            padding: 2,
-            boxSizing: "border-box",
-          }}
-        >
-          <MoveArrows />
-          <Grid2 size={3} padding={1} />
-          <BeamCentre
-            setCrosshairX={setCrosshairX}
-            setCrosshairY={setCrosshairY}
-          />
-          <PixelsToMicrons setPixelsPerMicron={setPixelsPerMicron} />
-          <BacklightControl
-            label="backlight-pos"
-            pv="ca://BL24I-MO-BL-01:MP:SELECT"
-          />
-          <ZoomControl
-            label="zoom-level"
-            pv="ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT"
-          />
-          <hr />
-          <CoordinateSystem />
-          <hr />
-          <PresetPositionsSideDrawer />
-        </Grid2>
+        <OAVSideBar />
       </Grid2>
     </div>
   );
