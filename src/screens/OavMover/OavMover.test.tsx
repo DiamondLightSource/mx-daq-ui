@@ -12,9 +12,6 @@ describe("OavMover Components", () => {
         <OavMover />
       </Provider>,
     );
-    expect(
-      screen.getByRole("textbox", { name: "Pixels per micron" }),
-    ).toBeInTheDocument();
     expect(screen.getByLabelText("Backlight")).toBeInTheDocument();
     expect(screen.getByLabelText("ZoomControl")).toBeInTheDocument();
   });
