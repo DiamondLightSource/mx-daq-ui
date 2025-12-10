@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { abortCurrentPlan, submitAndRunPlanImmediately } from "./blueapi";
 import {
   Alert,
@@ -14,9 +14,10 @@ type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
 type ButtonSize = "small" | "medium" | "large";
 type ButtonColor = "primary" | "secondary" | "custom";
+type ButtonStyleTemplates = "containedButtonStyles" | "outlinedButtonStyles";
 
 type RunPlanButtonProps = {
-  btnLabel: string;
+  btnLabel: string | ReactNode;
   planName: string;
   planParams?: object;
   title?: string;
@@ -24,6 +25,7 @@ type RunPlanButtonProps = {
   btnSize?: ButtonSize;
   btnColor?: ButtonColor;
   disabled?: boolean;
+  styleTemplate?: ButtonStyleTemplates;
   sx?: object;
   tooltipSx?: object;
   typographySx?: object;
@@ -42,7 +44,8 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const size = props.btnSize ? props.btnSize : "medium";
   const color = props.btnColor ? props.btnColor : "custom";
   const disabled = props.disabled ? props.disabled : false;
-  const sx = props.sx ? props.sx : {}; // Style for the button component which is the most likely to be customised
+  const buttonStyles = props.styleTemplate ? props.styleTemplate : {};
+  const sx = props.sx ? { ...buttonStyles, ...props.sx } : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
   const handleClick = () => {
