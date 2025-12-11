@@ -1,10 +1,10 @@
-import { Box, Typography, useTheme } from "@mui/material";
-import { ParamsPanel } from "screens/CollectionPanel";
-import { ReadOnlyInputs } from "components/ReadOnlyInputs";
+import { Box, Grid2, Typography, useTheme } from "@mui/material";
+import { ParamsPanel } from "../screens/CollectionPanel";
+import { CollectDarksPanel } from "../components/JungFrau/CollectDarksPanel";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackScreen } from "screens/FallbackScreen";
 
-export function FixedTarget() {
+export function JfRotation() {
   const theme = useTheme();
   return (
     <ErrorBoundary fallback={<FallbackScreen />}>
@@ -17,13 +17,14 @@ export function FixedTarget() {
             fontWeight: "fontWeightBold",
           }}
         >
-          Fixed Target Data Collection Setup
+          Jungfrau Rotation Scans Setup
         </Typography>
-        <ReadOnlyInputs
-          visit="ca://BL24I-MO-IOC-13:GP100"
-          detector="ca://BL24I-MO-IOC-13:GP101"
-        />
-        <ParamsPanel expt="fixed-target" />
+        <Grid2 container marginTop={2} spacing={2}>
+          <Grid2 size={5}>
+            <CollectDarksPanel />
+          </Grid2>
+          <ParamsPanel expt="jf" />
+        </Grid2>
       </Box>
     </ErrorBoundary>
   );

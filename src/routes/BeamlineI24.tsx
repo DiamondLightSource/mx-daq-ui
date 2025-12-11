@@ -3,6 +3,8 @@ import { BeamlineStatsTabPanel } from "screens/BeamlineStats";
 import { DetectorMotionTabPanel } from "screens/DetectorMotion";
 import { OavMover } from "screens/OavMover/OavMover";
 import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { FallbackScreen } from "screens/FallbackScreen";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,36 +43,38 @@ export function BeamlineI24() {
     setTab(newTab);
   };
   return (
-    <Box>
-      <Box
-        component="section"
-        sx={{
-          borderBottom: 1,
-          borderColor: "divider",
-          color: theme.palette.text.secondary,
-        }}
-      >
-        <Tabs
-          value={tab}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          textColor="secondary"
-          centered
+    <ErrorBoundary fallback={<FallbackScreen />}>
+      <Box>
+        <Box
+          component="section"
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            color: theme.palette.text.secondary,
+          }}
         >
-          <Tab label="Beamline info" {...a11yProps(0)} />
-          <Tab label="Detector position" {...a11yProps(1)} />
-          <Tab label="OAV view" {...a11yProps(2)} />
-        </Tabs>
+          <Tabs
+            value={tab}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            textColor="secondary"
+            centered
+          >
+            <Tab label="Beamline info" {...a11yProps(0)} />
+            <Tab label="Detector position" {...a11yProps(1)} />
+            <Tab label="OAV view" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={tab} index={0}>
+          <BeamlineStatsTabPanel />
+        </CustomTabPanel>
+        <CustomTabPanel value={tab} index={1}>
+          <DetectorMotionTabPanel />
+        </CustomTabPanel>
+        <CustomTabPanel value={tab} index={2}>
+          <OavMover />
+        </CustomTabPanel>
       </Box>
-      <CustomTabPanel value={tab} index={0}>
-        <BeamlineStatsTabPanel />
-      </CustomTabPanel>
-      <CustomTabPanel value={tab} index={1}>
-        <DetectorMotionTabPanel />
-      </CustomTabPanel>
-      <CustomTabPanel value={tab} index={2}>
-        <OavMover />
-      </CustomTabPanel>
-    </Box>
+    </ErrorBoundary>
   );
 }
