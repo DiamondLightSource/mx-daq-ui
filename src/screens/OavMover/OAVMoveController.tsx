@@ -1,19 +1,16 @@
 import {
-  KeyboardDoubleArrowLeft,
-  KeyboardArrowLeft,
   KeyboardDoubleArrowUp,
   KeyboardArrowUp,
+  KeyboardDoubleArrowLeft,
+  KeyboardArrowLeft,
   KeyboardArrowRight,
+  KeyboardDoubleArrowRight,
   KeyboardArrowDown,
   KeyboardDoubleArrowDown,
-  KeyboardDoubleArrowRight,
 } from "@mui/icons-material";
-import { Box, useTheme, Tab, Tabs } from "@mui/material";
-import { SelectionWithPlanRunner } from "../../components/SelectionControl";
-import { BacklightPositions, ZoomLevels } from "../../pv/enumPvValues";
-import { PvDescription } from "../../pv/types";
-import { useState } from "react";
+import { Box, Tabs, Tab, useTheme } from "@mui/material";
 import { RunPlanButton } from "blueapi/BlueapiComponents";
+import { useState } from "react";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -27,16 +24,6 @@ const arrowsBoxStyle = {
   display: "grid",
   gridTemplateColumns: "repeat(5, 1fr)",
   gap: "10px",
-};
-
-const arrowsScreenSizing = {
-  minWidth: {
-    lg: "32px",
-    xl: "64px",
-  },
-  width: {
-    lg: "32px",
-  },
 };
 
 function BlockMove(props: TabPanelProps) {
@@ -88,7 +75,6 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -96,7 +82,6 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -104,14 +89,12 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardArrowLeft />}
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box />
       <RunPlanButton
@@ -119,14 +102,12 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardDoubleArrowRight />}
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -134,7 +115,6 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -142,7 +122,6 @@ function NudgeMove(props: TabPanelProps) {
         planName={"move_nudge_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
     </Box>
   );
@@ -159,7 +138,6 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -167,7 +145,6 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "up", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -175,14 +152,12 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardArrowLeft />}
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "left", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box />
       <RunPlanButton
@@ -190,14 +165,12 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <RunPlanButton
         btnLabel={<KeyboardDoubleArrowRight />}
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "right", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -205,7 +178,6 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "small" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -213,7 +185,6 @@ function WindowMove(props: TabPanelProps) {
         planName={"move_window_on_arrow_click"}
         planParams={{ direction: "down", size_of_move: "big" }}
         btnVariant="outlined"
-        sx={arrowsScreenSizing}
       />
     </Box>
   );
@@ -257,46 +228,6 @@ export function MoveArrows() {
       <NudgeMove value={value} index={0} />
       <WindowMove value={value} index={1} />
       <BlockMove value={value} index={2} />
-    </Box>
-  );
-}
-
-export function BacklightControl(props: PvDescription) {
-  const theme = useTheme();
-  return (
-    <Box
-      bgcolor={theme.palette.background.paper}
-      borderRadius={5}
-      paddingTop={1}
-      paddingBottom={1}
-    >
-      <SelectionWithPlanRunner
-        pv={props.pv}
-        label={props.label}
-        id="Backlight"
-        plan_name="gui_move_backlight"
-        choices={BacklightPositions}
-      />
-    </Box>
-  );
-}
-
-export function ZoomControl(props: PvDescription) {
-  const theme = useTheme();
-  return (
-    <Box
-      bgcolor={theme.palette.background.paper}
-      borderRadius={5}
-      paddingTop={1}
-      paddingBottom={1}
-    >
-      <SelectionWithPlanRunner
-        pv={props.pv}
-        label={props.label}
-        id="ZoomControl"
-        plan_name="gui_set_zoom_level"
-        choices={ZoomLevels}
-      />
     </Box>
   );
 }
