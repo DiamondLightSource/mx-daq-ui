@@ -9,12 +9,12 @@ import { usePvwsConfig } from "../../config.ts";
 describe("OavMover Components", () => {
   it("should display all of the various components ", () => {
     render(
-      <Provider store={store(usePvwsConfig)}>
+      <Provider store={store(usePvwsConfig())}>
         <OavMover />
-      </Provider>,
+      </Provider>
     );
     expect(
-      screen.getByRole("textbox", { name: "Pixels per micron" }),
+      screen.getByRole("textbox", { name: "Pixels per micron" })
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Backlight")).toBeInTheDocument();
     expect(screen.getByLabelText("ZoomControl")).toBeInTheDocument();
