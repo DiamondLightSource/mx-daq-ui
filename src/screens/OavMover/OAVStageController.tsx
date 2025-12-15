@@ -6,7 +6,7 @@ import { parseInstrumentSession, readVisitFromPv } from "../../blueapi/visit";
 import { OAVSideBar } from "./OAVSideBar";
 
 export function OavMover() {
-  // #Issue 86: Remove these constants
+  // #Issue 86: Remove these constants - https://github.com/DiamondLightSource/mx-daq-ui/issues/86
   const crosshairX = 200;
   const crosshairY = 200;
   const pixelsPerMicron = 1.25;
