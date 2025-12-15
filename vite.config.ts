@@ -19,7 +19,6 @@ export default defineConfig({
       pv: path.resolve(__dirname, "./src/pv"),
       routes: path.resolve(__dirname, "./src/routes"),
       screens: path.resolve(__dirname, "./src/screens"),
-      public: path.resolve(__dirname, "./public"),
     },
   },
   base: "/mx-daq-ui/",

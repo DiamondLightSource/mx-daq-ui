@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 
 export const loadConfig = async (): Promise<CsWebLibConfig> => {
   let config;
-  //   if (config) {
-  //     return config;
-  //   }
+  if (config) {
+    return config;
+  }
   try {
     // Point towards your file location
-    const response = await fetch("/pvwsconfig.json");
+    const response = await fetch("/mx-daq-ui/public/pvwsconfig.json");
     config = await response.json();
   } catch (error) {
     console.warn("Configuration not found falling back to defaults", error);

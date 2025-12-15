@@ -11,10 +11,10 @@ describe("OavMover Components", () => {
     render(
       <Provider store={store(usePvwsConfig())}>
         <OavMover />
-      </Provider>
+      </Provider>,
     );
     expect(
-      screen.getByRole("textbox", { name: "Pixels per micron" })
+      screen.getByRole("textbox", { name: "Pixels per micron" }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Backlight")).toBeInTheDocument();
     expect(screen.getByLabelText("ZoomControl")).toBeInTheDocument();

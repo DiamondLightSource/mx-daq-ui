@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BeamlineI24 } from "routes/BeamlineI24.tsx";
 import { FixedTarget } from "routes/FixedTarget.tsx";
 import { Extruder } from "routes/Extruder.tsx";
-import { loadConfig, usePvwsConfig } from "./config.ts";
+import { loadConfig } from "./config.ts";
 import { useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
@@ -36,7 +36,7 @@ const router = createBrowserRouter(
       ],
     },
   ],
-  { basename: "/mx-daq-ui/" }
+  { basename: "/mx-daq-ui/" },
 );
 
 function AppLayout() {
@@ -65,18 +65,14 @@ function AppLayout() {
 }
 
 function App() {
-  // const [config, setConfig] = useState<CsWebLibConfig>();
-  // useEffect(() => {
-  //   loadConfig().then((config) => {
-  //     setConfig(config);
-  //   });
-  // }, []);
-  const config = usePvwsConfig();
-  // useEffect(() => {
-  //   if (config) {
-  //     console.log(`Config fetched: ${config}`);
-  //   }
-  // }, [config]);
+  const [config, setConfig] = useState<CsWebLibConfig>();
+  useEffect(() => {
+    loadConfig().then((config) => {
+      setConfig(config);
+      console.log(config);
+    });
+  }, []);
+  // const config = usePvwsConfig();
   return (
     <Provider store={store(config)}>
       <QueryClientProvider client={queryClient}>
@@ -84,28 +80,6 @@ function App() {
       </QueryClientProvider>
     </Provider>
   );
-  // const theme = useTheme();
-  // return (
-  //   <Box
-  //     sx={{
-  //       display: "flex",
-  //       justifyContent: "space-between",
-  //       flexDirection: "column",
-  //       minHeight: "100vh",
-  //       minWidth: "320px",
-  //       margin: 0,
-  //     }}
-  //   >
-  //     <SerialNavBar />
-  //     <Outlet />
-  //     <Footer
-  //       logo={theme.logos?.short}
-  //       color={theme.palette.primary.main}
-  //       leftSlot={<ColourSchemeButton />}
-  //       containerWidth={false}
-  //     />
-  //   </Box>
-  // );
 }
 
 export default App;
