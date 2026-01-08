@@ -2,6 +2,8 @@ import { CsWebLibConfig } from "@diamondlightsource/cs-web-lib";
 import { useEffect, useState } from "react";
 // import config from "../public/pvwsconfig.json";
 
+const configFile = "/pvwsconfig.json";
+
 export const loadConfig = async (): Promise<CsWebLibConfig> => {
   let config;
   if (config) {
@@ -9,7 +11,8 @@ export const loadConfig = async (): Promise<CsWebLibConfig> => {
   }
   try {
     // Point towards your file location
-    const response = await fetch("/mx-daq-ui/public/pvwsconfig.json");
+    // const response = await fetch("/mx-daq-ui/public/pvwsconfig.json");
+    const response = await fetch(configFile);
     config = await response.json();
   } catch (error) {
     console.warn("Configuration not found falling back to defaults", error);
