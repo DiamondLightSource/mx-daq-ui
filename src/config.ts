@@ -3,6 +3,11 @@ import { useEffect, useState } from "react";
 // import config from "../public/pvwsconfig.json";
 
 const configFile = "/pvwsconfig.json";
+const defaultConfig = {
+  PVWS_SOCKET: "pvws.diamond.ac.uk",
+  PVWS_SSL: true,
+  THROTTLE_PERIOD: 100,
+};
 
 export const loadConfig = async (): Promise<CsWebLibConfig> => {
   let config;
@@ -17,26 +22,22 @@ export const loadConfig = async (): Promise<CsWebLibConfig> => {
   } catch (error) {
     console.warn("Configuration not found falling back to defaults", error);
     // Set defaults here if necessary
-    config = {
-      PVWS_SOCKET: "pvws.diamond.ac.uk",
-      PVWS_SSL: true,
-      THROTTLE_PERIOD: 100,
-    };
+    config = defaultConfig;
   }
 
   return config as CsWebLibConfig;
 };
 
 export const usePvwsConfig = () => {
-  const [config, setConfig] = useState<CsWebLibConfig>();
+  const [config, setConfig] = useState<CsWebLibConfig>(defaultConfig);
   useEffect(() => {
     loadConfig().then((config) => {
       setConfig(config);
     });
   }, []);
-  //   if (config === null) {
-  //     console.log(config);
-  //     throw new Error("PVWS configuration not loaded correctly.");
-  //   }
+  if (config === null) {
+    console.log(config);
+    throw new Error("PVWS configuration not loaded correctly.");
+  }
   return config;
 };

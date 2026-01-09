@@ -40,6 +40,7 @@ export function BeamlineI24() {
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setTab(newTab);
   };
+
   return (
     <Box>
       <Box
