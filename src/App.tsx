@@ -1,13 +1,45 @@
 import { useTheme, Box } from "@mui/material";
 import "./App.css";
 import { ColourSchemeButton, Footer } from "@diamondlightsource/sci-react-ui";
-import { Switch, Route } from "react-router-dom";
-import { BeamlineI24 } from "./routes/BeamlineI24";
-import { FixedTarget } from "./routes/FixedTarget";
+import { Outlet } from "react-router-dom";
 import { SerialNavBar } from "./components/SerialNavBar";
-import { Extruder } from "./routes/Extruder";
+import { Provider } from "react-redux";
+import { CsWebLibConfig, store } from "@diamondlightsource/cs-web-lib";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BeamlineI24 } from "routes/BeamlineI24.tsx";
+import { FixedTarget } from "routes/FixedTarget.tsx";
+import { Extruder } from "routes/Extruder.tsx";
+import { loadConfig } from "./config.ts";
+import { useEffect, useState } from "react";
 
-function App() {
+const queryClient = new QueryClient();
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <AppLayout />,
+      children: [
+        {
+          index: true,
+          element: <BeamlineI24 />,
+        },
+        {
+          path: "fixed-target",
+          element: <FixedTarget />,
+        },
+        {
+          path: "extruder",
+          element: <Extruder />,
+        },
+      ],
+    },
+  ],
+  { basename: "/mx-daq-ui/" },
+);
+
+function AppLayout() {
   const theme = useTheme();
   return (
     <Box
@@ -21,17 +53,7 @@ function App() {
       }}
     >
       <SerialNavBar />
-      <Switch>
-        <Route exact path="/">
-          <BeamlineI24 />
-        </Route>
-        <Route path="/fixed-target">
-          <FixedTarget />
-        </Route>
-        <Route path="/extruder">
-          <Extruder />
-        </Route>
-      </Switch>
+      <Outlet />
       <Footer
         logo={theme.logos?.short}
         color={theme.palette.primary.main}
@@ -39,6 +61,24 @@ function App() {
         containerWidth={false}
       />
     </Box>
+  );
+}
+
+function App() {
+  const [config, setConfig] = useState<CsWebLibConfig>();
+  useEffect(() => {
+    loadConfig().then((config) => {
+      setConfig(config);
+      console.log(config);
+    });
+  }, []);
+
+  return (
+    <Provider store={store(config)}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </Provider>
   );
 }
 
