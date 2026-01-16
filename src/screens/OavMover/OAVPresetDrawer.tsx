@@ -1,7 +1,7 @@
 import { Box, Stack, Button, Drawer } from "@mui/material";
 import { useState } from "react";
 import { RunPlanButton } from "../../blueapi/BlueapiComponents";
-import { buttonStyle } from "blueapi/BlueapiComponentsStyling";
+import { containedButtonStyles } from "blueapi/BlueapiComponentsStyling";
 
 export function PresetMovements() {
   return (
@@ -17,7 +17,7 @@ export function PresetMovements() {
           title="Move into position for collection"
           btnSize="small"
           btnVariant="contained"
-          sx={buttonStyle}
+          sx={containedButtonStyles}
         />
         <RunPlanButton
           btnLabel="Load Position"
@@ -26,7 +26,7 @@ export function PresetMovements() {
           title="Move hardware for sample loading"
           btnSize="small"
           btnVariant="contained"
-          sx={buttonStyle}
+          sx={containedButtonStyles}
         />
         <RunPlanButton
           btnLabel="Microdrop align"
@@ -35,7 +35,7 @@ export function PresetMovements() {
           title="Align microdrop"
           btnSize="small"
           btnVariant="contained"
-          sx={buttonStyle}
+          sx={containedButtonStyles}
         />
       </Stack>
     </Box>
