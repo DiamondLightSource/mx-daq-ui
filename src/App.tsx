@@ -73,16 +73,6 @@ function App() {
     });
   }, []);
 
-  const [render, setRender] = useState(false);
-
-  // Workaround to force the app to wait and connect properly to pvws.
-  // To be removed once fixed in cs-web-lib
-  useEffect(() => {
-    setRender(true);
-  }, []);
-
-  if (!render) return <></>;
-
   return (
     <Provider store={store(config)}>
       <QueryClientProvider client={queryClient}>
