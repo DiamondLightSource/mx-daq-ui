@@ -27,6 +27,9 @@ export function SerialNavBar() {
         <NavLink linkComponent={Link} to="/extruder">
           Extruder
         </NavLink>
+        <NavLink linkComponent={Link} to="/jungfrau">
+          JF Rotation
+        </NavLink>
       </NavLinks>
     </Navbar>
   );
