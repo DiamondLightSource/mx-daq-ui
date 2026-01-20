@@ -221,7 +221,11 @@ function FocusMove(props: TabPanelProps) {
 
   return (
     <Box
-      sx={{ ...arrowsBoxStyle, py: 2, gridTemplateColumns: "repeat(4, 1fr)" }}
+      sx={{
+        ...arrowsBoxStyle,
+        py: 2,
+        gridTemplateColumns: { lg: "repeat(2, 1fr)", xl: "repeat(4, 1fr)" },
+      }}
     >
       <RunPlanButton
         btnLabel={"IN x3"}
@@ -272,6 +276,9 @@ export function MoveArrows() {
           value={value}
           onChange={handleChange}
           sx={{
+            "& .MuiTab-root": {
+              minWidth: { xs: 80, sm: 120 },
+            },
             "& .MuiTab-root.Mui-selected": {
               color: theme.palette.secondary.main,
             },
