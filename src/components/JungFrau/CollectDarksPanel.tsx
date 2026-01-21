@@ -37,7 +37,7 @@ export function CollectDarksPanel() {
               fontWeight: "fontWeightBold",
             }}
           >
-            Collect darks
+            Collect Darks
           </Typography>
           <Stack spacing={4} margin={4} alignItems={"center"}>
             <Stack direction={"row"} spacing={2}>

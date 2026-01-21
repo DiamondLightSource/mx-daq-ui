@@ -70,7 +70,7 @@ export function CollectionSetupJf() {
             fontWeight: "fontWeightBold",
           }}
         >
-          Parameters
+          Collection Parameters
         </Typography>
         <TextField
           size="small"
