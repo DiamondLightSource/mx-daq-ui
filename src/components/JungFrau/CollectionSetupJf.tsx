@@ -61,7 +61,7 @@ export function CollectionSetupJf() {
   const storageDirectory = fullStorageDirectory(visit);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Stack direction={"column"} alignItems={"center"} spacing={3}>
+      <Stack direction={"column"} alignItems={"center"} spacing={5}>
         <Typography
           variant="h2"
           sx={{
