@@ -5,10 +5,16 @@ import { store } from "@diamondlightsource/cs-web-lib";
 import "@testing-library/jest-dom/vitest";
 import { OAVSideBar } from "./OAVSideBar";
 
+const defaultConfig = {
+  PVWS_SOCKET: "pvws.diamond.ac.uk",
+  PVWS_SSL: true,
+  THROTTLE_PERIOD: 100,
+};
+
 describe("OavMover Components", () => {
   it("should display all of the various components ", () => {
     render(
-      <Provider store={store}>
+      <Provider store={store(defaultConfig)}>
         <OAVSideBar />
       </Provider>,
     );
