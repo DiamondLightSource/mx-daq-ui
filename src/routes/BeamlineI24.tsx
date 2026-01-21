@@ -42,6 +42,7 @@ export function BeamlineI24() {
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setTab(newTab);
   };
+
   return (
     <ErrorBoundary fallback={<FallbackScreen />}>
       <Box>

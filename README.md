@@ -10,11 +10,17 @@ module load node
 npm install
 ```
 
+Note that the current default version for node is `21.7.1`, which is getting quite old and not supported by somme of the packages we need to install. It would be best to have a version `>=22.12.0`.
+
 ## Gotchas
+
+### PVWS
+
+To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk`, we take advantage of the [cs-web-lib]https://github.com/DiamondLightSource/cs-web-lib) package - the current stable version being `0.9.10`. PVWS is now configured by setting up the parameters in a JSON config file which is loaded at runtime. The `pvwsconfig.json` is located in the `/public` directory to make it always accessible at runtime.
 
 ### Environment variables
 
-To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk` the environment variables `VITE_PVWS_SOCKET` and `VITE_PVWS_SSL` must be set to the URL and `"true"` respectively. This is in the file `.env`. Note that the value must be the string "true"
+To connect to the BlueAPI instance for I24, the environment variables `VITE_BLUEAPI_SOCKET` must be set to the URL in the file `.env`. The URL is currently set to localhost - but should change to the ingress once the UI is deployed to the beamline cluster.
 
 ### BlueAPI config
 
