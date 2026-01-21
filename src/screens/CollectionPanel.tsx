@@ -4,6 +4,7 @@ import { CollectionSetupEx } from "components/Extruder/CollectionSetupEx";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { CollectionSetupJf } from "components/JungFrau/CollectionSetupJf";
 import { JungfrauRotationProvider } from "context/jungfrau/JungfrauRotationProvider";
+import { VisitProvider } from "context/VisitProvider";
 type ExptType = {
   expt: "extruder" | "fixed-target" | "jf";
 };
@@ -27,9 +28,11 @@ export function ParamsPanel(expt: ExptType) {
       return <CollectionSetupEx />;
     case "jf":
       return (
-        <JungfrauRotationProvider>
-          <CollectionSetupJf />
-        </JungfrauRotationProvider>
+        <VisitProvider>
+          <JungfrauRotationProvider>
+            <CollectionSetupJf />
+          </JungfrauRotationProvider>
+        </VisitProvider>
       );
     default:
       return <FallbackScreen />;

@@ -9,69 +9,43 @@ import {
 import { AbortButton, RunPlanButton } from "blueapi/BlueapiComponents";
 import { ParameterInput } from "components/ParameterInputs";
 import { JungfrauRotationContext } from "context/jungfrau/JungfrauRotationContext";
+import { VisitContext } from "context/VisitContext";
 import React from "react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
-function fullStorageDirectory(visit: string, subDir: string): string {
+function fullStorageDirectory(visit: string): string {
   const date = new Date();
   const year = date.getFullYear();
-  return `/dls/i24/data/${year}/${visit}/jungfrau/${subDir}`;
+  return `/dls/i24/data/${year}/${visit}/jungfrau/`;
 }
 
-function RunButtons({
-  visit,
-  storageDirectory,
-}: {
-  visit: string;
-  storageDirectory: string;
-}): JSX.Element {
+function RunButtons(): JSX.Element {
   const {
     expTime,
     detDist,
     fileName,
-    shutterOpenT,
     omegaStart,
     omegaIncrement,
-    scanWidth,
     transFract,
+    sampleId,
   } = useContext(JungfrauRotationContext);
+  console.log(transFract);
   return (
     <React.Fragment>
       <Stack direction={"row"} spacing={4} justifyContent={"center"}>
         <RunPlanButton
-          btnLabel="Run single rotation"
-          planName="run_single_rotation_plan"
+          btnLabel="Run rotation scan"
+          planName="gui_run_jf_rotation_scan"
           planParams={{
             exposure_time_s: expTime,
             omega_start_deg: omegaStart,
             omega_increment_deg: omegaIncrement,
-            total_scan_width_deg: scanWidth,
             detector_distance_mm: detDist,
-            visit: visit,
-            file_name: fileName,
-            storage_directory: storageDirectory,
-            shutter_opening_time_s: shutterOpenT,
-            transmission: transFract[0],
+            filename: fileName,
+            transmissions: transFract,
+            sample_id: sampleId,
           }}
-          title="Run single rotation scan"
-          btnSize="large"
-        />
-        <RunPlanButton
-          btnLabel="Run multiple rotations"
-          planName="run_multi_rotation_plan"
-          planParams={{
-            exposure_time_s: expTime,
-            omega_start_deg: omegaStart,
-            omega_increment_deg: omegaIncrement,
-            total_scan_width_deg: scanWidth,
-            detector_distance_mm: detDist,
-            visit: visit,
-            file_name: fileName,
-            storage_directory: storageDirectory,
-            shutter_opening_time_s: shutterOpenT,
-            transmission_fractions: transFract,
-          }}
-          title="Run multiple rotation scans ar different transmissions"
+          title="Run the jungfrau rotation scan plan"
           btnSize="large"
         />
         <AbortButton />
@@ -83,8 +57,8 @@ function RunButtons({
 export function CollectionSetupJf() {
   const theme = useTheme();
   const context = useContext(JungfrauRotationContext);
-  const [visit, setVisit] = useState<string>("cm40647-5");
-  const storageDirectory = fullStorageDirectory(visit, context.directory);
+  const { visit } = useContext(VisitContext);
+  const storageDirectory = fullStorageDirectory(visit);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Stack direction={"column"} alignItems={"center"} spacing={3}>
@@ -98,26 +72,6 @@ export function CollectionSetupJf() {
         >
           Parameters
         </Typography>
-        <Grid container spacing={2} marginTop={3} justifyContent={"center"}>
-          <ParameterInput
-            value={visit}
-            onSet={setVisit}
-            label="Visit"
-            tooltip="Current visit directory"
-          />
-          <ParameterInput
-            value={context.directory}
-            onSet={context.setDirectory}
-            label="Sub-directory"
-            tooltip="Location inside visit directory to save data"
-          />
-          <ParameterInput
-            value={context.fileName}
-            onSet={context.setFileName}
-            label="File Name"
-            tooltip="Name to use to save the data"
-          />
-        </Grid>
         <TextField
           size="small"
           label="Storage Directory"
@@ -129,6 +83,12 @@ export function CollectionSetupJf() {
         />
         <Grid container spacing={2} marginTop={3} justifyContent={"center"}>
           <ParameterInput
+            value={context.fileName}
+            onSet={context.setFileName}
+            label="File Name"
+            tooltip="Name to use to save the data"
+          />
+          <ParameterInput
             value={context.expTime}
             onSet={context.setExpTime}
             label="Exposure Time (s)"
@@ -139,12 +99,6 @@ export function CollectionSetupJf() {
             onSet={context.setDetDist}
             label="Detector Distance (mm)"
             tooltip="Sample detector distance, in millimeters"
-          />
-          <ParameterInput
-            value={context.shutterOpenT}
-            onSet={context.setShutterOpenT}
-            label="Shutter opening time (s)"
-            tooltip="Fast shutter opening time, in seconds"
           />
         </Grid>
         <Grid container spacing={2} marginTop={3} justifyContent={"center"}>
@@ -161,10 +115,10 @@ export function CollectionSetupJf() {
             tooltip="Rotation increment step, in deg"
           />
           <ParameterInput
-            value={context.scanWidth}
-            onSet={context.setScanWidth}
-            label="Scan Width (deg)"
-            tooltip="Total scan width, in deg"
+            value={context.sampleId}
+            onSet={context.setSampleId}
+            label="Sample ID"
+            tooltip="Sample id"
           />
         </Grid>
         <Grid container spacing={2} marginTop={3} justifyContent={"center"}>
@@ -175,7 +129,7 @@ export function CollectionSetupJf() {
             tooltip="Request transmission value(s) for collection, expressed as a fraction. If running a single rotation, just input one value, if running multiples please pass a list."
           />
         </Grid>
-        <RunButtons visit={visit} storageDirectory={storageDirectory} />
+        <RunButtons />
       </Stack>
     </Box>
   );

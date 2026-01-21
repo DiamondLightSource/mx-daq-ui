@@ -1,8 +1,5 @@
-// Note not adding visit to it as I want to get that into an overall context
-
 import { createContext } from "react";
 
-// changeble only by staff. For now just a text field
 export type JungfrauRotationContextType = {
   fileName: string;
   expTime: number;
