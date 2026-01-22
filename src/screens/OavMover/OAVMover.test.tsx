@@ -1,11 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { it, describe, vi, expect, beforeEach } from "vitest";
+import { it, describe, vi, expect } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import { MoveArrows } from "./OAVMoveController";
-import { RunPlanButton } from "blueapi/BlueapiComponents";
 import userEvent from "@testing-library/user-event";
-import { OAVSideBar } from "./OAVSideBar";
-import { BacklightControl, ZoomControl } from "./OAVDeviceSettings";
 
 vi.mock("blueapi/BlueapiComponents", async () => {
   return {
