@@ -37,7 +37,7 @@ describe("OavMover Components", () => {
   it("should render moveArrows component", async () => {
     const blockTab = screen.getByRole("tab", { name: "Block" });
     await userEvent.click(blockTab);
-    expect(screen.getByText("Y - Y")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Y - Y" })).toBeInTheDocument();
   });
 
   it("should render zoom control dropdown ", () => {
