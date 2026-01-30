@@ -1,7 +1,7 @@
 {
-  "name": "i24-ssx-gui",
+  "name": "i24-daq-ui",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.4-dev",
   "type": "module",
   "scripts": {
     "dev": "vite",
