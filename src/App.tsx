@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { BeamlineI24 } from "routes/BeamlineI24.tsx";
 import { FixedTarget } from "routes/FixedTarget.tsx";
 import { Extruder } from "routes/Extruder.tsx";
+import { JfRotation } from "routes/JungfrauRotation.tsx";
 import { loadConfig } from "./config.ts";
 import { useEffect, useState } from "react";
 
@@ -32,6 +33,10 @@ const router = createBrowserRouter(
         {
           path: "extruder",
           element: <Extruder />,
+        },
+        {
+          path: "jungfrau",
+          element: <JfRotation />,
         },
       ],
     },
