@@ -1,8 +1,9 @@
-import { Grid2 } from "@mui/material";
+import { Button, Grid2 } from "@mui/material";
 import { CoordinateSystem } from "./OAVCoordinateSystem";
 import { PresetPositionsSideDrawer } from "./OAVPresetDrawer";
 import { MoveArrows } from "./OAVMoveController";
 import { BacklightControl, ZoomControl } from "./OAVDeviceSettings";
+import { testConfigCall } from "../../config/config";
 
 export function OAVSideBar() {
   return (
@@ -15,6 +16,15 @@ export function OAVSideBar() {
         boxSizing: "border-box",
       }}
     >
+      <Button
+        sx={{ backgroundColor: "gray", mb: 3 }}
+        onClick={() => {
+          console.log("Get Beam Center Button");
+          testConfigCall();
+        }}
+      >
+        Get Beam Center
+      </Button>
       <MoveArrows />
       <Grid2 size={3} padding={1} />
       <BacklightControl
