@@ -108,7 +108,8 @@ export function CollectDarksPanel() {
                 tooltip="Total triggers for the dark scan."
               />
               <Tooltip
-                title="Select gain mode before starting the darks acquisition."
+                title="Select gain mode before starting the darks acquisition.
+                WARNING. FixGO may damage the detector - use with caution."
                 placement="right"
               >
                 <FormControl size="small" style={{ width: 180 }}>
