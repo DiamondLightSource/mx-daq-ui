@@ -5,12 +5,19 @@
 On a DLS workstation, clone the repository and inside it run:
 
 ```bash
-module load node
+module load vscode
 
-npm install
+code .
 ```
 
-Note that the current default version for node is `21.7.1`, which is getting quite old and not supported by somme of the packages we need to install. It would be best to have a version `>=22.12.0`.
+When vscode opens, select `Reopen in container` to get a working environment with `pnpm` installed.
+
+On a non-dls workstation you have the option of opening the devcontainer or installing pnpm globally and then running the app.
+To install the app:
+
+```bash
+pnpm install
+```
 
 ## Gotchas
 
@@ -51,7 +58,13 @@ For I24 instead, The first few plans are in the branch https://github.com/Diamon
 Once all the above steps are done, start a blueapi server. The gui can be started by running:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 inside the repository and clicking on the link.
+
+## Make a release
+
+Make a release from the github `Releases` page and point it to either a tag or a branch.
+There is a workflow job that will then build the app and publish a docker image - which is necessary
+for deployment.
