@@ -116,19 +116,21 @@ function VideoBoxWithOverlay(props: {
     drawCanvas(canvasRef, props.crosshairX, props.crosshairY);
   }, [props.crosshairX, props.crosshairY, width, height]);
 
+  console.info();
+
   return (
     <Box position={"relative"} padding={0} ref={videoBoxRef}>
       <img
         src={props.videoStreamUrl}
-        height={width}
-        width={height}
+        height={height}
+        width={width}
         style={{ position: "relative", zIndex: 0 }}
         alt="OAV video stream"
       />
       <canvas
         ref={canvasRef}
-        width={width}
-        height={height}
+        width={videoBoxRef.current?.clientWidth}
+        height={videoBoxRef.current?.clientHeight}
         style={{ top: 0, left: 0, position: "absolute", zIndex: 1 }}
         onMouseDown={(e) => {
           if (props.onCoordClick) {
