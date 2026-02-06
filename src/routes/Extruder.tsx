@@ -1,8 +1,8 @@
+import { ReadOnlyInputs } from "#/components/ReadOnlyInputs.tsx";
+import { ParamsPanel } from "#/screens/CollectionPanel.tsx";
+import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
 import { Box, Typography, useTheme } from "@mui/material";
-import { ReadOnlyInputs } from "components/ReadOnlyInputs";
-import { ParamsPanel } from "screens/CollectionPanel";
 import { ErrorBoundary } from "react-error-boundary";
-import { FallbackScreen } from "screens/FallbackScreen";
 
 export function Extruder() {
   const theme = useTheme();

@@ -1,7 +1,7 @@
+import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
+import { containedButtonStyles } from "#/blueapi/BlueapiComponentsStyling.ts";
 import { Box, Stack, Button, Drawer } from "@mui/material";
 import { useState } from "react";
-import { RunPlanButton } from "../../blueapi/BlueapiComponents";
-import { containedButtonStyles } from "blueapi/BlueapiComponentsStyling";
 
 export function PresetMovements() {
   return (

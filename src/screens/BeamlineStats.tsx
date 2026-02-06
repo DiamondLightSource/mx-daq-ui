@@ -1,3 +1,5 @@
+import { PvItem } from "#/pv/types.ts";
+import { parseNumericPv, forceString } from "#/pv/util.ts";
 import {
   Box,
   Card,
@@ -7,10 +9,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { PvItem } from "pv/types";
-import { PvComponent } from "pv/PvComponent";
-import { forceString, parseNumericPv } from "pv/util";
-import { WorkerStatus } from "components/WorkerStatus";
+import { WorkerStatus } from "../components/WorkerStatus";
+import { PvComponent } from "../pv/PvComponent";
 
 type StateBoxProps = {
   children: React.ReactNode;

@@ -13,8 +13,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { ParameterInput } from "../ParameterInputs";
-import { RunPlanButton } from "../../blueapi/BlueapiComponents";
 import { GainModes } from "./constants";
+import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
 
 export function CollectDarksPanel() {
   const theme = useTheme();

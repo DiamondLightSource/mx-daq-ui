@@ -2,7 +2,7 @@ import { Box, Grid2, Typography, useTheme } from "@mui/material";
 import { ParamsPanel } from "../screens/CollectionPanel";
 import { CollectDarksPanel } from "../components/JungFrau/CollectDarksPanel";
 import { ErrorBoundary } from "react-error-boundary";
-import { FallbackScreen } from "screens/FallbackScreen";
+import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
 
 export function JfRotation() {
   const theme = useTheme();

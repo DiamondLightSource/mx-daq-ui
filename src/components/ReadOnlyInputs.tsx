@@ -1,5 +1,5 @@
+import { RoPvBox } from "#/pv/PvComponent.tsx";
 import { Grid2 } from "@mui/material";
-import { RoPvBox } from "pv/PvComponent";
 
 type RoPvAddress = {
   visit: string;

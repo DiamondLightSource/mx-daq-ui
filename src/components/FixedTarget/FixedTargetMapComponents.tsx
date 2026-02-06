@@ -13,8 +13,8 @@ import {
   ToggleButtonGroup,
   Tooltip,
 } from "@mui/material";
-import { MapTypes } from "components/params";
 import React from "react";
+import { MapTypes } from "../params";
 
 /**
  * Create list of numbered ToggleButtons to add to a ToggleButtonGroup

@@ -1,6 +1,6 @@
+import { useBlueApiCall, processUseBlueApiCall } from "#/blueapi/blueapi.ts";
 import { Grid2, Stack, Typography } from "@mui/material";
 
-import { processUseBlueApiCall, useBlueApiCall } from "blueapi/blueapi";
 import { useState } from "react";
 
 export function WorkerStatus() {

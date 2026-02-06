@@ -5,7 +5,7 @@ import "@testing-library/jest-dom/vitest";
 import { MoveArrows } from "./OAVMoveController";
 import { OAVSideBar } from "./OAVSideBar";
 
-vi.mock("blueapi/BlueapiComponents", () => {
+vi.mock("#/blueapi/BlueapiComponents.tsx", () => {
   return {
     RunPlanButton: vi.fn((props: { btnLabel: string }) => {
       return <button>{props.btnLabel}</button>;
