@@ -11,7 +11,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import { EavaRequest, calculateEAVA } from "components/params";
+import { EavaRequest, calculateEAVA } from "../params";
 import React from "react";
 
 /**

@@ -7,12 +7,12 @@ import { Provider } from "react-redux";
 import { CsWebLibConfig, store } from "@diamondlightsource/cs-web-lib";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BeamlineI24 } from "routes/BeamlineI24.tsx";
-import { FixedTarget } from "routes/FixedTarget.tsx";
-import { Extruder } from "routes/Extruder.tsx";
-import { JfRotation } from "routes/JungfrauRotation.tsx";
 import { loadConfig } from "./config.ts";
 import { useEffect, useState } from "react";
+import { BeamlineI24 } from "./routes/BeamlineI24.tsx";
+import { Extruder } from "./routes/Extruder.tsx";
+import { FixedTarget } from "./routes/FixedTarget.tsx";
+import { JfRotation } from "./routes/JungfrauRotation.tsx";
 
 const queryClient = new QueryClient();
 

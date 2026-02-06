@@ -1,13 +1,13 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { useContainerDimensions } from "./OavVideoStreamHelper";
-import { PvComponent } from "pv/PvComponent";
-import { PvDescription, PvItem } from "pv/types";
+import { PvComponent } from "#/pv/PvComponent.tsx";
+import { PvDescription, PvItem } from "#/pv/types.ts";
 import {
   useParsedPvConnection,
   parseNumericPv,
   pvIntArrayToString,
-} from "pv/util";
+} from "#/pv/util.ts";
 
 /*
  * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)

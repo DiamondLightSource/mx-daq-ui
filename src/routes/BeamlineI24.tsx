@@ -1,10 +1,10 @@
+import { BeamlineStatsTabPanel } from "#/screens/BeamlineStats.tsx";
+import { DetectorMotionTabPanel } from "#/screens/DetectorMotion.tsx";
+import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
+import { OavMover } from "#/screens/OavMover/OAVStageController.tsx";
 import { Box, Tab, Tabs, useTheme } from "@mui/material";
-import { BeamlineStatsTabPanel } from "screens/BeamlineStats";
-import { DetectorMotionTabPanel } from "screens/DetectorMotion";
-import { OavMover } from "screens/OavMover/OAVStageController";
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { FallbackScreen } from "screens/FallbackScreen";
 
 interface TabPanelProps {
   children?: React.ReactNode;

@@ -1,9 +1,8 @@
 import { Box, Grid2, useTheme } from "@mui/material";
-import { OavVideoStream } from "../../components/OavVideoStream";
-
-import { submitAndRunPlanImmediately } from "../../blueapi/blueapi";
-import { parseInstrumentSession, readVisitFromPv } from "../../blueapi/visit";
 import { OAVSideBar } from "./OAVSideBar";
+import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
+import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
+import { OavVideoStream } from "#/components/OavVideoStream.tsx";
 
 export function OavMover() {
   // #Issue 86: Remove these constants - https://github.com/DiamondLightSource/mx-daq-ui/issues/86

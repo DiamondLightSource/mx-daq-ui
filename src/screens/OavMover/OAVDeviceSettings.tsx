@@ -1,7 +1,7 @@
+import { SelectionWithPlanRunner } from "#/components/SelectionControl.tsx";
+import { BacklightPositions, ZoomLevels } from "#/pv/enumPvValues.ts";
+import { PvDescription } from "#/pv/types.ts";
 import { Box, useTheme } from "@mui/material";
-import { SelectionWithPlanRunner } from "components/SelectionControl";
-import { BacklightPositions, ZoomLevels } from "pv/enumPvValues";
-import { PvDescription } from "pv/types";
 
 export function BacklightControl(props: PvDescription) {
   const theme = useTheme();
