@@ -3,9 +3,9 @@ import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
 import { OavVideoStream } from "#/components/OavVideoStream.tsx";
-import { useConfigCall } from "../../config_server/config_server";
-import { forceString, useParsedPvConnection } from "pv/util";
-import { ZoomLevels } from "pv/enumPvValues";
+import { useConfigCall } from "#/config_server/configServer";
+import { forceString, useParsedPvConnection } from "#/pv/util";
+import { ZoomLevels } from "#/pv/enumPvValues";
 import { useMemo } from "react";
 
 export function OavMover() {
