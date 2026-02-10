@@ -3,11 +3,43 @@ import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
 import { OavVideoStream } from "#/components/OavVideoStream.tsx";
+import { useConfigCall } from "../../config_server/config_server";
+import { forceString, useParsedPvConnection } from "pv/util";
+import { ZoomLevels } from "pv/enumPvValues";
+import { useMemo } from "react";
 
 export function OavMover() {
+  const DISPLAY_CONFIG_ENDPOINT =
+    "/dls_sw/i24/software/daq_configuration/display.configuration";
+  const beamCenterQuery = useConfigCall(DISPLAY_CONFIG_ENDPOINT);
+  const currentZoomValue = String(
+    useParsedPvConnection({
+      pv: "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT",
+      label: "zoom-level",
+      transformValue: forceString,
+    }),
+  );
+  const zoomIndex = ZoomLevels.findIndex(
+    (element) => element == currentZoomValue,
+  );
+
+  const [crosshairX, crosshairY] = useMemo(() => {
+    if (!beamCenterQuery.data || zoomIndex < 0) {
+      return [NaN, NaN];
+    }
+
+    const lines = beamCenterQuery.data.split("\n");
+    const xLine = lines[zoomIndex * 7 + 1];
+    const yLine = lines[zoomIndex * 7 + 2];
+
+    if (!xLine || !yLine) {
+      return [NaN, NaN];
+    }
+
+    return [Number(xLine.split(" ")[2]), Number(yLine.split(" ")[2])];
+  }, [beamCenterQuery.data, zoomIndex]);
+
   // #Issue 86: Remove these constants - https://github.com/DiamondLightSource/mx-daq-ui/issues/86
-  const crosshairX = 200;
-  const crosshairY = 200;
   const pixelsPerMicron = 1.25;
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;

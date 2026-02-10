@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useContainerDimensions } from "./OavVideoStreamHelper";
 import { PvComponent } from "#/pv/PvComponent.tsx";
 import { PvDescription, PvItem } from "#/pv/types.ts";
@@ -84,8 +84,13 @@ function drawCanvas(
     );
     context.strokeStyle = "red";
     context.font = "50px sans-serif";
-    context.strokeRect(crosshairX - 10, crosshairY - 1, 20, 2);
-    context.strokeRect(crosshairX - 1, crosshairY - 10, 2, 20);
+    context.beginPath();
+    context.arc(crosshairX, crosshairY, 10, 0, 2 * Math.PI);
+    context.moveTo(crosshairX - 15, crosshairY);
+    context.lineTo(crosshairX + 15, crosshairY);
+    context.moveTo(crosshairX, crosshairY - 15);
+    context.lineTo(crosshairX, crosshairY + 15);
+    context.stroke();
   }
 }
 
@@ -104,22 +109,28 @@ function VideoBoxWithOverlay(props: {
   // TODO: wait until the video URL is correct once then stop updating it
   // may need a new kind of PV component for that
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
-  const videoBoxRef = React.useRef<HTMLHeadingElement | null>(null);
+  const videoBoxRef = React.useRef<HTMLDivElement | null>(null);
   const { width, height } = useContainerDimensions(videoBoxRef);
-  drawCanvas(canvasRef, props.crosshairX, props.crosshairY);
+
+  useEffect(() => {
+    drawCanvas(canvasRef, props.crosshairX, props.crosshairY);
+  }, [props.crosshairX, props.crosshairY, width, height]);
+
+  console.info();
+
   return (
     <Box position={"relative"} padding={0} ref={videoBoxRef}>
       <img
         src={props.videoStreamUrl}
-        height={width}
-        width={height}
+        height={height}
+        width={width}
         style={{ position: "relative", zIndex: 0 }}
         alt="OAV video stream"
       />
       <canvas
-        width={width}
-        height="auto"
         ref={canvasRef}
+        width={videoBoxRef.current?.clientWidth}
+        height={videoBoxRef.current?.clientHeight}
         style={{ top: 0, left: 0, position: "absolute", zIndex: 1 }}
         onMouseDown={(e) => {
           if (props.onCoordClick) {
