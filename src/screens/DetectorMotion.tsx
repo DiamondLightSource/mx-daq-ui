@@ -21,11 +21,11 @@ export function DetectorMotionTabPanel() {
         <RoPvBox label="Selected detector" pv="ca://BL24I-MO-IOC-13:GP101" />
         <RoPvBox
           label="Detector stage y position"
-          pv="ca://BL24I-EA-DET-01:Y"
+          pv="ca://BL24I-MO-DET-01:Y.RBV"
         />
         <RoPvBox
           label="Detector stage z position"
-          pv="ca://BL24I-EA-DET-01:Z"
+          pv="ca://BL24I-MO-DET-01:Z.RBV"
         />
         <Stack direction={"row"} spacing={5} justifyContent={"center"}>
           <RunPlanButton
