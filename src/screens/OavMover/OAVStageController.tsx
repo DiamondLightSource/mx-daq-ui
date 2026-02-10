@@ -4,7 +4,7 @@ import { OavVideoStream } from "../../components/OavVideoStream";
 import { submitAndRunPlanImmediately } from "../../blueapi/blueapi";
 import { parseInstrumentSession, readVisitFromPv } from "../../blueapi/visit";
 import { OAVSideBar } from "./OAVSideBar";
-import { useConfigCall } from "../../config_server/config_server";
+import { useConfigCall } from "../../config_server/configServer";
 import { forceString, useParsedPvConnection } from "pv/util";
 import { ZoomLevels } from "pv/enumPvValues";
 import { useMemo } from "react";
