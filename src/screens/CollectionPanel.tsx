@@ -1,10 +1,11 @@
 import { Box, Typography } from "@mui/material";
-import { CollectionSetupFt } from "components/FixedTarget/CollectionSetupFt";
-import { CollectionSetupEx } from "components/Extruder/CollectionSetupEx";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { CollectionSetupJf } from "components/JungFrau/CollectionSetupJf";
-import { JungfrauRotationProvider } from "context/jungfrau/JungfrauRotationProvider";
-import { VisitProvider } from "context/VisitProvider";
+import { CollectionSetupEx } from "#/components/Extruder/CollectionSetupEx.tsx";
+import { CollectionSetupFt } from "#/components/FixedTarget/CollectionSetupFt.tsx";
+import { CollectionSetupJf } from "#/components/JungFrau/CollectionSetupJf.tsx";
+import { JungfrauRotationProvider } from "#/context/jungfrau/JungfrauRotationProvider.tsx";
+import { VisitProvider } from "#/context/VisitProvider.tsx";
+
 type ExptType = {
   expt: "extruder" | "fixed-target" | "jf";
 };

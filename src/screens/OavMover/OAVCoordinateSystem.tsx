@@ -9,9 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { RunPlanButton } from "../../blueapi/BlueapiComponents";
-import oxfordChipDiagram from "../../assets/Oxford Chip Diagram.excalidraw.svg";
-import { containedButtonStyles } from "blueapi/BlueapiComponentsStyling";
+import oxfordChipDiagram from "#/assets/Oxford Chip Diagram.excalidraw.svg";
+import { containedButtonStyles } from "#/blueapi/BlueapiComponentsStyling.ts";
+import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
 
 export function CoordinateSystem() {
   const [open, setOpen] = React.useState(false);

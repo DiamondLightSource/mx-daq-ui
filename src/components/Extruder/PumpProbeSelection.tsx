@@ -1,3 +1,4 @@
+import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
 import {
   FormControl,
   InputLabel,
@@ -5,9 +6,8 @@ import {
   Select,
   Tooltip,
 } from "@mui/material";
-import { RunPlanButton } from "blueapi/BlueapiComponents";
-import { ParameterInput } from "components/ParameterInputs";
 import React from "react";
+import { ParameterInput } from "../ParameterInputs";
 
 export function PumpProbeSelection({
   pumpProbe,

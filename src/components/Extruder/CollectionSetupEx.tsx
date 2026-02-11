@@ -5,8 +5,8 @@ import {
   PumpProbeSelection,
   PumpProbeSetup,
 } from "./PumpProbeSelection";
-import { ParameterInput } from "components/ParameterInputs";
-import { AbortButton, RunPlanButton } from "blueapi/BlueapiComponents";
+import { RunPlanButton, AbortButton } from "#/blueapi/BlueapiComponents.tsx";
+import { ParameterInput } from "../ParameterInputs";
 
 /**Main collection input window for the extruderpanel. */
 export function CollectionSetupEx() {

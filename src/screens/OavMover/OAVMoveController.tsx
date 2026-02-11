@@ -1,3 +1,4 @@
+import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
 import {
   KeyboardDoubleArrowUp,
   KeyboardArrowUp,
@@ -9,7 +10,6 @@ import {
   KeyboardDoubleArrowDown,
 } from "@mui/icons-material";
 import { Box, Tabs, Tab, useTheme } from "@mui/material";
-import { RunPlanButton } from "blueapi/BlueapiComponents";
 import { useState } from "react";
 
 interface TabPanelProps {

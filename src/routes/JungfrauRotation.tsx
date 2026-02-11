@@ -2,8 +2,10 @@ import { Box, Grid2, Stack, Typography, useTheme } from "@mui/material";
 import { ParamsPanel } from "../screens/CollectionPanel";
 import { CollectDarksPanel } from "../components/JungFrau/CollectDarksPanel";
 import { ErrorBoundary } from "react-error-boundary";
-import { FallbackScreen } from "screens/FallbackScreen";
-import { RoPvBox } from "pv/PvComponent";
+
+import { RoPvBox } from "#/pv/PvComponent.tsx";
+
+import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
 
 export function JfRotation() {
   const theme = useTheme();
