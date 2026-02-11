@@ -1,7 +1,7 @@
 {
   "name": "i24-daq-ui",
   "private": true,
-  "version": "0.0.4-dev",
+  "version": "0.0.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
