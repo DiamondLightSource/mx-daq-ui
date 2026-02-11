@@ -16,33 +16,30 @@ import { JfRotation } from "./routes/JungfrauRotation.tsx";
 
 const queryClient = new QueryClient();
 
-const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <AppLayout />,
-      children: [
-        {
-          index: true,
-          element: <BeamlineI24 />,
-        },
-        {
-          path: "fixed-target",
-          element: <FixedTarget />,
-        },
-        {
-          path: "extruder",
-          element: <Extruder />,
-        },
-        {
-          path: "jungfrau",
-          element: <JfRotation />,
-        },
-      ],
-    },
-  ],
-  { basename: "/mx-daq-ui/" },
-);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      {
+        index: true,
+        element: <BeamlineI24 />,
+      },
+      {
+        path: "fixed-target",
+        element: <FixedTarget />,
+      },
+      {
+        path: "extruder",
+        element: <Extruder />,
+      },
+      {
+        path: "jungfrau",
+        element: <JfRotation />,
+      },
+    ],
+  },
+]);
 
 function AppLayout() {
   const theme = useTheme();
