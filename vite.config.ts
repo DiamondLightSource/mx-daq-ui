@@ -6,10 +6,7 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   define: {
-    "process.env": {
-      VITE_PVWS_SOCKET: "pvws.diamond.ac.uk",
-      VITE_PVWS_SSL: "true",
-    },
+    "process.env": {},
   },
   resolve: {
     alias: {
