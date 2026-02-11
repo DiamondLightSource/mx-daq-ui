@@ -3,9 +3,9 @@ import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
 import { OavVideoStream } from "#/components/OavVideoStream.tsx";
-import { useConfigCall } from "#/config_server/configServer";
-import { forceString, useParsedPvConnection } from "#/pv/util";
-import { ZoomLevels } from "#/pv/enumPvValues";
+import { useConfigCall } from "#/config_server/configServer.ts";
+import { forceString, useParsedPvConnection } from "#/pv/util.ts";
+import { ZoomLevels } from "#/pv/enumPvValues.ts";
 import { useMemo } from "react";
 
 export function OavMover() {
@@ -20,7 +20,7 @@ export function OavMover() {
     }),
   );
   const zoomIndex = ZoomLevels.findIndex(
-    (element) => element == currentZoomValue,
+    (element: string) => element == currentZoomValue,
   );
 
   const [crosshairX, crosshairY] = useMemo(() => {
