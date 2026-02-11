@@ -16,6 +16,4 @@ export default defineConfig({
       "#": path.resolve(__dirname, "src"), // <-- maps #/* → src/*
     },
   },
-
-  base: "/mx-daq-ui/",
 });
