@@ -85,12 +85,12 @@ function ScanStatus(props: Omit<StateBoxProps, "children">) {
     >
       <PvComponent
         label="Scan Status"
-        pv="ca://BL24I-MO-STEP-14:pmac:read:P2401"
+        pv="ca://BL24I-MO-STEP-13:pmac:read:P2401"
         transformValue={forceString}
       />
       <PvComponent
         label="Frames Counter"
-        pv="ca://BL24I-MO-STEP-14:pmac:read:P2402"
+        pv="ca://BL24I-MO-STEP-13:pmac:read:P2402"
         transformValue={forceString}
       />
     </StateCard>
