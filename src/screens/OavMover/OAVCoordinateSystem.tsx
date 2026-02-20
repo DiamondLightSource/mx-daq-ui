@@ -119,6 +119,8 @@ export function CoordinateSystem() {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        maxWidth="md"
+        scroll="body"
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           How to use Co-ordinate System Setup
