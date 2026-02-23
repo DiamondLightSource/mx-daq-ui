@@ -8,6 +8,9 @@ import { forceString, useParsedPvConnection } from "#/pv/util.ts";
 import { ZoomLevels } from "#/pv/enumPvValues.ts";
 import { useMemo } from "react";
 
+const DISPLAY_CONFIG_ENDPOINT =
+  "/dls_sw/i24/software/daq_configuration/domain/display.configuration";
+
 export function OavMover() {
   const DISPLAY_CONFIG_ENDPOINT =
     "/dls_sw/i24/software/daq_configuration/domain/display.configuration";
