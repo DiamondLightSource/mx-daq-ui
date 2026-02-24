@@ -12,16 +12,7 @@ import {
 import React from "react";
 import { useContext } from "react";
 import { ParameterInput } from "../ParameterInputs";
-
-function fullStorageDirectory(currentVisit: string): string {
-  return `${currentVisit}/jungfrau/`;
-}
-
-function getCurrentVisit(instrumentSession: string): string {
-  const date = new Date();
-  const year = date.getFullYear();
-  return `/dls/i24/data/${year}/${instrumentSession}`;
-}
+import { fullStorageDirectory, getCurrentVisit } from "./jfUtils";
 
 function RunButtons({ currentVisit }: { currentVisit: string }): JSX.Element {
   const {
