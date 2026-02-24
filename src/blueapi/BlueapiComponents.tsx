@@ -20,6 +20,7 @@ type RunPlanButtonProps = {
   btnLabel: string | ReactNode;
   planName: string;
   planParams?: object;
+  currentVisit?: string;
   title?: string;
   btnVariant?: VariantChoice;
   btnSize?: ButtonSize;
@@ -36,7 +37,12 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const [msg, setMsg] = React.useState<string>("Running plan...");
   const [severity, setSeverity] = React.useState<SeverityLevel>("info");
 
-  const fullVisit = readVisitFromPv();
+  let fullVisit: string;
+  if (props.currentVisit === undefined) {
+    fullVisit = readVisitFromPv();
+  } else {
+    fullVisit = props.currentVisit;
+  }
   let instrumentSession: string;
 
   const params = props.planParams ? props.planParams : {};
