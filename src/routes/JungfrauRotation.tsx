@@ -6,6 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { RoPvBox } from "#/pv/PvComponent.tsx";
 
 import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
+import { VisitProvider } from "#/context/VisitProvider.tsx";
 
 export function JfRotation() {
   const theme = useTheme();
@@ -30,7 +31,9 @@ export function JfRotation() {
         </Stack>
         <Grid2 container marginTop={2} spacing={2}>
           <Grid2 size={5}>
-            <CollectDarksPanel />
+            <VisitProvider>
+              <CollectDarksPanel />
+            </VisitProvider>
           </Grid2>
           <ParamsPanel expt="jf" />
         </Grid2>

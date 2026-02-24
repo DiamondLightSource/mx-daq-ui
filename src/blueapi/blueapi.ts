@@ -79,6 +79,7 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
   return blueApiCall("/tasks", "POST", {
     name: request.planName,
     params: request.planParams,
+    instrument_session: request.instrumentSession,
   }).then((res) => {
     if (!res.ok) {
       throw new Error(
