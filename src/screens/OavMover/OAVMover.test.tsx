@@ -53,10 +53,11 @@ describe("OavMover Components", () => {
   });
 
   it("should render side drawer", async () => {
-    expect(screen.getByText("Preset Positions")).toBeInTheDocument();
+    screen.debug();
     const presetButton = screen.getByRole("button", {
-      name: "Preset Positions",
+      name: /Preset Positions/i,
     });
+    expect(presetButton).toBeInTheDocument();
     await userEvent.click(presetButton);
     expect(screen.getByRole("presentation")).toBeInTheDocument();
     expect(

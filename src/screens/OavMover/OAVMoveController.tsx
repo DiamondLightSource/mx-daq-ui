@@ -9,7 +9,7 @@ import {
   KeyboardArrowDown,
   KeyboardDoubleArrowDown,
 } from "@mui/icons-material";
-import { Box, Tabs, Tab, useTheme } from "@mui/material";
+import { Box, Tabs, Tab, useTheme, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 
 interface TabPanelProps {
@@ -28,11 +28,12 @@ const arrowsBoxStyle = {
 
 const arrowsScreenSizing = {
   minWidth: {
+    md: "16px",
     lg: "32px",
     xl: "64px",
   },
   width: {
-    lg: "32px",
+    md: "32px",
   },
 };
 
@@ -218,6 +219,12 @@ function WindowMove(props: TabPanelProps) {
 
 function FocusMove(props: TabPanelProps) {
   if (props.value !== props.index) return null;
+  const focus_move = [
+    { direction: "in", size_of_move: "big", label: "IN x3" },
+    { direction: "in", size_of_move: "small", label: "IN" },
+    { direction: "out", size_of_move: "small", label: "OUT" },
+    { direction: "out", size_of_move: "big", label: "OUT x3" },
+  ];
 
   return (
     <Box
@@ -227,30 +234,18 @@ function FocusMove(props: TabPanelProps) {
         gridTemplateColumns: { lg: "repeat(2, 1fr)", xl: "repeat(4, 1fr)" },
       }}
     >
-      <RunPlanButton
-        btnLabel={"IN x3"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "in", size_of_move: "big" }}
-        btnVariant="outlined"
-      />
-      <RunPlanButton
-        btnLabel={"IN"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "in", size_of_move: "small" }}
-        btnVariant="outlined"
-      />
-      <RunPlanButton
-        btnLabel={"OUT"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "out", size_of_move: "small" }}
-        btnVariant="outlined"
-      />
-      <RunPlanButton
-        btnLabel={"OUT x3"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "out", size_of_move: "big" }}
-        btnVariant="outlined"
-      />
+      {focus_move.map((move) => (
+        <RunPlanButton
+          key={`${move.direction}-${move.size_of_move}`}
+          btnLabel={move.label}
+          planName={"focus_on_oav_view"}
+          planParams={{
+            direction: move.direction,
+            size_of_move: move.size_of_move,
+          }}
+          btnVariant="outlined"
+        />
+      ))}
     </Box>
   );
 }
@@ -259,6 +254,7 @@ export function MoveArrows() {
   const theme = useTheme();
 
   const [value, setValue] = useState(0);
+  const isSmall = useMediaQuery(theme.breakpoints.down("xl"));
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -276,13 +272,18 @@ export function MoveArrows() {
           value={value}
           onChange={handleChange}
           sx={{
+            "& .MuiTabs-flexContainer": {
+              flexWrap: isSmall ? "wrap" : "nowrap",
+            },
             "& .MuiTab-root": {
-              minWidth: { xs: 80, sm: 120 },
+              minWidth: isSmall ? "50%" : "25%",
+              maxWidth: isSmall ? "50%" : "none",
             },
             "& .MuiTab-root.Mui-selected": {
               color: theme.palette.secondary.main,
             },
             "& .MuiTabs-indicator": {
+              display: isSmall ? "none" : "block",
               backgroundColor: theme.palette.secondary.dark,
             },
           }}
