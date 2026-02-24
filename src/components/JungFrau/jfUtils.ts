@@ -1,5 +1,5 @@
 export function fullStorageDirectory(currentVisit: string): string {
-  return `${currentVisit}jungfrau`;
+  return `${currentVisit}jungfrau/`;
 }
 
 export function getCurrentVisit(instrumentSession: string): string {
