@@ -87,7 +87,7 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
         `Unable to POST request, response error ${res.status} ${res.statusText}`,
       );
     }
-    res.json().then((res) => res["task_id"]);
+    return res.json().then((res) => res["task_id"]);
   });
 }
 
@@ -98,7 +98,7 @@ function runTask(taskId: string): Promise<string | void> {
         `Unable to run task, response error ${res.status} ${res.statusText}`,
       );
     }
-    res.json().then((res) => res["task_id"]);
+    return res.json().then((res) => res["task_id"]);
   });
 }
 
@@ -108,6 +108,8 @@ export function submitAndRunPlanImmediately(
   return submitTask(request).then((res) => {
     if (res) {
       runTask(res);
+    } else {
+      throw new Error("Couldn't run plan");
     }
   });
 }
