@@ -116,8 +116,6 @@ function VideoBoxWithOverlay(props: {
     drawCanvas(canvasRef, props.crosshairX, props.crosshairY);
   }, [props.crosshairX, props.crosshairY, width, height]);
 
-  console.info();
-
   return (
     <Box position={"relative"} padding={0} ref={videoBoxRef}>
       <img
