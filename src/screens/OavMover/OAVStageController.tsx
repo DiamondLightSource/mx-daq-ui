@@ -1,4 +1,4 @@
-import { Box, Grid2, useTheme } from "@mui/material";
+import { Grid2, useTheme } from "@mui/material";
 import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
@@ -61,15 +61,13 @@ export function OavMover() {
     <div>
       <Grid2 container spacing={2} columns={12}>
         <Grid2 size={9} sx={{ bgcolor: bgColor }}>
-          <Box width={"100%"}>
-            <OavVideoStream
-              pv="ca://BL24I-DI-OAV-01:"
-              label="I24 OAV image stream"
-              crosshairX={crosshairX}
-              crosshairY={crosshairY}
-              onCoordClick={onCoordClick}
-            />
-          </Box>
+          <OavVideoStream
+            pv="ca://BL24I-DI-OAV-01:"
+            label="I24 OAV image stream"
+            crosshairX={crosshairX}
+            crosshairY={crosshairY}
+            onCoordClick={onCoordClick}
+          />
         </Grid2>
         <OAVSideBar />
       </Grid2>
