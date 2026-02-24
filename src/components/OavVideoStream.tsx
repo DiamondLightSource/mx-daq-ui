@@ -137,18 +137,8 @@ function VideoBoxWithOverlay(props: {
             const canvas = canvasRef.current;
             if (canvas) {
               const rect = canvas.getBoundingClientRect();
-              // x and y relative to the canvas
               const [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
-              // x and y relative to the crosshair
-              const [relX, relY] = [x - props.crosshairX, y - props.crosshairY];
-              // fraction of the image in x/y * original dimension in pixels
-              const scaledX = props.originalDims
-                ? (relX / width) * props.originalDims.width
-                : x;
-              const scaledY = props.originalDims
-                ? (relY / height) * props.originalDims.height
-                : y;
-              props.onCoordClick(scaledX, scaledY);
+              props.onCoordClick(x, y);
             }
           }
         }}
