@@ -6,7 +6,7 @@ import { OavVideoStream } from "#/components/OavVideoStream.tsx";
 import { useConfigCall } from "#/config_server/configServer.ts";
 import { forceString, useParsedPvConnection } from "#/pv/util.ts";
 import { ZoomLevels } from "#/pv/enumPvValues.ts";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 
 const DISPLAY_CONFIG_ENDPOINT =
   "/dls_sw/i24/software/daq_configuration/domain/display.configuration";
@@ -20,6 +20,9 @@ export function OavMover() {
       transformValue: forceString,
     }),
   );
+  useEffect(() => {
+    beamCenterQuery.refetch();
+  }, [currentZoomValue]);
   const zoomIndex = ZoomLevels.findIndex(
     (element: string) => element == currentZoomValue,
   );
