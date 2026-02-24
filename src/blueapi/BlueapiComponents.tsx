@@ -58,6 +58,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
     setOpenSnackbar(true);
     try {
       instrumentSession = parseInstrumentSession(fullVisit);
+      console.log(`Current instrument session: ${instrumentSession}`);
       submitAndRunPlanImmediately({
         planName: props.planName,
         planParams: params,
