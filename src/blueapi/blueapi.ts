@@ -33,6 +33,7 @@ function blueApiCall(
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      "X-Requested-By": "XMLHttpRequest",
     },
     method: _method,
     body: body ? JSON.stringify(body) : null,
