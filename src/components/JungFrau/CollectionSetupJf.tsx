@@ -13,13 +13,17 @@ import React from "react";
 import { useContext } from "react";
 import { ParameterInput } from "../ParameterInputs";
 
-function fullStorageDirectory(visit: string): string {
-  const date = new Date();
-  const year = date.getFullYear();
-  return `/dls/i24/data/${year}/${visit}/jungfrau/`;
+function fullStorageDirectory(currentVisit: string): string {
+  return `${currentVisit}/jungfrau/`;
 }
 
-function RunButtons(): JSX.Element {
+function getCurrentVisit(instrumentSession: string): string {
+  const date = new Date();
+  const year = date.getFullYear();
+  return `/dls/i24/data/${year}/${instrumentSession}`;
+}
+
+function RunButtons({ currentVisit }: { currentVisit: string }): JSX.Element {
   const {
     expTime,
     detDist,
@@ -45,6 +49,7 @@ function RunButtons(): JSX.Element {
             transmissions: transFract,
             sample_id: sampleId,
           }}
+          currentVisit={currentVisit}
           title="Run the jungfrau rotation scan plan"
           btnSize="large"
         />
@@ -58,7 +63,8 @@ export function CollectionSetupJf() {
   const theme = useTheme();
   const context = useContext(JungfrauRotationContext);
   const { visit } = useContext(VisitContext);
-  const storageDirectory = fullStorageDirectory(visit);
+  const currentVisit = getCurrentVisit(visit);
+  const storageDirectory = fullStorageDirectory(currentVisit);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Stack direction={"column"} alignItems={"center"} spacing={5}>
@@ -129,7 +135,7 @@ export function CollectionSetupJf() {
             tooltip="Request transmission value(s) for collection, expressed as a fraction. If running a single rotation, just input one value, if running multiples please pass a list."
           />
         </Grid>
-        <RunButtons />
+        <RunButtons currentVisit={currentVisit} />
       </Stack>
     </Box>
   );
