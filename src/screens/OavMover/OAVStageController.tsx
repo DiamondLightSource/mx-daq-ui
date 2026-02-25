@@ -10,19 +10,22 @@ import { useMemo, useEffect } from "react";
 
 const DISPLAY_CONFIG_ENDPOINT =
   "/dls_sw/i24/software/daq_configuration/domain/display.configuration";
+const ZOOM_PV = "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT";
 
-export function OavMover() {
+function useZoomAndCrosshair() {
   const beamCenterQuery = useConfigCall(DISPLAY_CONFIG_ENDPOINT);
   const currentZoomValue = String(
     useParsedPvConnection({
-      pv: "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT",
+      pv: ZOOM_PV,
       label: "zoom-level",
       transformValue: forceString,
     }),
   );
+
   useEffect(() => {
     beamCenterQuery.refetch();
   }, [currentZoomValue]);
+
   const zoomIndex = ZoomLevels.findIndex(
     (element: string) => element == currentZoomValue,
   );
@@ -42,6 +45,12 @@ export function OavMover() {
 
     return [Number(xLine.split(" ")[2]), Number(yLine.split(" ")[2])];
   }, [beamCenterQuery.data, zoomIndex]);
+
+  return { crosshairX, crosshairY };
+}
+
+export function OavMover() {
+  const { crosshairX, crosshairY } = useZoomAndCrosshair();
 
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
