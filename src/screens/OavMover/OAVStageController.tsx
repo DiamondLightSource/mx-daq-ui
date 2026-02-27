@@ -1,19 +1,19 @@
 import { Grid2, useTheme } from "@mui/material";
+import { useContext } from "react";
 import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
 import { OavVideoStream } from "#/components/OavVideoStream.tsx";
-import { useConfigCall } from "#/config_server/configServer.ts";
 import { forceString, useParsedPvConnection } from "#/pv/util.ts";
 import { ZoomLevels } from "#/pv/enumPvValues.ts";
 import { useMemo, useEffect } from "react";
+import { BeamCenterContext } from "#/context/BeamCenterContext.ts";
 
-const DISPLAY_CONFIG_ENDPOINT =
-  "/dls_sw/i24/software/daq_configuration/domain/display.configuration";
 const ZOOM_PV = "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT";
+const BEAM_CENTER_LINES_PER_ZOOM = 7;
 
 function useZoomAndCrosshair() {
-  const beamCenterQuery = useConfigCall(DISPLAY_CONFIG_ENDPOINT);
+  const beamCenterQuery = useContext(BeamCenterContext);
   const currentZoomValue = String(
     useParsedPvConnection({
       pv: ZOOM_PV,
@@ -24,7 +24,7 @@ function useZoomAndCrosshair() {
 
   useEffect(() => {
     beamCenterQuery.refetch();
-  }, [currentZoomValue]);
+  }, [currentZoomValue, beamCenterQuery]);
 
   const zoomIndex = ZoomLevels.findIndex(
     (element: string) => element == currentZoomValue,
@@ -36,8 +36,8 @@ function useZoomAndCrosshair() {
     }
 
     const lines = beamCenterQuery.data.split("\n");
-    const xLine = lines[zoomIndex * 7 + 1];
-    const yLine = lines[zoomIndex * 7 + 2];
+    const xLine = lines[zoomIndex * BEAM_CENTER_LINES_PER_ZOOM + 1];
+    const yLine = lines[zoomIndex * BEAM_CENTER_LINES_PER_ZOOM + 2];
 
     if (!xLine || !yLine) {
       return [NaN, NaN];
@@ -64,7 +64,7 @@ export function OavMover() {
       instrumentSession: parseInstrumentSession(fullVisit),
     }).catch((error) => {
       console.log(
-        `Failed to run plan , see console and logs for full error. Reason: ${error}`,
+        `Failed to run plan, see console and logs for full error. Reason: ${error}`,
       );
     });
   }
