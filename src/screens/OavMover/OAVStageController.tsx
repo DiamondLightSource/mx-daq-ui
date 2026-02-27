@@ -24,7 +24,7 @@ function useZoomAndCrosshair() {
 
   useEffect(() => {
     beamCenterQuery.refetch();
-  }, [currentZoomValue, beamCenterQuery]);
+  }, [currentZoomValue]);
 
   const zoomIndex = ZoomLevels.findIndex(
     (element: string) => element == currentZoomValue,
