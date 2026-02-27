@@ -29,6 +29,7 @@ type RunPlanButtonProps = {
   sx?: object;
   tooltipSx?: object;
   typographySx?: object;
+  onSuccess?: () => void | Promise<void>; // Optional callback after plan succeeds
 };
 
 export function RunPlanButton(props: RunPlanButtonProps) {
@@ -56,13 +57,17 @@ export function RunPlanButton(props: RunPlanButtonProps) {
         planName: props.planName,
         planParams: params,
         instrumentSession: instrumentSession,
-      }).catch((error) => {
-        setSeverity("error");
-        setMsg(
-          `Failed to run plan ${props.planName}, see console and logs for full error`,
-        );
-        console.log(`${msg}. Reason: ${error}`);
-      });
+      })
+        .then(() => {
+          props.onSuccess?.();
+        })
+        .catch((error) => {
+          setSeverity("error");
+          setMsg(
+            `Failed to run plan ${props.planName}, see console and logs for full error`,
+          );
+          console.log(`${msg}. Reason: ${error}`);
+        });
     } catch (error) {
       setSeverity("error");
       setMsg(
