@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useContainerDimensions } from "./OavVideoStreamHelper";
 import { PvComponent } from "#/pv/PvComponent.tsx";
 import { PvDescription, PvItem } from "#/pv/types.ts";
@@ -8,6 +8,7 @@ import {
   parseNumericPv,
   pvIntArrayToString,
 } from "#/pv/util.ts";
+import { BeamCenterContext } from "#/context/BeamCenterContext.ts";
 
 /*
  * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)
@@ -111,12 +112,11 @@ function VideoBoxWithOverlay(props: {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const videoBoxRef = React.useRef<HTMLDivElement | null>(null);
   const { width, height } = useContainerDimensions(videoBoxRef);
+  const beamCenterQuery = useContext(BeamCenterContext);
 
   useEffect(() => {
     drawCanvas(canvasRef, props.crosshairX, props.crosshairY);
   }, [props.crosshairX, props.crosshairY, width, height]);
-
-  console.info();
 
   return (
     <Box position={"relative"} padding={0} ref={videoBoxRef}>
@@ -137,18 +137,9 @@ function VideoBoxWithOverlay(props: {
             const canvas = canvasRef.current;
             if (canvas) {
               const rect = canvas.getBoundingClientRect();
-              // x and y relative to the canvas
               const [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
-              // x and y relative to the crosshair
-              const [relX, relY] = [x - props.crosshairX, y - props.crosshairY];
-              // fraction of the image in x/y * original dimension in pixels
-              const scaledX = props.originalDims
-                ? (relX / width) * props.originalDims.width
-                : x;
-              const scaledY = props.originalDims
-                ? (relY / height) * props.originalDims.height
-                : y;
-              props.onCoordClick(scaledX, scaledY);
+              props.onCoordClick(x, y);
+              beamCenterQuery.refetch();
             }
           }
         }}

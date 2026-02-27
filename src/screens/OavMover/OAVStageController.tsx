@@ -1,25 +1,31 @@
-import { Box, Grid2, useTheme } from "@mui/material";
+import { Grid2, useTheme } from "@mui/material";
+import { useContext } from "react";
 import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
 import { OavVideoStream } from "#/components/OavVideoStream.tsx";
-import { useConfigCall } from "#/config_server/configServer.ts";
 import { forceString, useParsedPvConnection } from "#/pv/util.ts";
 import { ZoomLevels } from "#/pv/enumPvValues.ts";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import { BeamCenterContext } from "#/context/BeamCenterContext.ts";
 
-const DISPLAY_CONFIG_ENDPOINT =
-  "/dls_sw/i24/software/daq_configuration/domain/display.configuration";
+const ZOOM_PV = "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT";
+const BEAM_CENTER_LINES_PER_ZOOM = 7;
 
-export function OavMover() {
-  const beamCenterQuery = useConfigCall(DISPLAY_CONFIG_ENDPOINT);
+function useZoomAndCrosshair() {
+  const beamCenterQuery = useContext(BeamCenterContext);
   const currentZoomValue = String(
     useParsedPvConnection({
-      pv: "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT",
+      pv: ZOOM_PV,
       label: "zoom-level",
       transformValue: forceString,
     }),
   );
+
+  useEffect(() => {
+    beamCenterQuery.refetch();
+  }, [currentZoomValue]);
+
   const zoomIndex = ZoomLevels.findIndex(
     (element: string) => element == currentZoomValue,
   );
@@ -30,8 +36,8 @@ export function OavMover() {
     }
 
     const lines = beamCenterQuery.data.split("\n");
-    const xLine = lines[zoomIndex * 7 + 1];
-    const yLine = lines[zoomIndex * 7 + 2];
+    const xLine = lines[zoomIndex * BEAM_CENTER_LINES_PER_ZOOM + 1];
+    const yLine = lines[zoomIndex * BEAM_CENTER_LINES_PER_ZOOM + 2];
 
     if (!xLine || !yLine) {
       return [NaN, NaN];
@@ -40,48 +46,40 @@ export function OavMover() {
     return [Number(xLine.split(" ")[2]), Number(yLine.split(" ")[2])];
   }, [beamCenterQuery.data, zoomIndex]);
 
-  // #Issue 86: Remove these constants - https://github.com/DiamondLightSource/mx-daq-ui/issues/86
-  const pixelsPerMicron = 1.25;
+  return { crosshairX, crosshairY };
+}
+
+export function OavMover() {
+  const { crosshairX, crosshairY } = useZoomAndCrosshair();
+
   const theme = useTheme();
   const bgColor = theme.palette.background.paper;
 
   const fullVisit = readVisitFromPv();
 
+  function onCoordClick(x: number, y: number) {
+    submitAndRunPlanImmediately({
+      planName: "move_on_oav_view_click",
+      planParams: { position: [x, y] },
+      instrumentSession: parseInstrumentSession(fullVisit),
+    }).catch((error) => {
+      console.log(
+        `Failed to run plan, see console and logs for full error. Reason: ${error}`,
+      );
+    });
+  }
+
   return (
     <div>
       <Grid2 container spacing={2} columns={12}>
         <Grid2 size={9} sx={{ bgcolor: bgColor }}>
-          <Box width={"100%"}>
-            <OavVideoStream
-              pv="ca://BL24I-DI-OAV-01:"
-              label="I24 OAV image stream"
-              crosshairX={crosshairX}
-              crosshairY={crosshairY}
-              onCoordClick={(x: number, y: number) => {
-                const [x_um, y_um] = [x / pixelsPerMicron, y / pixelsPerMicron];
-                console.log(
-                  `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`,
-                );
-                const [x_int, y_int] = [Math.round(x), Math.round(y)];
-                if (Number.isNaN(x_um) || Number.isNaN(y_um)) {
-                  console.log(
-                    "Not submitting plan while disconnected from PVs!",
-                  );
-                } else {
-                  // This is an example but not useful for actual production use.
-                  submitAndRunPlanImmediately({
-                    planName: "gui_gonio_move_on_click",
-                    planParams: { position_px: [x_int, y_int] },
-                    instrumentSession: parseInstrumentSession(fullVisit),
-                  }).catch((error) => {
-                    console.log(
-                      `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`,
-                    );
-                  });
-                }
-              }}
-            />
-          </Box>
+          <OavVideoStream
+            pv="ca://BL24I-DI-OAV-01:"
+            label="I24 OAV image stream"
+            crosshairX={crosshairX}
+            crosshairY={crosshairY}
+            onCoordClick={onCoordClick}
+          />
         </Grid2>
         <OAVSideBar />
       </Grid2>

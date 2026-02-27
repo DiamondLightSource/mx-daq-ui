@@ -2,9 +2,10 @@ import { BeamlineStatsTabPanel } from "#/screens/BeamlineStats.tsx";
 import { DetectorMotionTabPanel } from "#/screens/DetectorMotion.tsx";
 import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
 import { OavMover } from "#/screens/OavMover/OAVStageController.tsx";
+import { BeamCenterProvider } from "#/context/BeamCenterProvider.tsx";
 import { Box, Tab, Tabs, useTheme } from "@mui/material";
-import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useState } from "react";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,7 +38,7 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export function BeamlineI24() {
   const theme = useTheme();
-  const [tab, setTab] = React.useState(0);
+  const [tab, setTab] = useState(0);
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setTab(newTab);
@@ -73,7 +74,9 @@ export function BeamlineI24() {
           <DetectorMotionTabPanel />
         </CustomTabPanel>
         <CustomTabPanel value={tab} index={2}>
-          <OavMover />
+          <BeamCenterProvider>
+            <OavMover />
+          </BeamCenterProvider>
         </CustomTabPanel>
       </Box>
     </ErrorBoundary>

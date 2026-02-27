@@ -1,4 +1,6 @@
 import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
+import { useContext } from "react";
+import { BeamCenterContext } from "#/context/BeamCenterContext.ts";
 import {
   KeyboardDoubleArrowUp,
   KeyboardArrowUp,
@@ -36,7 +38,7 @@ const arrowsScreenSizing = {
   },
 };
 
-function BlockMove(props: TabPanelProps) {
+function BlockMove(props: TabPanelProps & { onMoveSuccess?: () => void }) {
   if (props.value !== props.index) return null;
 
   return (
@@ -47,6 +49,7 @@ function BlockMove(props: TabPanelProps) {
         planName={"move_block_on_arrow_click"}
         planParams={{ direction: "up" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box /> <Box />
       <RunPlanButton
@@ -54,6 +57,7 @@ function BlockMove(props: TabPanelProps) {
         planName={"move_block_on_arrow_click"}
         planParams={{ direction: "left" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
       <Box />
       <RunPlanButton
@@ -61,6 +65,7 @@ function BlockMove(props: TabPanelProps) {
         planName={"move_block_on_arrow_click"}
         planParams={{ direction: "right" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box /> <Box />
       <RunPlanButton
@@ -68,13 +73,14 @@ function BlockMove(props: TabPanelProps) {
         planName={"move_block_on_arrow_click"}
         planParams={{ direction: "down" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box />
     </Box>
   );
 }
 
-function NudgeMove(props: TabPanelProps) {
+function NudgeMove(props: TabPanelProps & { onMoveSuccess?: () => void }) {
   if (props.value !== props.index) return null;
 
   return (
@@ -86,6 +92,7 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "up", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -94,6 +101,7 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "up", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -102,6 +110,7 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "left", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <RunPlanButton
         btnLabel={<KeyboardArrowLeft />}
@@ -109,6 +118,7 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "left", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box />
       <RunPlanButton
@@ -117,6 +127,7 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "right", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <RunPlanButton
         btnLabel={<KeyboardDoubleArrowRight />}
@@ -124,6 +135,7 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "right", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -132,6 +144,7 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "down", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -140,12 +153,13 @@ function NudgeMove(props: TabPanelProps) {
         planParams={{ direction: "down", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
     </Box>
   );
 }
 
-function WindowMove(props: TabPanelProps) {
+function WindowMove(props: TabPanelProps & { onMoveSuccess?: () => void }) {
   if (props.value !== props.index) return null;
 
   return (
@@ -157,6 +171,7 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "up", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -165,6 +180,7 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "up", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -173,6 +189,7 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "left", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <RunPlanButton
         btnLabel={<KeyboardArrowLeft />}
@@ -180,6 +197,7 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "left", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box />
       <RunPlanButton
@@ -188,6 +206,7 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "right", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <RunPlanButton
         btnLabel={<KeyboardDoubleArrowRight />}
@@ -195,6 +214,7 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "right", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box />
       <RunPlanButton
@@ -203,6 +223,7 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "down", size_of_move: "small" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
       <Box /> <Box /> <Box /> <Box />
       <RunPlanButton
@@ -211,12 +232,13 @@ function WindowMove(props: TabPanelProps) {
         planParams={{ direction: "down", size_of_move: "big" }}
         btnVariant="outlined"
         sx={arrowsScreenSizing}
+        onSuccess={props.onMoveSuccess}
       />
     </Box>
   );
 }
 
-function FocusMove(props: TabPanelProps) {
+function FocusMove(props: TabPanelProps & { onMoveSuccess?: () => void }) {
   if (props.value !== props.index) return null;
 
   return (
@@ -228,24 +250,28 @@ function FocusMove(props: TabPanelProps) {
         planName={"focus_on_oav_view"}
         planParams={{ direction: "in", size_of_move: "big" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
       <RunPlanButton
         btnLabel={"IN"}
         planName={"focus_on_oav_view"}
         planParams={{ direction: "in", size_of_move: "small" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
       <RunPlanButton
         btnLabel={"OUT"}
         planName={"focus_on_oav_view"}
         planParams={{ direction: "out", size_of_move: "small" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
       <RunPlanButton
         btnLabel={"OUT x3"}
         planName={"focus_on_oav_view"}
         planParams={{ direction: "out", size_of_move: "big" }}
         btnVariant="outlined"
+        onSuccess={props.onMoveSuccess}
       />
     </Box>
   );
@@ -253,7 +279,7 @@ function FocusMove(props: TabPanelProps) {
 
 export function MoveArrows() {
   const theme = useTheme();
-
+  const beamCenterQuery = useContext(BeamCenterContext);
   const [value, setValue] = useState(0);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -287,10 +313,28 @@ export function MoveArrows() {
           <Tab label="Focus" />
         </Tabs>
       </Box>
-      <NudgeMove value={value} index={0} />
-      <WindowMove value={value} index={1} />
-      <BlockMove value={value} index={2} />
-      <FocusMove value={value} index={3} />
+      <NudgeMove
+        value={value}
+        index={0}
+        onMoveSuccess={() => {
+          beamCenterQuery?.refetch();
+        }}
+      />
+      <WindowMove
+        value={value}
+        index={1}
+        onMoveSuccess={() => beamCenterQuery?.refetch()}
+      />
+      <BlockMove
+        value={value}
+        index={2}
+        onMoveSuccess={() => beamCenterQuery?.refetch()}
+      />
+      <FocusMove
+        value={value}
+        index={3}
+        onMoveSuccess={() => beamCenterQuery?.refetch()}
+      />
     </Box>
   );
 }
