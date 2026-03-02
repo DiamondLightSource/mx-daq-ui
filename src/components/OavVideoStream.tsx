@@ -8,7 +8,7 @@ import {
   parseNumericPv,
   pvIntArrayToString,
 } from "#/pv/util.ts";
-import { BeamCenterContext } from "#/context/BeamCenterContext.ts";
+import { BeamCenterContext } from "#/context/beamcenter/BeamCenterContext.ts";
 
 /*
  * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)
