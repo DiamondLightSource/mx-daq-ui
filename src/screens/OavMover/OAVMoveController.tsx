@@ -1,6 +1,6 @@
 import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
 import { useContext } from "react";
-import { BeamCenterContext } from "#/context/BeamCenterContext.ts";
+import { BeamCenterContext } from "#/context/beamcenter/BeamCenterContext.ts";
 import {
   KeyboardDoubleArrowUp,
   KeyboardArrowUp,

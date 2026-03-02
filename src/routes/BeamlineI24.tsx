@@ -2,7 +2,7 @@ import { BeamlineStatsTabPanel } from "#/screens/BeamlineStats.tsx";
 import { DetectorMotionTabPanel } from "#/screens/DetectorMotion.tsx";
 import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
 import { OavMover } from "#/screens/OavMover/OAVStageController.tsx";
-import { BeamCenterProvider } from "#/context/BeamCenterProvider.tsx";
+import { BeamCenterProvider } from "#/context/beamcenter/BeamCenterProvider.tsx";
 import { Box, Tab, Tabs, useTheme } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
 import { useState } from "react";

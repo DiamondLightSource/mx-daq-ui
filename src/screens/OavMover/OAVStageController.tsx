@@ -7,7 +7,7 @@ import { OavVideoStream } from "#/components/OavVideoStream.tsx";
 import { forceString, useParsedPvConnection } from "#/pv/util.ts";
 import { ZoomLevels } from "#/pv/enumPvValues.ts";
 import { useMemo, useEffect } from "react";
-import { BeamCenterContext } from "#/context/BeamCenterContext.ts";
+import { BeamCenterContext } from "#/context/beamcenter/BeamCenterContext.ts";
 
 const ZOOM_PV = "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT";
 const BEAM_CENTER_LINES_PER_ZOOM = 7;
