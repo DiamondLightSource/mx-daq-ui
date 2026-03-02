@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useContainerDimensions } from "./OavVideoStreamHelper";
 import { PvComponent } from "#/pv/PvComponent.tsx";
 import { PvDescription, PvItem } from "#/pv/types.ts";
@@ -8,7 +8,6 @@ import {
   parseNumericPv,
   pvIntArrayToString,
 } from "#/pv/util.ts";
-import { BeamCenterContext } from "#/context/beamcenter/BeamCenterContext.ts";
 
 /*
  * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)
@@ -112,7 +111,6 @@ function VideoBoxWithOverlay(props: {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const videoBoxRef = React.useRef<HTMLDivElement | null>(null);
   const { width, height } = useContainerDimensions(videoBoxRef);
-  const beamCenterQuery = useContext(BeamCenterContext);
 
   useEffect(() => {
     drawCanvas(canvasRef, props.crosshairX, props.crosshairY);
@@ -139,7 +137,6 @@ function VideoBoxWithOverlay(props: {
               const rect = canvas.getBoundingClientRect();
               const [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
               props.onCoordClick(x, y);
-              beamCenterQuery.refetch();
             }
           }
         }}
