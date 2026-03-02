@@ -1,5 +1,5 @@
 import { Grid2, useTheme } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
@@ -22,8 +22,10 @@ function useZoomAndCrosshair() {
     }),
   );
 
+  const beamCenterQueryRef = useRef(beamCenterQuery);
+
   useEffect(() => {
-    beamCenterQuery.refetch();
+    beamCenterQueryRef.current.refetch();
   }, [currentZoomValue]);
 
   const zoomIndex = ZoomLevels.findIndex(
@@ -56,6 +58,7 @@ export function OavMover() {
   const bgColor = theme.palette.background.paper;
 
   const fullVisit = readVisitFromPv();
+  const beamCenterQuery = useContext(BeamCenterContext);
 
   function onCoordClick(x: number, y: number) {
     submitAndRunPlanImmediately({
@@ -67,6 +70,8 @@ export function OavMover() {
         `Failed to run plan, see console and logs for full error. Reason: ${error}`,
       );
     });
+
+    beamCenterQuery.refetch();
   }
 
   return (
