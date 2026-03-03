@@ -1,4 +1,4 @@
-import { Box, Grid2, useTheme } from "@mui/material";
+import { Grid2, useTheme } from "@mui/material";
 import { OAVSideBar } from "./OAVSideBar";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import { readVisitFromPv, parseInstrumentSession } from "#/blueapi/visit.ts";
@@ -48,43 +48,72 @@ export function OavMover() {
   const fullVisit = readVisitFromPv();
 
   return (
-    <div>
-      <Grid2 container spacing={2} columns={12}>
-        <Grid2 size={9} sx={{ bgcolor: bgColor }}>
-          <Box width={"100%"}>
-            <OavVideoStream
-              pv="ca://BL24I-DI-OAV-01:"
-              label="I24 OAV image stream"
-              crosshairX={crosshairX}
-              crosshairY={crosshairY}
-              onCoordClick={(x: number, y: number) => {
-                const [x_um, y_um] = [x / pixelsPerMicron, y / pixelsPerMicron];
+    <Grid2 container spacing={2} columns={12}>
+      <Grid2 size={{ xs: 12, lg: 8 }} sx={{ bgcolor: bgColor }}>
+        <OavVideoStream
+          pv="ca://BL24I-DI-OAV-01:"
+          label="I24 OAV image stream"
+          crosshairX={crosshairX}
+          crosshairY={crosshairY}
+          onCoordClick={(x: number, y: number) => {
+            const [x_um, y_um] = [x / pixelsPerMicron, y / pixelsPerMicron];
+            console.log(
+              `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`,
+            );
+            const [x_int, y_int] = [Math.round(x), Math.round(y)];
+            if (Number.isNaN(x_um) || Number.isNaN(y_um)) {
+              console.log("Not submitting plan while disconnected from PVs!");
+            } else {
+              // This is an example but not useful for actual production use.
+              submitAndRunPlanImmediately({
+                planName: "gui_gonio_move_on_click",
+                planParams: { position_px: [x_int, y_int] },
+                instrumentSession: parseInstrumentSession(fullVisit),
+              }).catch((error) => {
                 console.log(
-                  `Clicked on position (${x}, ${y}) (px relative to beam centre) in original stream. Relative position in um (${x_um}, ${y_um}). Submitting to BlueAPI...`,
+                  `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`,
                 );
-                const [x_int, y_int] = [Math.round(x), Math.round(y)];
-                if (Number.isNaN(x_um) || Number.isNaN(y_um)) {
-                  console.log(
-                    "Not submitting plan while disconnected from PVs!",
-                  );
-                } else {
-                  // This is an example but not useful for actual production use.
-                  submitAndRunPlanImmediately({
-                    planName: "gui_gonio_move_on_click",
-                    planParams: { position_px: [x_int, y_int] },
-                    instrumentSession: parseInstrumentSession(fullVisit),
-                  }).catch((error) => {
-                    console.log(
-                      `Failed to run plan gui_gonio_move_on_click, see console and logs for full error. Reason: ${error}`,
-                    );
-                  });
-                }
-              }}
-            />
-          </Box>
-        </Grid2>
+              });
+            }
+          }}
+        />
+      </Grid2>
+
+      <Grid2
+        size={{ xs: 12, lg: 4 }}
+        sx={{
+          height: "95vh", // Height set to 95vh to span height of screen but to also leave 5vh space for the top navigation header.
+          overflowY: "auto",
+          padding: 2,
+          boxSizing: "border-box",
+        }}
+      >
         <OAVSideBar />
       </Grid2>
-    </div>
+    </Grid2>
   );
 }
+
+/**
+ * Responsive layout strategy:
+ *
+ * Breakpoints: xs, sm, md, lg, xl
+ *
+ * - < lg (below 1200px):
+ *   Single-column layout.
+ *   The sidebar stacks below the video stream.
+ *
+ * - lg (>= 1200px):
+ *   Two-column layout.
+ *   Main content: 8/12 columns
+ *   Sidebar: 4/12 columns
+ *   Sidebar uses a compact layout (e.g. focus tab arranged in a 2x2 grid).
+ *
+ * - xl and above:
+ *   Two-column layout maintained.
+ *   Sidebar can use a full-width layout (e.g. focus tab arranged in a 4-button row).
+ *
+ * Note:
+ * Extremely large screens are not specially optimized beyond xl for now;
+ * layout simply scales with the standard MUI grid behaviour.
+ */
