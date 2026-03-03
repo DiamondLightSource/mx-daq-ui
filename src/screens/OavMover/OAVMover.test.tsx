@@ -53,7 +53,6 @@ describe("OavMover Components", () => {
   });
 
   it("should render side drawer", async () => {
-    screen.debug();
     const presetButton = screen.getByRole("button", {
       name: /Preset Positions/i,
     });

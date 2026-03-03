@@ -260,6 +260,23 @@ export function MoveArrows() {
     setValue(newValue);
   };
 
+  const tabStyling = {
+    "& .MuiTabs-flexContainer": {
+      flexWrap: isSmall ? "wrap" : "nowrap",
+    },
+    "& .MuiTab-root": {
+      minWidth: isSmall ? "50%" : "25%",
+      maxWidth: isSmall ? "50%" : "none",
+    },
+    "& .MuiTab-root.Mui-selected": {
+      color: theme.palette.secondary.main,
+    },
+    "& .MuiTabs-indicator": {
+      display: isSmall ? "none" : "block",
+      backgroundColor: theme.palette.secondary.dark,
+    },
+  };
+
   return (
     <Box
       bgcolor={theme.palette.background.paper}
@@ -268,27 +285,7 @@ export function MoveArrows() {
       paddingBottom={1}
     >
       <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          sx={{
-            "& .MuiTabs-flexContainer": {
-              flexWrap: isSmall ? "wrap" : "nowrap",
-            },
-            "& .MuiTab-root": {
-              minWidth: isSmall ? "50%" : "25%",
-              maxWidth: isSmall ? "50%" : "none",
-            },
-            "& .MuiTab-root.Mui-selected": {
-              color: theme.palette.secondary.main,
-            },
-            "& .MuiTabs-indicator": {
-              display: isSmall ? "none" : "block",
-              backgroundColor: theme.palette.secondary.dark,
-            },
-          }}
-          centered
-        >
+        <Tabs value={value} onChange={handleChange} sx={tabStyling} centered>
           <Tab label="Nudge" />
           <Tab label="Window" />
           <Tab label="Block" />
