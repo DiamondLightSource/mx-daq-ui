@@ -12,7 +12,7 @@ import { BeamCenterContext } from "#/context/beamcenter/BeamCenterContext.ts";
 const ZOOM_PV = "ca://BL24I-EA-OAV-01:FZOOM:MP:SELECT";
 const BEAM_CENTER_LINES_PER_ZOOM = 7;
 
-function useZoomAndCrosshair() {
+export function useZoomAndCrosshair() {
   const beamCenterQuery = useContext(BeamCenterContext);
   const currentZoomValue = String(
     useParsedPvConnection({
