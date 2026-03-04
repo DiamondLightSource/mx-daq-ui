@@ -11,10 +11,12 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { ParameterInput } from "../ParameterInputs";
 import { GainModes } from "./constants";
 import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
+import { VisitContext } from "#/context/VisitContext.ts";
+import { getCurrentVisit } from "./jfUtils";
 
 export function CollectDarksPanel() {
   const theme = useTheme();
@@ -24,6 +26,9 @@ export function CollectDarksPanel() {
   const [pedestalLoops, setPedestalLoops] = React.useState<number>(200);
   const [totTriggers, setTotTriggers] = React.useState<number>(1000);
   const [gainMode, setGainMode] = React.useState<string>(GainModes[0]);
+
+  const { visit } = useContext(VisitContext);
+  const currentVisit = getCurrentVisit(visit);
 
   return (
     <Box sx={{ flexGrow: 1, marginLeft: 15, marginRight: 5 }}>
@@ -87,6 +92,7 @@ export function CollectDarksPanel() {
                 pedestal_loops: pedestalLoops,
                 filename: filename,
               }}
+              currentVisit={currentVisit}
               title="Collect pedestal darks"
               btnSize="large"
             />
@@ -139,6 +145,7 @@ export function CollectDarksPanel() {
                 total_triggers: totTriggers,
                 filename: filename,
               }}
+              currentVisit={currentVisit}
               title="Collect non pedestal darks"
               btnSize="large"
             />

@@ -11,7 +11,7 @@ import {
   KeyboardArrowDown,
   KeyboardDoubleArrowDown,
 } from "@mui/icons-material";
-import { Box, Tabs, Tab, useTheme } from "@mui/material";
+import { Box, Tabs, Tab, useTheme, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 
 interface TabPanelProps {
@@ -30,11 +30,12 @@ const arrowsBoxStyle = {
 
 const arrowsScreenSizing = {
   minWidth: {
+    md: "16px",
     lg: "32px",
     xl: "64px",
   },
   width: {
-    lg: "32px",
+    md: "32px",
   },
 };
 
@@ -240,39 +241,34 @@ function WindowMove(props: TabPanelProps & { onMoveSuccess?: () => void }) {
 
 function FocusMove(props: TabPanelProps & { onMoveSuccess?: () => void }) {
   if (props.value !== props.index) return null;
+  const focus_move = [
+    { direction: "in", size_of_move: "big", label: "IN x3" },
+    { direction: "in", size_of_move: "small", label: "IN" },
+    { direction: "out", size_of_move: "small", label: "OUT" },
+    { direction: "out", size_of_move: "big", label: "OUT x3" },
+  ];
 
   return (
     <Box
-      sx={{ ...arrowsBoxStyle, py: 2, gridTemplateColumns: "repeat(4, 1fr)" }}
+      sx={{
+        ...arrowsBoxStyle,
+        py: 2,
+        gridTemplateColumns: { lg: "repeat(2, 1fr)", xl: "repeat(4, 1fr)" },
+      }}
     >
-      <RunPlanButton
-        btnLabel={"IN x3"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "in", size_of_move: "big" }}
-        btnVariant="outlined"
-        onSuccess={props.onMoveSuccess}
-      />
-      <RunPlanButton
-        btnLabel={"IN"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "in", size_of_move: "small" }}
-        btnVariant="outlined"
-        onSuccess={props.onMoveSuccess}
-      />
-      <RunPlanButton
-        btnLabel={"OUT"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "out", size_of_move: "small" }}
-        btnVariant="outlined"
-        onSuccess={props.onMoveSuccess}
-      />
-      <RunPlanButton
-        btnLabel={"OUT x3"}
-        planName={"focus_on_oav_view"}
-        planParams={{ direction: "out", size_of_move: "big" }}
-        btnVariant="outlined"
-        onSuccess={props.onMoveSuccess}
-      />
+      {focus_move.map((move) => (
+        <RunPlanButton
+          key={`${move.direction}-${move.size_of_move}`}
+          btnLabel={move.label}
+          planName={"focus_on_oav_view"}
+          planParams={{
+            direction: move.direction,
+            size_of_move: move.size_of_move,
+          }}
+          btnVariant="outlined"
+          onSuccess={props.onMoveSuccess}
+        />
+      ))}
     </Box>
   );
 }
@@ -281,9 +277,27 @@ export function MoveArrows() {
   const theme = useTheme();
   const beamCenterQuery = useContext(BeamCenterContext);
   const [value, setValue] = useState(0);
+  const isSmall = useMediaQuery(theme.breakpoints.down("xl"));
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+  };
+
+  const tabStyling = {
+    "& .MuiTabs-flexContainer": {
+      flexWrap: isSmall ? "wrap" : "nowrap",
+    },
+    "& .MuiTab-root": {
+      minWidth: isSmall ? "50%" : "25%",
+      maxWidth: isSmall ? "50%" : "none",
+    },
+    "& .MuiTab-root.Mui-selected": {
+      color: theme.palette.secondary.main,
+    },
+    "& .MuiTabs-indicator": {
+      display: isSmall ? "none" : "block",
+      backgroundColor: theme.palette.secondary.dark,
+    },
   };
 
   return (
@@ -294,19 +308,7 @@ export function MoveArrows() {
       paddingBottom={1}
     >
       <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 2 }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          sx={{
-            "& .MuiTab-root.Mui-selected": {
-              color: theme.palette.secondary.main,
-            },
-            "& .MuiTabs-indicator": {
-              backgroundColor: theme.palette.secondary.dark,
-            },
-          }}
-          centered
-        >
+        <Tabs value={value} onChange={handleChange} sx={tabStyling} centered>
           <Tab label="Nudge" />
           <Tab label="Window" />
           <Tab label="Block" />
