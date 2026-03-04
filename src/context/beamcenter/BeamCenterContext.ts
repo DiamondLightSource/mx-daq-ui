@@ -1,8 +1,11 @@
 import { createContext } from "react";
-import { UseQueryResult } from "react-query";
 
-type BeamCenterQueryResult = UseQueryResult<string, unknown>;
+type BeamCenterQueryResult = {
+  data: string | null | undefined;
+  refetch: () => void;
+};
 
-export const BeamCenterContext = createContext<BeamCenterQueryResult>(
-  null as unknown as BeamCenterQueryResult,
-);
+export const BeamCenterContext = createContext<BeamCenterQueryResult>({
+  data: null,
+  refetch: () => {},
+});
