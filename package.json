@@ -66,8 +66,13 @@
     "vite": "^5.4.21",
     "vitest": "^3.2.4"
   },
-  "resolutions": {
+  "overrides": {
     "minimatch": "^10.2.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "ajv": "6.12.6"
+    }
   },
   "imports": {
     "#/*": "./src/*.ts"
