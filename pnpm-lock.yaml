@@ -9,6 +9,7 @@ overrides:
   esbuild@<=0.24.2: ">=0.25.0"
   minimatch@>=9.0.0 <9.0.6: ">=9.0.6"
   minimatch@>=9.0.0 <9.0.7: ">=9.0.7"
+  serialize-javascript@<=7.0.2: ">=7.0.3"
 
 importers:
   .:
@@ -5454,12 +5455,6 @@ packages:
         integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==,
       }
 
-  randombytes@2.1.0:
-    resolution:
-      {
-        integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==,
-      }
-
   react-dom@18.3.1:
     resolution:
       {
@@ -5846,11 +5841,12 @@ packages:
     engines: { node: ">=10" }
     hasBin: true
 
-  serialize-javascript@6.0.2:
+  serialize-javascript@7.0.4:
     resolution:
       {
-        integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==,
+        integrity: sha512-DuGdB+Po43Q5Jxwpzt1lhyFSYKryqoNjQSA9M92tyw0lyHIOur+XCalOUe0KTJpyqzT8+fQ5A0Jf7vCx/NKmIg==,
       }
+    engines: { node: ">=20.0.0" }
 
   set-function-length@1.2.2:
     resolution:
@@ -10377,10 +10373,6 @@ snapshots:
     dependencies:
       performance-now: 2.1.0
 
-  randombytes@2.1.0:
-    dependencies:
-      safe-buffer: 5.2.1
-
   react-dom@18.3.1(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
@@ -10684,9 +10676,7 @@ snapshots:
 
   semver@7.7.4: {}
 
-  serialize-javascript@6.0.2:
-    dependencies:
-      randombytes: 2.1.0
+  serialize-javascript@7.0.4: {}
 
   set-function-length@1.2.2:
     dependencies:
@@ -10936,7 +10926,7 @@ snapshots:
       "@jridgewell/trace-mapping": 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
-      serialize-javascript: 6.0.2
+      serialize-javascript: 7.0.4
       terser: 5.46.0
       webpack: 5.104.1
 
