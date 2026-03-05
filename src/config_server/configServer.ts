@@ -22,6 +22,6 @@ export function useConfigCall(
     return await response.text();
   };
   return useQuery(queryKey ?? "ConfigCall", fetchCall, {
-    refetchInterval: pollRateMillis ?? 500,
+    refetchInterval: pollRateMillis ?? false,
   });
 }
