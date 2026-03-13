@@ -1,4 +1,5 @@
 import { useQuery, UseQueryResult } from "react-query";
+import { logger } from "../utils/logger";
 
 const BLUEAPI_SOCKET: string = "/api"; // import.meta.env.VITE_BLUEAPI_SOCKET;
 
@@ -77,6 +78,7 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
 // Note. fetch only rejects a promise on network errors, but http errors
 // must be caught by checking the response
 function submitTask(request: BlueApiRequestBody): Promise<string | void> {
+  logger.info("Submitting task:", request.planName, request.planParams);
   return blueApiCall("/tasks", "POST", {
     name: request.planName,
     params: request.planParams,
@@ -92,6 +94,7 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
 }
 
 function runTask(taskId: string): Promise<string | void> {
+  logger.info("Running task:", taskId);
   return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
     if (!res.ok) {
       throw new Error(
@@ -108,6 +111,7 @@ export function submitAndRunPlanImmediately(
   return submitTask(request).then((res) => {
     if (res) {
       runTask(res);
+      logger.log("Plan submitted and running successfully");
     } else {
       throw new Error("Couldn't run plan");
     }
@@ -115,6 +119,7 @@ export function submitAndRunPlanImmediately(
 }
 
 export function abortCurrentPlan(): Promise<BlueApiWorkerState> {
+  logger.warn("Aborting current plan");
   return blueApiCall("/worker/state", "PUT", {
     new_state: "ABORTING",
     reason: "Abort button pressed",
