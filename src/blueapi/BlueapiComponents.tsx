@@ -62,29 +62,29 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const sx = props.sx ? { ...buttonStyles, ...props.sx } : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
+  const snackBarLogging = (severity: SeverityLevel, message: string) => {
+    setSeverity(severity);
+    setMsg(message);
+    setIsPolling(false);
+    setInitialWorkerState(null);
+  };
+
   const pollWorkerStatus = useCallback(async () => {
     try {
       const currentState: BlueApiWorkerState = await getWorkerStatus();
 
       if (initialWorkerState === "RUNNING" && currentState === "IDLE") {
-        setSeverity("success");
-        setMsg("Plan completed successfully");
-        setIsPolling(false);
-        setInitialWorkerState(null);
+        snackBarLogging("success", "Plan completed successfully");
         return;
       }
 
       if (currentState === "PANICKED") {
-        setSeverity("error");
-        setMsg("Plan failed.");
-        setIsPolling(false);
-        setInitialWorkerState(null);
+        snackBarLogging("error", "Plan failed.");
         return;
       }
     } catch (error) {
+      snackBarLogging("error", `Error polling worker status: ${error} `);
       console.error("Error polling worker status:", error);
-      setIsPolling(false);
-      setInitialWorkerState(null);
     }
   }, [initialWorkerState]);
 
@@ -117,13 +117,11 @@ export function RunPlanButton(props: RunPlanButtonProps) {
       });
       setIsPolling(true);
     } catch (error) {
-      setSeverity("error");
-      setMsg(
+      snackBarLogging(
+        "error",
         `Failed to run plan ${props.planName}, see console and logs for full error`,
       );
       console.error(`${msg}. Reason: ${error}`);
-      setIsPolling(false);
-      setInitialWorkerState(null);
     }
   };
 
