@@ -1,5 +1,10 @@
-import React, { ReactNode } from "react";
-import { abortCurrentPlan, submitAndRunPlanImmediately } from "./blueapi";
+import React, { ReactNode, useCallback, useEffect } from "react";
+import {
+  abortCurrentPlan,
+  submitAndRunPlanImmediately,
+  getWorkerStatus,
+  type BlueApiWorkerState,
+} from "./blueapi";
 import {
   Alert,
   Button,
@@ -36,6 +41,9 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const [openSnackbar, setOpenSnackbar] = React.useState<boolean>(false);
   const [msg, setMsg] = React.useState<string>("Running plan...");
   const [severity, setSeverity] = React.useState<SeverityLevel>("info");
+  const [isPolling, setIsPolling] = React.useState<boolean>(false);
+  const [initialWorkerState, setInitialWorkerState] =
+    React.useState<BlueApiWorkerState | null>(null);
 
   let fullVisit: string;
   if (props.currentVisit === undefined) {
@@ -54,28 +62,68 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const sx = props.sx ? { ...buttonStyles, ...props.sx } : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
 
-  const handleClick = () => {
+  const pollWorkerStatus = useCallback(async () => {
+    try {
+      const currentState: BlueApiWorkerState = await getWorkerStatus();
+
+      if (initialWorkerState === "RUNNING" && currentState === "IDLE") {
+        setSeverity("success");
+        setMsg("Plan completed successfully");
+        setIsPolling(false);
+        setInitialWorkerState(null);
+        return;
+      }
+
+      if (currentState === "PANICKED") {
+        setSeverity("error");
+        setMsg("Plan failed.");
+        setIsPolling(false);
+        setInitialWorkerState(null);
+        return;
+      }
+    } catch (error) {
+      console.error("Error polling worker status:", error);
+      setIsPolling(false);
+      setInitialWorkerState(null);
+    }
+  }, [initialWorkerState]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null;
+    if (isPolling) {
+      intervalId = setInterval(pollWorkerStatus, 1000);
+    }
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isPolling, pollWorkerStatus]);
+
+  const handleClick = async () => {
     setOpenSnackbar(true);
     try {
+      setSeverity("info");
+      setMsg("Running plan...");
+
+      const initialState = await getWorkerStatus();
+      setInitialWorkerState(initialState);
       instrumentSession = parseInstrumentSession(fullVisit);
       console.log(`Current instrument session: ${instrumentSession}`);
-      submitAndRunPlanImmediately({
+      await submitAndRunPlanImmediately({
         planName: props.planName,
         planParams: params,
         instrumentSession: instrumentSession,
-      }).catch((error) => {
-        setSeverity("error");
-        setMsg(
-          `Failed to run plan ${props.planName}, see console and logs for full error`,
-        );
-        console.log(`${msg}. Reason: ${error}`);
       });
+      setIsPolling(true);
     } catch (error) {
       setSeverity("error");
       setMsg(
-        `Failed to run plan ${props.planName}, please check visit PV is set.`,
+        `Failed to run plan ${props.planName}, see console and logs for full error`,
       );
-      console.log(`An error occurred ${error}`);
+      console.error(`${msg}. Reason: ${error}`);
+      setIsPolling(false);
+      setInitialWorkerState(null);
     }
   };
 
@@ -173,7 +221,7 @@ export function AbortButton() {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
         <Alert onClose={handleMsgClose} severity="warning">
-          Aborting plan ...
+          Aborting plan...
         </Alert>
       </Snackbar>
     </div>
