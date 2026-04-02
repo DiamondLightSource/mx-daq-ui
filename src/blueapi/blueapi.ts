@@ -78,13 +78,18 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
 // Note. fetch only rejects a promise on network errors, but http errors
 // must be caught by checking the response
 function submitTask(request: BlueApiRequestBody): Promise<string | void> {
-  logger.info("Submitting task:", request.planName, request.planParams);
+  logger.info(
+    `Submitting task: ${request.planName} for session ${request.instrumentSession}`,
+    request.planParams,
+  );
   return blueApiCall("/tasks", "POST", {
     name: request.planName,
     params: request.planParams,
     instrument_session: request.instrumentSession,
   }).then((res) => {
+    logger.info("Received response from blueapi task submission:", res);
     if (!res.ok) {
+      logger.error(`Error submitting task: ${res.status} ${res.statusText}`);
       throw new Error(
         `Unable to POST request, response error ${res.status} ${res.statusText}`,
       );
@@ -101,7 +106,10 @@ function runTask(taskId: string): Promise<string | void> {
         `Unable to run task, response error ${res.status} ${res.statusText}`,
       );
     }
-    return res.json().then((res) => res["task_id"]);
+    return res.json().then((res) => {
+      logger.info(`Task ${taskId} started successfully`);
+      return res["task_id"];
+    });
   });
 }
 

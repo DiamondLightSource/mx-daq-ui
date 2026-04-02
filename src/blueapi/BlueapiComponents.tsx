@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { parseInstrumentSession, readVisitFromPv } from "./visit";
+import { logger } from "#/utils/logger.ts";
 
 type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
@@ -58,7 +59,6 @@ export function RunPlanButton(props: RunPlanButtonProps) {
     setOpenSnackbar(true);
     try {
       instrumentSession = parseInstrumentSession(fullVisit);
-      console.log(`Current instrument session: ${instrumentSession}`);
       submitAndRunPlanImmediately({
         planName: props.planName,
         planParams: params,
@@ -68,14 +68,14 @@ export function RunPlanButton(props: RunPlanButtonProps) {
         setMsg(
           `Failed to run plan ${props.planName}, see console and logs for full error`,
         );
-        console.log(`${msg}. Reason: ${error}`);
+        logger.error(`${msg}. Reason: ${error}`);
       });
     } catch (error) {
       setSeverity("error");
       setMsg(
         `Failed to run plan ${props.planName}, please check visit PV is set.`,
       );
-      console.log(`An error occurred ${error}`);
+      logger.error(`An error occurred: ${error}`);
     }
   };
 
