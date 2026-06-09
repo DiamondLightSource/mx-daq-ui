@@ -1,4 +1,4 @@
-enum LogLevel {
+export enum LogLevel {
   LOG = "log",
   INFO = "info",
   DEBUG = "debug",
@@ -7,7 +7,7 @@ enum LogLevel {
 }
 
 const getTimestamp = (): string => {
-  return new Date().toLocaleString();
+  return new Date().toISOString().split("T")[0];
 };
 
 const log = (level: LogLevel, message: string, ...data: unknown[]): void => {
