@@ -5,10 +5,14 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  ajv: ^6.12.6
+  ajv@<6.14.0: ">=6.14.0"
+  ajv@>=7.0.0-alpha.0 <8.18.0: ">=8.18.0"
   esbuild@<=0.24.2: ">=0.25.0"
+  minimatch@>=10.0.0 <10.2.3: ">=10.2.3"
   minimatch@>=9.0.0 <9.0.6: ">=9.0.6"
   minimatch@>=9.0.0 <9.0.7: ">=9.0.7"
+  rollup@>=4.0.0 <4.59.0: ">=4.59.0"
+  serialize-javascript@<=7.0.2: ">=7.0.3"
 
 importers:
   .:
@@ -1940,6 +1944,7 @@ packages:
       {
         integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==,
       }
+    deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
   "@vitejs/plugin-react-swc@3.11.0":
     resolution:
@@ -2195,7 +2200,7 @@ packages:
         integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==,
       }
     peerDependencies:
-      ajv: ^6.12.6
+      ajv: ">=8.18.0"
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -2206,12 +2211,18 @@ packages:
         integrity: sha512-YCS/JNFAUyr5vAuhk1DWm1CBxRHW9LbJ2ozWeemrIqpbsqKjHVxYPyi5GC0rjZIT5JxJ3virVTS8wk4i/Z+krw==,
       }
     peerDependencies:
-      ajv: ^6.12.6
+      ajv: ">=8.18.0"
 
   ajv@6.14.0:
     resolution:
       {
         integrity: sha512-IWrosm/yrn43eiKqkfkHis7QioDleaXQHdDVPKg0FSwwd/DuvyX79TZnFOnYpB7dcsFAMmtFztZuXPDvSePkFw==,
+      }
+
+  ajv@8.20.0:
+    resolution:
+      {
+        integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==,
       }
 
   almost-equal@1.1.0:
@@ -3646,6 +3657,12 @@ packages:
         integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==,
       }
 
+  fast-uri@3.1.3:
+    resolution:
+      {
+        integrity: sha512-i70LwGWUduXqzicKXWshooq+sWL1K3WUU5rKZNG/0i3a1OSoX3HqhH5WbWwTmqWfor4urUakGPiRQcleRZTwOg==,
+      }
+
   fastq@1.20.1:
     resolution:
       {
@@ -4611,6 +4628,12 @@ packages:
         integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==,
       }
 
+  json-schema-traverse@1.0.0:
+    resolution:
+      {
+        integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==,
+      }
+
   json-stable-stringify-without-jsonify@1.0.1:
     resolution:
       {
@@ -4851,20 +4874,7 @@ packages:
       {
         integrity: sha512-oRjTw/97aTBN0RHbYCdtF1MQfvusSIBQM0IZEgzl6426+8jSC0nF1a/GmnVLpfB9yyr6g6FTqWqiZVbxrtaCIg==,
       }
-
-  minimatch@9.0.3:
-    resolution:
-      {
-        integrity: sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==,
-      }
-    engines: { node: ">=16 || 14 >=14.17" }
-
-  minimatch@9.0.9:
-    resolution:
-      {
-        integrity: sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg==,
-      }
-    engines: { node: ">=16 || 14 >=14.17" }
+    engines: { node: 18 || 20 || >=22 }
 
   minimatch@3.1.5:
     resolution:
@@ -5677,6 +5687,13 @@ packages:
       {
         integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==,
       }
+
+  require-from-string@2.0.2:
+    resolution:
+      {
+        integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==,
+      }
+    engines: { node: ">=0.10.0" }
 
   require-relative@0.8.7:
     resolution:
@@ -6603,6 +6620,7 @@ packages:
       {
         integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==,
       }
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   vite-node@3.2.4:
@@ -7348,8 +7366,8 @@ snapshots:
   "@jsonforms/core@3.7.0":
     dependencies:
       "@types/json-schema": 7.0.15
-      ajv: 6.14.0
-      ajv-formats: 2.1.1(ajv@6.14.0)
+      ajv: 8.20.0
+      ajv-formats: 2.1.1(ajv@8.20.0)
       lodash: 4.17.23
 
   "@jsonforms/material-renderers@3.7.0(084ffb6e2cd7bbd51e9104c649105a46)":
@@ -7414,7 +7432,7 @@ snapshots:
   "@microsoft/tsdoc-config@0.17.1":
     dependencies:
       "@microsoft/tsdoc": 0.15.1
-      ajv: 6.14.0
+      ajv: 8.20.0
       jju: 1.4.0
       resolve: 1.22.11
 
@@ -8221,13 +8239,13 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ajv-formats@2.1.1(ajv@6.14.0):
+  ajv-formats@2.1.1(ajv@8.20.0):
     optionalDependencies:
-      ajv: 6.14.0
+      ajv: 8.20.0
 
-  ajv-keywords@5.1.0(ajv@6.14.0):
+  ajv-keywords@5.1.0(ajv@8.20.0):
     dependencies:
-      ajv: 6.14.0
+      ajv: 8.20.0
       fast-deep-equal: 3.1.3
 
   ajv@6.14.0:
@@ -8236,6 +8254,13 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
+
+  ajv@8.20.0:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-uri: 3.1.3
+      json-schema-traverse: 1.0.0
+      require-from-string: 2.0.2
 
   almost-equal@1.1.0: {}
 
@@ -9246,6 +9271,8 @@ snapshots:
 
   fast-levenshtein@2.0.6: {}
 
+  fast-uri@3.1.3: {}
+
   fastq@1.20.1:
     dependencies:
       reusify: 1.1.0
@@ -9833,6 +9860,8 @@ snapshots:
   json-parse-even-better-errors@2.3.1: {}
 
   json-schema-traverse@0.4.1: {}
+
+  json-schema-traverse@1.0.0: {}
 
   json-stable-stringify-without-jsonify@1.0.1: {}
 
@@ -10561,6 +10590,8 @@ snapshots:
 
   remove-accents@0.5.0: {}
 
+  require-from-string@2.0.2: {}
+
   require-relative@0.8.7: {}
 
   reselect@5.1.1: {}
@@ -10673,9 +10704,9 @@ snapshots:
   schema-utils@4.3.3:
     dependencies:
       "@types/json-schema": 7.0.15
-      ajv: 6.14.0
-      ajv-formats: 2.1.1(ajv@6.14.0)
-      ajv-keywords: 5.1.0(ajv@6.14.0)
+      ajv: 8.20.0
+      ajv-formats: 2.1.1(ajv@8.20.0)
+      ajv-keywords: 5.1.0(ajv@8.20.0)
 
   semver@6.3.1: {}
 
