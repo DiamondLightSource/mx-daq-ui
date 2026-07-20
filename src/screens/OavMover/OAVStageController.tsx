@@ -58,17 +58,25 @@ export function OavMover() {
   }
 
   return (
-    <div>
-      <Grid2 container spacing={2} columns={12}>
-        <Grid2 size={9} sx={{ bgcolor: bgColor }}>
-          <OavVideoStream
-            pv="ca://BL24I-DI-OAV-01:"
-            label="I24 OAV image stream"
-            crosshairX={crosshairX}
-            crosshairY={crosshairY}
-            onCoordClick={onCoordClick}
-          />
-        </Grid2>
+    <Grid2 container spacing={2} columns={12}>
+      <Grid2 size={{ xs: 12, lg: 8 }} sx={{ bgcolor: bgColor }}>
+        <OavVideoStream
+          pv="ca://BL24I-DI-OAV-01:"
+          label="I24 OAV image stream"
+          crosshairX={crosshairX}
+          crosshairY={crosshairY}
+          onCoordClick={onCoordClick}
+        />
+      </Grid2>
+      <Grid2
+        size={{ xs: 12, lg: 4 }}
+        sx={{
+          height: "95vh", // Height set to 95vh to span height of screen but to also leave 5vh space for the top navigation header.
+          overflowY: "auto",
+          padding: 2,
+          boxSizing: "border-box",
+        }}
+      >
         <OAVSideBar />
       </Grid2>
     </Grid2>
