@@ -27,9 +27,6 @@ const I24DiamondThemeOptions = mergeThemeOptions(
     colorSchemes: {
       light: {
         palette: {
-          primary: {
-            contrastText: "#000000",
-          },
           custom: {
             main: "#1976d2",
             light: "#68a0e2",

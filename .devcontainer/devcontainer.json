@@ -8,17 +8,20 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-vscode.vscode-typescript-next",
         "esbenp.prettier-vscode",
         "ms-vscode.vscode-json",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "aaron-bond.better-comments",
+        "dbaeumer.vscode-eslint",
+        "vitest.explorer",
+        "usernamehw.errorlens"
       ],
       "settings": {
-        "typescript.preferences.preferTypeOnlyAutoImports": true,
+        "js/ts.preferences.preferTypeOnlyAutoImports": true,
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": "always"
+          "source.fixAll.eslint": "explicit"
         }
       }
     }

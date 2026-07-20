@@ -3,6 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { forceString, useParsedPvConnection } from "#/pv/util.ts";
 import { submitAndRunPlanImmediately } from "#/blueapi/blueapi.ts";
 import type { PvDescription } from "#/pv/types.ts";
+import { parseInstrumentSession, readVisitFromPv } from "#/blueapi/visit.ts";
 
 type SelectionProps = PvDescription & {
   id: string;
@@ -24,12 +25,17 @@ export function SelectionWithPlanRunner(props: SelectionProps) {
   console.log(`${props.id} current value: ${currentValue}`);
   const [_, updateVal] = React.useState<string>(currentValue.toString());
 
+  // FIXME, temporary - will be fixed by using context everywhere
+  const fullVisit = readVisitFromPv();
+  let instrumentSession: string;
+
   const handleChange = (newValue: typeof currentValue) => {
     updateVal(newValue);
+    instrumentSession = parseInstrumentSession(fullVisit);
     submitAndRunPlanImmediately({
       planName: props.plan_name,
       planParams: { position: newValue },
-      instrumentSession: "", // FIXME, temporary
+      instrumentSession: instrumentSession,
     });
   };
 

@@ -71,6 +71,30 @@ export function OavMover() {
         </Grid2>
         <OAVSideBar />
       </Grid2>
-    </div>
+    </Grid2>
   );
 }
+
+/**
+ * Responsive layout strategy:
+ *
+ * Breakpoints: xs, sm, md, lg, xl
+ *
+ * - < lg (below 1200px):
+ *   Single-column layout.
+ *   The sidebar stacks below the video stream.
+ *
+ * - lg (>= 1200px):
+ *   Two-column layout.
+ *   Main content: 8/12 columns
+ *   Sidebar: 4/12 columns
+ *   Sidebar uses a compact layout (e.g. focus tab arranged in a 2x2 grid).
+ *
+ * - xl and above:
+ *   Two-column layout maintained.
+ *   Sidebar can use a full-width layout (e.g. focus tab arranged in a 4-button row).
+ *
+ * Note:
+ * Extremely large screens are not specially optimized beyond xl for now;
+ * layout simply scales with the standard MUI grid behaviour.
+ */

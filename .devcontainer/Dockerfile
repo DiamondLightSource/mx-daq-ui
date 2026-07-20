@@ -1,5 +1,5 @@
 # Base stage with Node.js and pnpm
-FROM node:20-bullseye AS base
+FROM node:24-bullseye AS base
 WORKDIR /workspaces
 
 # Install system dependencies

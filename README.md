@@ -53,6 +53,17 @@ stomp:
 
 For I24 instead, The first few plans are in the branch https://github.com/DiamondLightSource/mx-bluesky/tree/151_web-ui-first-plans and there is already a BlueAPI configuration defined in https://github.com/DiamondLightSource/mx-bluesky/blob/main/src/mx_bluesky/beamlines/i24/serial/blueapi_config.yaml that can be used for testing.
 
+### PNPM Audits
+
+Occasionally third party dependencies may have new known vulnerabilities. The CI checks for these when code is committed and pushed. To fix this, run the audit command with the fix flag. This scans your dependencies for vulnerabilities and automatically adds overrides to `package.json`, pinning affected packages to safe versions. Review these changes before proceeding, as some bumps may be to a new major version that may break other third party dependencies.
+
+```bash
+pnpm audit --fix
+pnpm install
+```
+
+If vulnerabilities remain or other packages break after this, you may need to repeat the command or manually update the affected package (`pnpm update <package>`) or add an override in `package.json` yourself.
+
 ## Run
 
 Once all the above steps are done, start a blueapi server. The gui can be started by running:
