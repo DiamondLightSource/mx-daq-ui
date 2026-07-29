@@ -27,7 +27,18 @@ To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk`, we take advanta
 
 ### Environment variables
 
-To connect to the BlueAPI instance for I24, the environment variables `VITE_BLUEAPI_SOCKET` must be set to the URL in the file `.env`. The URL is currently set to localhost - but should change to the ingress once the UI is deployed to the beamline cluster.
+`.env` holds the URLs the app talks to:
+
+| Variable                  | Read by                             | What it does                       |
+| ------------------------- | ----------------------------------- | ---------------------------------- |
+| `VITE_CONFIG_SOCKET`      | `src/config_server/configServer.ts` | the daq-config server              |
+| `VITE_BLUEAPI_SOCKET_DEV` | `vite.config.ts`                    | where `pnpm dev` proxies `/api` to |
+| `VITE_BLUEAPI_SOCKET`     | nothing, currently                  | see below                          |
+
+blueapi is addressed as the origin-relative `/api` (`src/blueapi/blueapi.ts`), so in a
+deployment whatever sits in front of the app routes that on, and `VITE_BLUEAPI_SOCKET` is
+not read - the line that read it is still there, commented out. The dev server has nothing
+in front of it, so it proxies `/api` itself, to `VITE_BLUEAPI_SOCKET_DEV`.
 
 ### BlueAPI config
 
