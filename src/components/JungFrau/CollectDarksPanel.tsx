@@ -37,7 +37,7 @@ export function CollectDarksPanel() {
           <Typography
             variant="h2"
             sx={{
-              color: theme.palette.primary.contrastText,
+              color: theme.palette.text.primary,
               fontSize: 24,
               fontWeight: "fontWeightBold",
             }}
@@ -62,7 +62,7 @@ export function CollectDarksPanel() {
             <Typography
               variant="body1"
               sx={{
-                color: theme.palette.primary.contrastText,
+                color: theme.palette.text.primary,
                 fontSize: 20,
                 fontWeight: "fontWeightBold",
               }}
@@ -99,7 +99,7 @@ export function CollectDarksPanel() {
             <Typography
               variant="body1"
               sx={{
-                color: theme.palette.primary.contrastText,
+                color: theme.palette.text.primary,
                 fontSize: 20,
                 fontWeight: "fontWeightBold",
               }}
