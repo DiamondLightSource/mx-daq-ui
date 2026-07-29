@@ -74,6 +74,88 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
   return blueApiCall("/worker/state").then((res) => res.json());
 }
 
+const PLAN_POLL_MILLIS = 10000;
+
+type PlanSchemaProperty = {
+  title?: string;
+  type?: string;
+  enum?: string[];
+};
+
+export type BlueApiPlan = {
+  name: string;
+  description?: string;
+  schema?: {
+    properties?: Record<string, PlanSchemaProperty>;
+  };
+};
+
+export type PlanReadiness = {
+  runnable: boolean;
+  reason?: string;
+};
+
+// blueapi describes a plan's injected devices as parameters whose type is a dotted
+// python path, with an enum listing the connected devices of that type. An ordinary
+// choice parameter (e.g. GainMode) is a $ref into $defs and has type "string", so the
+// dotted type is what tells a device apart from a plain enum.
+function isDeviceParam(param: PlanSchemaProperty): boolean {
+  return (
+    Array.isArray(param.enum) &&
+    param.type !== undefined &&
+    param.type.includes(".")
+  );
+}
+
+function fetchPlans(): Promise<BlueApiPlan[]> {
+  return blueApiCall("/plans").then((res) => {
+    if (!res.ok) {
+      throw new Error(
+        `Unable to fetch plans, response error ${res.status} ${res.statusText}`,
+      );
+    }
+    return res.json().then((body) => body["plans"] ?? []);
+  });
+}
+
+/** Check, before a plan is submitted, that blueapi knows it and has its devices.
+ *
+ * An empty device enum means blueapi failed to connect that device at startup, so
+ * submitting would fail validation with a 422.
+ */
+export function usePlanReadiness(planName: string): PlanReadiness {
+  const { data, status } = useQuery("BlueApiPlans", fetchPlans, {
+    refetchInterval: PLAN_POLL_MILLIS,
+  });
+
+  // Until /plans answers, assume the plan is fine: an unreachable plan list
+  // shouldn't be what stops an otherwise working beamline.
+  if (status !== "success" || data === undefined) {
+    return { runnable: true };
+  }
+
+  const plan = data.find((candidate) => candidate.name === planName);
+  if (plan === undefined) {
+    return {
+      runnable: false,
+      reason: `Plan ${planName} is not registered with blueapi`,
+    };
+  }
+
+  const missingDevices = Object.entries(plan.schema?.properties ?? {})
+    .filter(([, param]) => isDeviceParam(param) && param.enum?.length === 0)
+    .map(([name]) => name);
+
+  if (missingDevices.length > 0) {
+    return {
+      runnable: false,
+      reason: `Not connected in blueapi: ${missingDevices.join(", ")}`,
+    };
+  }
+
+  return { runnable: true };
+}
+
 // Note. fetch only rejects a promise on network errors, but http errors
 // must be caught by checking the response
 function submitTask(request: BlueApiRequestBody): Promise<string | void> {

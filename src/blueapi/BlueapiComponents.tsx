@@ -1,5 +1,9 @@
 import React, { ReactNode } from "react";
-import { abortCurrentPlan, submitAndRunPlanImmediately } from "./blueapi";
+import {
+  abortCurrentPlan,
+  submitAndRunPlanImmediately,
+  usePlanReadiness,
+} from "./blueapi";
 import {
   Alert,
   Button,
@@ -45,11 +49,14 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   }
   let instrumentSession: string;
 
+  const readiness = usePlanReadiness(props.planName);
+
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
   const size = props.btnSize ? props.btnSize : "medium";
   const color = props.btnColor ? props.btnColor : "custom";
-  const disabled = props.disabled ? props.disabled : false;
+  const disabled =
+    (props.disabled ? props.disabled : false) || !readiness.runnable;
   const buttonStyles = props.styleTemplate ? props.styleTemplate : {};
   const sx = props.sx ? { ...buttonStyles, ...props.sx } : {}; // Style for the button component which is the most likely to be customised
   const tooltipSx = props.tooltipSx ? props.tooltipSx : {};
@@ -93,7 +100,7 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   return (
     <div>
       <Tooltip
-        title={props.title ? props.title : ""}
+        title={readiness.reason ?? (props.title ? props.title : "")}
         placement="bottom"
         slotProps={{
           tooltip: {
@@ -102,18 +109,22 @@ export function RunPlanButton(props: RunPlanButtonProps) {
         }}
         arrow
       >
-        <Button
-          variant={variant}
-          color={color}
-          size={size}
-          disabled={disabled}
-          onClick={handleClick}
-          sx={sx}
-        >
-          <Typography variant="button" fontWeight="fontWeightBold">
-            {props.btnLabel}
-          </Typography>
-        </Button>
+        {/* A disabled button emits no pointer events, so it needs a wrapper for the
+        tooltip to explain why it is disabled. */}
+        <span style={{ display: "inline-flex" }}>
+          <Button
+            variant={variant}
+            color={color}
+            size={size}
+            disabled={disabled}
+            onClick={handleClick}
+            sx={sx}
+          >
+            <Typography variant="button" fontWeight="fontWeightBold">
+              {props.btnLabel}
+            </Typography>
+          </Button>
+        </span>
       </Tooltip>
       <Snackbar
         open={openSnackbar}
