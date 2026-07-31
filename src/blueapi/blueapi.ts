@@ -102,6 +102,78 @@ export function isWorkerBusy(state: BlueApiWorkerState | undefined): boolean {
   return state !== undefined && BUSY_WORKER_STATES.includes(state);
 }
 
+const TASK_POLL_MILLIS = 1000;
+
+/** blueapi records a finished task's fate as a discriminated union on `outcome`. */
+export type BlueApiTaskOutcome =
+  | { outcome: "success"; type: string; result?: unknown }
+  | { outcome: "error"; type: string; message: string };
+
+export type BlueApiTask = {
+  task_id: string;
+  is_complete: boolean;
+  is_pending: boolean;
+  errors: string[];
+  outcome?: BlueApiTaskOutcome | null;
+};
+
+/** What became of a submitted plan, as far as the frontend can tell. */
+export type TaskProgress =
+  | { state: "none" }
+  | { state: "running" }
+  | { state: "succeeded" }
+  | { state: "failed"; message: string }
+  /** The task exists but its fate could not be read, so treat the plan as finished. */
+  | { state: "unreadable" };
+
+function fetchTask(taskId: string): Promise<BlueApiTask> {
+  return blueApiCall(`/tasks/${taskId}`).then((res) => {
+    if (!res.ok) {
+      throw new Error(
+        `Unable to fetch task ${taskId}, response error ${res.status} ${res.statusText}`,
+      );
+    }
+    return res.json();
+  });
+}
+
+/** Follow a submitted task until blueapi says it is complete, then report its fate.
+ *
+ * PUT /worker/task returns as soon as the worker accepts the task, so a plan that dies
+ * partway through is only visible by asking about the task afterwards.
+ */
+export function useTaskProgress(taskId: string | undefined): TaskProgress {
+  const { data, status } = useQuery(
+    ["BlueApiTask", taskId],
+    () => fetchTask(taskId as string),
+    {
+      enabled: taskId !== undefined,
+      // Stop polling once it is complete; there is nothing left to learn.
+      refetchInterval: (task?: BlueApiTask) =>
+        task?.is_complete ? false : TASK_POLL_MILLIS,
+    },
+  );
+
+  if (taskId === undefined) {
+    return { state: "none" };
+  }
+  if (status === "error") {
+    return { state: "unreadable" };
+  }
+  if (status !== "success" || data === undefined || !data.is_complete) {
+    // Still loading counts as running: the plan was accepted, so it is underway.
+    return { state: "running" };
+  }
+  if (data.outcome?.outcome === "error") {
+    return { state: "failed", message: data.outcome.message };
+  }
+  // A completed task carrying errors but no error outcome is still a failure.
+  if (data.errors.length > 0) {
+    return { state: "failed", message: data.errors.join("; ") };
+  }
+  return { state: "succeeded" };
+}
+
 type PlanSchemaProperty = {
   title?: string;
   type?: string;
@@ -207,7 +279,7 @@ export function usePlanReadiness(planName: string): PlanReadiness {
 
 // Note. fetch only rejects a promise on network errors, but http errors
 // must be caught by checking the response
-function submitTask(request: BlueApiRequestBody): Promise<string | void> {
+function submitTask(request: BlueApiRequestBody): Promise<string> {
   return blueApiCall("/tasks", "POST", {
     name: request.planName,
     params: request.planParams,
@@ -218,33 +290,35 @@ function submitTask(request: BlueApiRequestBody): Promise<string | void> {
         `Unable to POST request, response error ${res.status} ${res.statusText}`,
       );
     }
-    return res.json().then((res) => res["task_id"]);
+    return res.json().then((body) => {
+      const taskId = body["task_id"];
+      if (!taskId) {
+        throw new Error("blueapi accepted the task but returned no task_id");
+      }
+      return taskId as string;
+    });
   });
 }
 
-function runTask(taskId: string): Promise<string | void> {
+function runTask(taskId: string): Promise<void> {
   return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
     if (!res.ok) {
       throw new Error(
         `Unable to run task, response error ${res.status} ${res.statusText}`,
       );
     }
-    return res.json().then((res) => res["task_id"]);
   });
 }
 
+/** Submit a plan and start it, resolving with the task id so its fate can be followed. */
 export function submitAndRunPlanImmediately(
   request: BlueApiRequestBody,
-): Promise<string | void> {
-  return submitTask(request).then((res) => {
-    if (res) {
-      // Returned, not just called: otherwise a 409 from a busy worker becomes an
-      // unhandled rejection and the caller thinks the plan started.
-      return runTask(res);
-    } else {
-      throw new Error("Couldn't run plan");
-    }
-  });
+): Promise<string> {
+  return submitTask(request).then((taskId) =>
+    // Returned, not just called: otherwise a 409 from a busy worker becomes an
+    // unhandled rejection and the caller thinks the plan started.
+    runTask(taskId).then(() => taskId),
+  );
 }
 
 export function abortCurrentPlan(): Promise<BlueApiWorkerState> {

@@ -3,6 +3,7 @@ import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
   usePlanReadiness,
+  useTaskProgress,
 } from "./blueapi";
 import {
   Alert,
@@ -20,10 +21,6 @@ type VariantChoice = "outlined" | "contained";
 type ButtonSize = "small" | "medium" | "large";
 type ButtonColor = "primary" | "secondary" | "custom";
 type ButtonStyleTemplates = "containedButtonStyles" | "outlinedButtonStyles";
-
-// How long to keep a just-pressed button marked in-progress if the worker state poll
-// never reports it busy. Several poll intervals, so a slow answer doesn't release early.
-const OWNERSHIP_GRACE_MILLIS = 5000;
 
 type RunPlanButtonProps = {
   btnLabel: string | ReactNode;
@@ -46,10 +43,10 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   const [msg, setMsg] = React.useState<string>("Running plan...");
   const [severity, setSeverity] = React.useState<SeverityLevel>("info");
   // Set the moment this button is pressed, so a second press cannot get in during the
-  // round trip to blueapi or the up-to-500ms wait for the worker state poll to notice.
+  // round trip to blueapi, before there is a task to follow.
   const [submitting, setSubmitting] = React.useState<boolean>(false);
-  // This button is the one that started the plan the worker is currently running.
-  const [ownsRunningPlan, setOwnsRunningPlan] = React.useState<boolean>(false);
+  // The task this button started, followed until blueapi reports how it ended.
+  const [taskId, setTaskId] = React.useState<string | undefined>(undefined);
 
   let fullVisit: string;
   if (props.currentVisit === undefined) {
@@ -61,32 +58,39 @@ export function RunPlanButton(props: RunPlanButtonProps) {
 
   const readiness = usePlanReadiness(props.planName);
 
-  // Track ownership across the worker's busy period: arm on submit, release once the
-  // worker has been seen busy and then idle again.
-  const sawWorkerBusy = React.useRef<boolean>(false);
-  React.useEffect(() => {
-    if (!ownsRunningPlan) {
-      return;
-    }
-    if (readiness.workerBusy) {
-      sawWorkerBusy.current = true;
-      return;
-    }
-    if (sawWorkerBusy.current) {
-      sawWorkerBusy.current = false;
-      setOwnsRunningPlan(false);
-      return;
-    }
-    // The worker never looked busy: either the plan finished inside one poll interval,
-    // or it never started. Release rather than leave the button disabled for good.
-    const timer = setTimeout(
-      () => setOwnsRunningPlan(false),
-      OWNERSHIP_GRACE_MILLIS,
-    );
-    return () => clearTimeout(timer);
-  }, [ownsRunningPlan, readiness.workerBusy]);
+  const progress = useTaskProgress(taskId);
 
-  const inProgress = submitting || ownsRunningPlan;
+  // Report how the plan ended, then stop following the task. A plan can fail long after
+  // it was accepted, and the only way to hear about it is to ask blueapi for the task.
+  React.useEffect(() => {
+    switch (progress.state) {
+      case "succeeded":
+        setSeverity("success");
+        setMsg(`Plan ${props.planName} finished`);
+        setOpenSnackbar(true);
+        setTaskId(undefined);
+        break;
+      case "failed":
+        setSeverity("error");
+        setMsg(`Plan ${props.planName} failed: ${progress.message}`);
+        setOpenSnackbar(true);
+        setTaskId(undefined);
+        break;
+      case "unreadable":
+        setSeverity("warning");
+        setMsg(
+          `Cannot tell whether plan ${props.planName} succeeded: blueapi did not answer. Check the logs.`,
+        );
+        setOpenSnackbar(true);
+        setTaskId(undefined);
+        break;
+    }
+    // Keyed on the state alone: reporting clears taskId, which moves the state to "none",
+    // so the next plan's state change re-triggers this even if it fails the same way.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress.state]);
+
+  const inProgress = submitting || progress.state === "running";
 
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";
@@ -116,10 +120,10 @@ export function RunPlanButton(props: RunPlanButtonProps) {
         planParams: params,
         instrumentSession: instrumentSession,
       })
-        .then(() => {
-          // Hold the in-progress marker until the worker state poll confirms the plan
-          // is running, otherwise the button would flick back to enabled in between.
-          setOwnsRunningPlan(true);
+        .then((id) => {
+          // Follow this task from here on; the in-progress marker and the eventual
+          // success or failure message both come from it.
+          setTaskId(id);
         })
         .catch((error) => {
           setSeverity("error");
@@ -190,11 +194,19 @@ export function RunPlanButton(props: RunPlanButtonProps) {
       </Tooltip>
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={5000}
+        // Failures stay up until dismissed: a plan traceback is not readable in 5s, and
+        // a missed failure is how a broken collection looks like a working one.
+        autoHideDuration={
+          severity === "info" || severity === "success" ? 5000 : null
+        }
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert onClose={handleSnackbarClose} severity={severity}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={severity}
+          sx={{ maxWidth: 600, overflowWrap: "anywhere" }}
+        >
           {msg}
         </Alert>
       </Snackbar>

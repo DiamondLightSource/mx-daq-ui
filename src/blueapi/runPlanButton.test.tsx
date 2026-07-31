@@ -26,8 +26,58 @@ const PLANS_RESPONSE = {
   ],
 };
 
-/** Stand in for blueapi: /plans, /worker/state, and a task submission that succeeds. */
-function mockBlueapi(workerState: () => string) {
+const TASK_ID = "task-1";
+
+/** The blueapi task record the frontend polls; tests move it on to model an outcome. */
+type FakeTask = {
+  task_id: string;
+  is_complete: boolean;
+  is_pending: boolean;
+  errors: string[];
+  outcome?: object | null;
+};
+
+const RUNNING_TASK: FakeTask = {
+  task_id: TASK_ID,
+  is_complete: false,
+  is_pending: false,
+  errors: [],
+  outcome: null,
+};
+
+/** Shaped like the real record for the MotorLimitsError failure, message and all. */
+const FAILED_TASK: FakeTask = {
+  task_id: TASK_ID,
+  is_complete: true,
+  is_pending: false,
+  errors: ["<WatchableAsyncStatus, device: detector_motion-z, errored: ...>"],
+  outcome: {
+    outcome: "error",
+    type: "FailedStatus",
+    message:
+      "detector_motion-z motor trajectory for requested fly/move is from 1300.0mm to 200mm but motor limits are 215.8mm <= x <= 1510.0mm",
+  },
+};
+
+const SUCCEEDED_TASK: FakeTask = {
+  task_id: TASK_ID,
+  is_complete: true,
+  is_pending: false,
+  errors: [],
+  outcome: { outcome: "success", type: "NoneType", result: null },
+};
+
+type BlueapiMockOptions = {
+  workerState?: () => string;
+  task?: () => FakeTask;
+  taskReadable?: () => boolean;
+};
+
+/** Stand in for blueapi: /plans, /worker/state, task submission, and task follow-up. */
+function mockBlueapi(options: BlueapiMockOptions = {}) {
+  const workerState = options.workerState ?? (() => "IDLE");
+  const task = options.task ?? (() => RUNNING_TASK);
+  const taskReadable = options.taskReadable ?? (() => true);
   const fetchMock = vi.fn((url: string, init?: RequestInit) => {
     const method = init?.method ?? "GET";
     if (url.endsWith("/plans")) {
@@ -37,15 +87,29 @@ function mockBlueapi(workerState: () => string) {
       return jsonResponse(workerState());
     }
     if (url.endsWith("/tasks") && method === "POST") {
-      return jsonResponse({ task_id: "task-1" });
+      return jsonResponse({ task_id: TASK_ID });
     }
     if (url.endsWith("/worker/task") && method === "PUT") {
-      return jsonResponse({ task_id: "task-1" });
+      return jsonResponse({ task_id: TASK_ID });
+    }
+    if (url.endsWith(`/tasks/${TASK_ID}`)) {
+      return taskReadable()
+        ? jsonResponse(task())
+        : errorResponse(500, "Internal Server Error");
     }
     throw new Error(`Unexpected request ${method} ${url}`);
   });
   vi.stubGlobal("fetch", fetchMock);
   return fetchMock;
+}
+
+function errorResponse(status: number, statusText: string) {
+  return Promise.resolve({
+    ok: false,
+    status: status,
+    statusText: statusText,
+    json: () => Promise.resolve({}),
+  });
 }
 
 function jsonResponse(body: unknown) {
@@ -104,13 +168,13 @@ describe("RunPlanButton while a plan is running", () => {
   });
 
   it("disables the button when the worker is already running a plan", async () => {
-    mockBlueapi(() => "RUNNING");
+    mockBlueapi({ workerState: () => "RUNNING" });
     renderButton();
     await waitFor(() => expect(darksButton()).toBeDisabled());
   });
 
   it("explains why it is disabled rather than silently doing nothing", async () => {
-    mockBlueapi(() => "RUNNING");
+    mockBlueapi({ workerState: () => "RUNNING" });
     renderButton();
     await waitFor(() => expect(darksButton()).toBeDisabled());
     // The tooltip lives on the wrapper span, since a disabled button has no pointer events.
@@ -123,7 +187,7 @@ describe("RunPlanButton while a plan is running", () => {
   });
 
   it("submits no task when the worker is busy", async () => {
-    const fetchMock = mockBlueapi(() => "RUNNING");
+    const fetchMock = mockBlueapi({ workerState: () => "RUNNING" });
     renderButton();
     await waitFor(() => expect(darksButton()).toBeDisabled());
     // Force the click past the disabled attribute so the handler's own guard is what
@@ -134,7 +198,7 @@ describe("RunPlanButton while a plan is running", () => {
 
   it("re-enables the button once the worker returns to idle", async () => {
     let state = "RUNNING";
-    mockBlueapi(() => state);
+    mockBlueapi({ workerState: () => state });
     renderButton();
     await waitFor(() => expect(darksButton()).toBeDisabled());
     state = "IDLE";
@@ -155,9 +219,9 @@ describe("RunPlanButton double presses", () => {
   });
 
   it("submits only one task when pressed repeatedly before the worker state updates", async () => {
-    // The worker stays IDLE throughout: the poll never sees the plan, so only the
-    // button's own in-progress state can stop the extra presses.
-    const fetchMock = mockBlueapi(() => "IDLE");
+    // The worker stays IDLE throughout, so the 500ms state poll never reports the plan.
+    // Only the button's own in-progress state can stop the extra presses.
+    const fetchMock = mockBlueapi();
     const user = userEvent.setup({
       advanceTimers: vi.advanceTimersByTime,
       pointerEventsCheck: 0,
@@ -174,30 +238,126 @@ describe("RunPlanButton double presses", () => {
   });
 
   it("shows an in-progress marker on the button that started the plan", async () => {
-    let state = "IDLE";
-    mockBlueapi(() => state);
+    mockBlueapi();
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderButton();
     await waitFor(() => expect(darksButton()).toBeEnabled());
 
     await user.click(darksButton());
-    state = "RUNNING";
     await waitFor(() =>
       expect(screen.getByRole("progressbar")).toBeInTheDocument(),
     );
   });
+});
 
-  it("releases the button if the worker is never seen busy", async () => {
-    // A plan shorter than the poll interval must not leave the button stuck.
-    mockBlueapi(() => "IDLE");
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+describe("RunPlanButton reporting how a plan ended", () => {
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+    vi.clearAllMocks();
+  });
+
+  it("reports a plan that failed after it had started", async () => {
+    // The failure blueapi actually recorded for the rotation scan: the plan was accepted
+    // and only died later, in the setup move.
+    mockBlueapi({ task: () => FAILED_TASK });
     renderButton();
     await waitFor(() => expect(darksButton()).toBeEnabled());
 
-    await user.click(darksButton());
-    await waitFor(() => expect(darksButton()).toBeDisabled());
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(
+        screen.getByText(/Plan do_pedestal_darks failed/),
+      ).toBeInTheDocument(),
+    );
+    // The reason has to be in the message, not just "it failed".
+    expect(
+      screen.getByText(/motor limits are 215.8mm <= x <= 1510.0mm/),
+    ).toBeInTheDocument();
+  });
 
-    vi.advanceTimersByTime(6000);
+  it("leaves a failure on screen instead of auto-hiding it", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    try {
+      mockBlueapi({ task: () => FAILED_TASK });
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+      renderButton();
+      await waitFor(() => expect(darksButton()).toBeEnabled());
+
+      await user.click(darksButton());
+      await waitFor(() =>
+        expect(
+          screen.getByText(/Plan do_pedestal_darks failed/),
+        ).toBeInTheDocument(),
+      );
+
+      vi.advanceTimersByTime(30000);
+      expect(
+        screen.getByText(/Plan do_pedestal_darks failed/),
+      ).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("reports a plan that finished cleanly", async () => {
+    mockBlueapi({ task: () => SUCCEEDED_TASK });
+    renderButton();
     await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(
+        screen.getByText("Plan do_pedestal_darks finished"),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("treats a completed task carrying errors as a failure", async () => {
+    // Belt and braces: report the errors list even without an error outcome.
+    mockBlueapi({
+      task: () => ({
+        ...RUNNING_TASK,
+        is_complete: true,
+        errors: ["something went wrong in the plan"],
+        outcome: null,
+      }),
+    });
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(
+        screen.getByText(/something went wrong in the plan/),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("says the outcome is unknown if the task cannot be read", async () => {
+    mockBlueapi({ taskReadable: () => false });
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          /Cannot tell whether plan do_pedestal_darks succeeded/,
+        ),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("re-enables the button once the plan has finished", async () => {
+    let task = RUNNING_TASK;
+    mockBlueapi({ task: () => task });
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() => expect(darksButton()).toBeDisabled());
+    task = SUCCEEDED_TASK;
+    await waitFor(() => expect(darksButton()).toBeEnabled(), { timeout: 3000 });
   });
 });
