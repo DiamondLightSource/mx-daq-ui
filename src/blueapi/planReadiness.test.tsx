@@ -72,17 +72,24 @@ const PLANS_RESPONSE = {
   ],
 };
 
-function mockPlansFetch(body: object, ok = true) {
+/** Stub fetch for both endpoints usePlanReadiness consults: /plans and /worker/state. */
+function mockBlueapiFetch(
+  plansBody: object,
+  workerState: string = "IDLE",
+  plansOk = true,
+) {
   vi.stubGlobal(
     "fetch",
-    vi.fn(() =>
-      Promise.resolve({
+    vi.fn((url: string) => {
+      const isPlans = url.endsWith("/plans");
+      const ok = isPlans ? plansOk : true;
+      return Promise.resolve({
         ok: ok,
         status: ok ? 200 : 500,
         statusText: ok ? "OK" : "Internal Server Error",
-        json: () => Promise.resolve(body),
-      }),
-    ),
+        json: () => Promise.resolve(isPlans ? plansBody : workerState),
+      });
+    }),
   );
 }
 
@@ -97,7 +104,7 @@ function wrapper({ children }: { children: ReactNode }) {
 
 describe("usePlanReadiness", () => {
   beforeEach(() => {
-    mockPlansFetch(PLANS_RESPONSE);
+    mockBlueapiFetch(PLANS_RESPONSE);
   });
 
   afterEach(() => {
@@ -150,10 +157,54 @@ describe("usePlanReadiness", () => {
   });
 
   it("allows the plan through if the plan list cannot be fetched", async () => {
-    mockPlansFetch({}, false);
+    mockBlueapiFetch({}, "IDLE", false);
     const { result } = renderHook(() => usePlanReadiness("do_pedestal_darks"), {
       wrapper,
     });
     await waitFor(() => expect(result.current.runnable).toBe(true));
+  });
+
+  it.each(["RUNNING", "PAUSED", "ABORTING"])(
+    "blocks a runnable plan while the worker is %s",
+    async (state) => {
+      mockBlueapiFetch(PLANS_RESPONSE, state);
+      const { result } = renderHook(() => usePlanReadiness("block_check"), {
+        wrapper,
+      });
+      await waitFor(() => expect(result.current.runnable).toBe(false));
+      expect(result.current.workerBusy).toBe(true);
+      expect(result.current.reason).toBe(
+        `A plan is already running (worker is ${state})`,
+      );
+    },
+  );
+
+  it("reports a busy worker rather than a disconnected device", async () => {
+    // Busy takes priority: waiting is the answer, not restarting blueapi.
+    mockBlueapiFetch(PLANS_RESPONSE, "RUNNING");
+    const { result } = renderHook(() => usePlanReadiness("do_pedestal_darks"), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.workerBusy).toBe(true));
+  });
+
+  it("blocks a plan when the worker has panicked", async () => {
+    mockBlueapiFetch(PLANS_RESPONSE, "PANICKED");
+    const { result } = renderHook(() => usePlanReadiness("block_check"), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.runnable).toBe(false));
+    expect(result.current.workerBusy).toBe(false);
+    expect(result.current.reason).toBe(
+      "The blueapi worker has panicked and needs restarting",
+    );
+  });
+
+  it("allows a runnable plan while the worker is idle", async () => {
+    const { result } = renderHook(() => usePlanReadiness("block_check"), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.runnable).toBe(true));
+    expect(result.current.workerBusy).toBe(false);
   });
 });

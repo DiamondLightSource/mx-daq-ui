@@ -75,6 +75,32 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
 }
 
 const PLAN_POLL_MILLIS = 10000;
+const WORKER_STATE_POLL_MILLIS = 500;
+
+// Anything other than IDLE means blueapi will reject PUT /worker/task with a 409, so
+// there is no point offering to start a plan. PANICKED is called out separately because
+// it needs a restart rather than just waiting.
+const BUSY_WORKER_STATES: BlueApiWorkerState[] = [
+  "RUNNING",
+  "PAUSING",
+  "PAUSED",
+  "HALTING",
+  "STOPPING",
+  "ABORTING",
+  "SUSPENDING",
+];
+
+/** Poll the worker state. All callers share one query, so one poll serves every button. */
+export function useWorkerState(): BlueApiWorkerState | undefined {
+  const { data, status } = useQuery("BlueApiWorkerState", getWorkerStatus, {
+    refetchInterval: WORKER_STATE_POLL_MILLIS,
+  });
+  return status === "success" ? data : undefined;
+}
+
+export function isWorkerBusy(state: BlueApiWorkerState | undefined): boolean {
+  return state !== undefined && BUSY_WORKER_STATES.includes(state);
+}
 
 type PlanSchemaProperty = {
   title?: string;
@@ -93,6 +119,8 @@ export type BlueApiPlan = {
 export type PlanReadiness = {
   runnable: boolean;
   reason?: string;
+  /** The worker is mid-plan, so a plan is running somewhere on the beamline. */
+  workerBusy: boolean;
 };
 
 // blueapi describes a plan's injected devices as parameters whose type is a dotted
@@ -118,20 +146,39 @@ function fetchPlans(): Promise<BlueApiPlan[]> {
   });
 }
 
-/** Check, before a plan is submitted, that blueapi knows it and has its devices.
+/** Check, before a plan is submitted, that blueapi knows it, has its devices, and is free.
  *
  * An empty device enum means blueapi failed to connect that device at startup, so
- * submitting would fail validation with a 422.
+ * submitting would fail validation with a 422. A non-idle worker means blueapi would
+ * accept the task but refuse to start it with a 409, leaving an orphan in the task store.
  */
 export function usePlanReadiness(planName: string): PlanReadiness {
   const { data, status } = useQuery("BlueApiPlans", fetchPlans, {
     refetchInterval: PLAN_POLL_MILLIS,
   });
+  const workerState = useWorkerState();
+  const workerBusy = isWorkerBusy(workerState);
+
+  if (workerBusy) {
+    return {
+      runnable: false,
+      reason: `A plan is already running (worker is ${workerState})`,
+      workerBusy: true,
+    };
+  }
+
+  if (workerState === "PANICKED") {
+    return {
+      runnable: false,
+      reason: "The blueapi worker has panicked and needs restarting",
+      workerBusy: false,
+    };
+  }
 
   // Until /plans answers, assume the plan is fine: an unreachable plan list
   // shouldn't be what stops an otherwise working beamline.
   if (status !== "success" || data === undefined) {
-    return { runnable: true };
+    return { runnable: true, workerBusy: false };
   }
 
   const plan = data.find((candidate) => candidate.name === planName);
@@ -139,6 +186,7 @@ export function usePlanReadiness(planName: string): PlanReadiness {
     return {
       runnable: false,
       reason: `Plan ${planName} is not registered with blueapi`,
+      workerBusy: false,
     };
   }
 
@@ -150,10 +198,11 @@ export function usePlanReadiness(planName: string): PlanReadiness {
     return {
       runnable: false,
       reason: `Not connected in blueapi: ${missingDevices.join(", ")}`,
+      workerBusy: false,
     };
   }
 
-  return { runnable: true };
+  return { runnable: true, workerBusy: false };
 }
 
 // Note. fetch only rejects a promise on network errors, but http errors
@@ -189,7 +238,9 @@ export function submitAndRunPlanImmediately(
 ): Promise<string | void> {
   return submitTask(request).then((res) => {
     if (res) {
-      runTask(res);
+      // Returned, not just called: otherwise a 409 from a busy worker becomes an
+      // unhandled rejection and the caller thinks the plan started.
+      return runTask(res);
     } else {
       throw new Error("Couldn't run plan");
     }
