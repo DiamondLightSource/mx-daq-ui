@@ -73,6 +73,14 @@ type BlueapiMockOptions = {
   taskReadable?: () => boolean;
   /** Reject PUT /worker/task with a 409, as blueapi does for a non-idle worker. */
   conflictOnStart?: () => boolean;
+  /** Reject POST /tasks with this status and FastAPI-shaped body. */
+  refuseSubmit?: () => {
+    status: number;
+    statusText: string;
+    body?: unknown;
+  } | null;
+  /** Fail every request the way an unreachable server does: fetch itself rejects. */
+  unreachable?: () => boolean;
 };
 
 /** Stand in for blueapi: /plans, /worker/state, task submission, and task follow-up. */
@@ -81,8 +89,13 @@ function mockBlueapi(options: BlueapiMockOptions = {}) {
   const task = options.task ?? (() => RUNNING_TASK);
   const taskReadable = options.taskReadable ?? (() => true);
   const conflictOnStart = options.conflictOnStart ?? (() => false);
+  const refuseSubmit = options.refuseSubmit ?? (() => null);
+  const unreachable = options.unreachable ?? (() => false);
   const fetchMock = vi.fn((url: string, init?: RequestInit) => {
     const method = init?.method ?? "GET";
+    if (unreachable()) {
+      return Promise.reject(new TypeError("Failed to fetch"));
+    }
     if (url.endsWith("/plans")) {
       return jsonResponse(PLANS_RESPONSE);
     }
@@ -90,7 +103,10 @@ function mockBlueapi(options: BlueapiMockOptions = {}) {
       return jsonResponse(workerState());
     }
     if (url.endsWith("/tasks") && method === "POST") {
-      return jsonResponse({ task_id: TASK_ID });
+      const refusal = refuseSubmit();
+      return refusal
+        ? errorResponse(refusal.status, refusal.statusText, refusal.body)
+        : jsonResponse({ task_id: TASK_ID });
     }
     if (url.endsWith("/worker/task") && method === "PUT") {
       return conflictOnStart()
@@ -108,12 +124,13 @@ function mockBlueapi(options: BlueapiMockOptions = {}) {
   return fetchMock;
 }
 
-function errorResponse(status: number, statusText: string) {
+function errorResponse(status: number, statusText: string, body: unknown = {}) {
   return Promise.resolve({
     ok: false,
     status: status,
     statusText: statusText,
-    json: () => Promise.resolve({}),
+    json: () => Promise.resolve(body),
+    text: () => Promise.resolve(JSON.stringify(body)),
   });
 }
 
@@ -123,6 +140,7 @@ function jsonResponse(body: unknown) {
     status: 200,
     statusText: "OK",
     json: () => Promise.resolve(body),
+    text: () => Promise.resolve(JSON.stringify(body)),
   });
 }
 
@@ -275,6 +293,74 @@ describe("RunPlanButton when blueapi refuses to start the plan", () => {
         String(url).endsWith(`/tasks/${TASK_ID}`),
       ),
     ).toHaveLength(0);
+  });
+});
+
+describe("RunPlanButton when blueapi refuses the plan", () => {
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+    vi.clearAllMocks();
+  });
+
+  it("shows what blueapi said about a 500 rather than pointing at the logs", async () => {
+    // Whoever is standing at the beamline is the one who needs this, and they are not
+    // the one with the console open.
+    mockBlueapi({
+      refuseSubmit: () => ({
+        status: 500,
+        statusText: "Internal Server Error",
+        body: { detail: "Device jungfrau is not connected" },
+      }),
+    });
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(
+        screen.getByText(/Device jungfrau is not connected/),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("names the offending parameter from a 422", async () => {
+    mockBlueapi({
+      refuseSubmit: () => ({
+        status: 422,
+        statusText: "Unprocessable Entity",
+        body: {
+          detail: [
+            {
+              loc: ["params", "exposure_time_s"],
+              msg: "Input should be a number",
+            },
+          ],
+        },
+      }),
+    });
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(
+        screen.getByText(/params\.exposure_time_s: Input should be a number/),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("says the server could not be reached when there is nothing listening", async () => {
+    // fetch rejects with a bare "Failed to fetch", which on its own reads like a bug
+    // in the page rather than a blueapi that is not running.
+    mockBlueapi({ unreachable: () => true });
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await forceClick(darksButton());
+    await waitFor(() =>
+      expect(screen.getByText(/Could not reach blueapi/)).toBeInTheDocument(),
+    );
   });
 });
 

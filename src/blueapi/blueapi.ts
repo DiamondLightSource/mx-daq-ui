@@ -22,6 +22,70 @@ export type BlueApiWorkerState =
   | "PANICKED"
   | "UNKNOWN";
 
+/** blueapi could not be reached at all: it is down, or the proxy in front of it is. */
+export class BlueApiUnreachableError extends Error {
+  constructor(endpoint: string, cause: unknown) {
+    super(`Could not reach blueapi at ${BLUEAPI_SOCKET}${endpoint}`);
+    this.name = "BlueApiUnreachableError";
+    this.cause = cause;
+  }
+}
+
+/** blueapi answered, but with an error status. Carries whatever detail it gave. */
+export class BlueApiHttpError extends Error {
+  readonly status: number;
+  constructor(
+    action: string,
+    status: number,
+    statusText: string,
+    detail?: string,
+  ) {
+    // The detail is the only part that says what actually went wrong - a bare
+    // "500 Internal Server Error" is no use to whoever has to fix it - so lead with
+    // the status and append the detail rather than the other way around.
+    super(
+      detail
+        ? `${action} failed (${status} ${statusText}): ${detail}`
+        : `${action} failed (${status} ${statusText})`,
+    );
+    this.name = "BlueApiHttpError";
+    this.status = status;
+  }
+}
+
+/**
+ * Pull the human-readable part out of an error response.
+ *
+ * blueapi is FastAPI, so errors come back as {"detail": ...}: a string for its own
+ * HTTPExceptions, or a list of per-field objects for a 422 validation failure. Falls
+ * back to the raw text for anything that isn't JSON, e.g. a proxy's own error page.
+ */
+async function errorDetail(res: Response): Promise<string | undefined> {
+  const text = await res.text().catch(() => "");
+  if (!text) {
+    return undefined;
+  }
+  try {
+    const detail = JSON.parse(text)["detail"];
+    if (typeof detail === "string") {
+      return detail;
+    }
+    if (Array.isArray(detail)) {
+      return detail
+        .map((item) => {
+          const location = Array.isArray(item?.loc)
+            ? item.loc.join(".")
+            : undefined;
+          return location ? `${location}: ${item?.msg}` : `${item?.msg}`;
+        })
+        .join("; ");
+    }
+    return detail ? JSON.stringify(detail) : text;
+  } catch {
+    return text;
+  }
+}
+
 function blueApiCall(
   endpoint: string,
   method?: string,
@@ -37,6 +101,10 @@ function blueApiCall(
     },
     method: _method,
     body: body ? JSON.stringify(body) : null,
+    // fetch only rejects on network errors, and does so with an opaque "Failed to
+    // fetch", so name the endpoint here while we still know it.
+  }).catch((error) => {
+    throw new BlueApiUnreachableError(endpoint, error);
   });
 }
 
@@ -318,19 +386,20 @@ function submitTask(request: BlueApiRequestBody): Promise<string> {
     name: request.planName,
     params: request.planParams,
     instrument_session: request.instrumentSession,
-  }).then((res) => {
+  }).then(async (res) => {
     if (!res.ok) {
-      throw new Error(
-        `Unable to POST request, response error ${res.status} ${res.statusText}`,
+      throw new BlueApiHttpError(
+        `Submitting ${request.planName}`,
+        res.status,
+        res.statusText,
+        await errorDetail(res),
       );
     }
-    return res.json().then((body) => {
-      const taskId = body["task_id"];
-      if (!taskId) {
-        throw new Error("blueapi accepted the task but returned no task_id");
-      }
-      return taskId as string;
-    });
+    const taskId = (await res.json())["task_id"];
+    if (!taskId) {
+      throw new Error("blueapi accepted the task but returned no task_id");
+    }
+    return taskId as string;
   });
 }
 
@@ -343,19 +412,24 @@ export class WorkerBusyError extends Error {
 }
 
 function runTask(taskId: string): Promise<void> {
-  return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
-    // A 409 is the one failure the frontend can explain in full, and the likely one:
-    // the readiness check runs off a poll, so a plan started elsewhere in the meantime
-    // is invisible until the next one lands.
-    if (res.status === 409) {
-      throw new WorkerBusyError();
-    }
-    if (!res.ok) {
-      throw new Error(
-        `Unable to run task, response error ${res.status} ${res.statusText}`,
-      );
-    }
-  });
+  return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then(
+    async (res) => {
+      // A 409 is the one failure the frontend can explain in full, and the likely one:
+      // the readiness check runs off a poll, so a plan started elsewhere in the meantime
+      // is invisible until the next one lands.
+      if (res.status === 409) {
+        throw new WorkerBusyError();
+      }
+      if (!res.ok) {
+        throw new BlueApiHttpError(
+          `Starting task ${taskId}`,
+          res.status,
+          res.statusText,
+          await errorDetail(res),
+        );
+      }
+    },
+  );
 }
 
 /** Submit a plan and start it, resolving with the task id so its fate can be followed. */

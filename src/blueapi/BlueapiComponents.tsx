@@ -18,6 +18,11 @@ import {
 } from "@mui/material";
 import { parseInstrumentSession, readVisitFromPv } from "./visit";
 
+/** The most useful thing we can say about a rejected promise, in one line. */
+function describeError(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
 type SeverityLevel = "success" | "info" | "warning" | "error";
 type VariantChoice = "outlined" | "contained";
 type ButtonSize = "small" | "medium" | "large";
@@ -136,7 +141,10 @@ export function RunPlanButton(props: RunPlanButtonProps) {
           setMsg(
             error instanceof WorkerBusyError
               ? `Cannot run ${props.planName}: a plan is already running`
-              : `Failed to run plan ${props.planName}, see console and logs for full error`,
+              : // blueapi says why it refused - a 422's offending field, a 500's
+                // traceback summary - so show that rather than sending the user to
+                // a console they may not have open.
+                `Failed to run plan ${props.planName}: ${describeError(error)}`,
           );
           console.error(`Failed to run plan ${props.planName}. Reason: ${error}`);
           // blueapi has just contradicted the readiness check, so re-read the worker
