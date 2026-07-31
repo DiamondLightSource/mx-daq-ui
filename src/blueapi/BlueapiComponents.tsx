@@ -56,9 +56,13 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   }
   let instrumentSession: string;
 
-  const readiness = usePlanReadiness(props.planName);
-
   const progress = useTaskProgress(taskId);
+
+  const inProgress = submitting || progress.state === "running";
+
+  // While this button's plan is in flight the worker state is about to change, so ask
+  // for it often; the rest of the time a slow poll is enough.
+  const readiness = usePlanReadiness(props.planName, inProgress);
 
   // Report how the plan ended, then stop following the task. A plan can fail long after
   // it was accepted, and the only way to hear about it is to ask blueapi for the task.
@@ -89,8 +93,6 @@ export function RunPlanButton(props: RunPlanButtonProps) {
     // so the next plan's state change re-triggers this even if it fails the same way.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress.state]);
-
-  const inProgress = submitting || progress.state === "running";
 
   const params = props.planParams ? props.planParams : {};
   const variant = props.btnVariant ? props.btnVariant : "outlined";

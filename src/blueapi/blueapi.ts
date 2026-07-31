@@ -75,7 +75,11 @@ export function getWorkerStatus(): Promise<BlueApiWorkerState> {
 }
 
 const PLAN_POLL_MILLIS = 10000;
-const WORKER_STATE_POLL_MILLIS = 500;
+const WORKER_STATE_QUERY_KEY = "BlueApiWorkerState";
+// Fast enough to feel immediate while a state change is expected, slow enough to keep
+// an idle beamline out of the blueapi log.
+const WORKER_STATE_ACTIVE_POLL_MILLIS = 500;
+const WORKER_STATE_IDLE_POLL_MILLIS = 10000;
 
 // Anything other than IDLE means blueapi will reject PUT /worker/task with a 409, so
 // there is no point offering to start a plan. PANICKED is called out separately because
@@ -90,10 +94,24 @@ const BUSY_WORKER_STATES: BlueApiWorkerState[] = [
   "SUSPENDING",
 ];
 
-/** Poll the worker state. All callers share one query, so one poll serves every button. */
-export function useWorkerState(): BlueApiWorkerState | undefined {
-  const { data, status } = useQuery("BlueApiWorkerState", getWorkerStatus, {
-    refetchInterval: WORKER_STATE_POLL_MILLIS,
+/** Poll the worker state. All callers share one query, so one poll serves every button.
+ *
+ * The poll only runs fast when the state is expected to move: while the worker is
+ * mid-plan, or while `awaitingChange` says this caller has just triggered something and
+ * is waiting for the worker to catch up. An idle worker with nothing pending only
+ * changes when somebody else starts a plan, and a slow poll notices that soon enough.
+ *
+ * react-query gives each caller its own timer but dedupes the fetches, so one caller
+ * asking for the fast rate speeds up the shared query for everyone.
+ */
+export function useWorkerState(
+  awaitingChange: boolean = false,
+): BlueApiWorkerState | undefined {
+  const { data, status } = useQuery(WORKER_STATE_QUERY_KEY, getWorkerStatus, {
+    refetchInterval: (state?: BlueApiWorkerState) =>
+      awaitingChange || isWorkerBusy(state)
+        ? WORKER_STATE_ACTIVE_POLL_MILLIS
+        : WORKER_STATE_IDLE_POLL_MILLIS,
   });
   return status === "success" ? data : undefined;
 }
@@ -223,12 +241,18 @@ function fetchPlans(): Promise<BlueApiPlan[]> {
  * An empty device enum means blueapi failed to connect that device at startup, so
  * submitting would fail validation with a 422. A non-idle worker means blueapi would
  * accept the task but refuse to start it with a 409, leaving an orphan in the task store.
+ *
+ * `awaitingChange` is for a caller that has just submitted a plan and is waiting for the
+ * worker to report it; see useWorkerState.
  */
-export function usePlanReadiness(planName: string): PlanReadiness {
+export function usePlanReadiness(
+  planName: string,
+  awaitingChange: boolean = false,
+): PlanReadiness {
   const { data, status } = useQuery("BlueApiPlans", fetchPlans, {
     refetchInterval: PLAN_POLL_MILLIS,
   });
-  const workerState = useWorkerState();
+  const workerState = useWorkerState(awaitingChange);
   const workerBusy = isWorkerBusy(workerState);
 
   if (workerBusy) {
