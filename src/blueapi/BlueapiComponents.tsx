@@ -3,7 +3,9 @@ import {
   abortCurrentPlan,
   submitAndRunPlanImmediately,
   usePlanReadiness,
+  useRefreshWorkerState,
   useTaskProgress,
+  WorkerBusyError,
 } from "./blueapi";
 import {
   Alert,
@@ -63,6 +65,8 @@ export function RunPlanButton(props: RunPlanButtonProps) {
   // While this button's plan is in flight the worker state is about to change, so ask
   // for it often; the rest of the time a slow poll is enough.
   const readiness = usePlanReadiness(props.planName, inProgress);
+
+  const refreshWorkerState = useRefreshWorkerState();
 
   // Report how the plan ended, then stop following the task. A plan can fail long after
   // it was accepted, and the only way to hear about it is to ask blueapi for the task.
@@ -130,9 +134,14 @@ export function RunPlanButton(props: RunPlanButtonProps) {
         .catch((error) => {
           setSeverity("error");
           setMsg(
-            `Failed to run plan ${props.planName}, see console and logs for full error`,
+            error instanceof WorkerBusyError
+              ? `Cannot run ${props.planName}: a plan is already running`
+              : `Failed to run plan ${props.planName}, see console and logs for full error`,
           );
           console.error(`Failed to run plan ${props.planName}. Reason: ${error}`);
+          // blueapi has just contradicted the readiness check, so re-read the worker
+          // state rather than leaving the button enabled until the next idle poll.
+          refreshWorkerState();
         })
         .finally(() => setSubmitting(false));
     } catch (error) {

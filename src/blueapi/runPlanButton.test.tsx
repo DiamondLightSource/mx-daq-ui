@@ -71,6 +71,8 @@ type BlueapiMockOptions = {
   workerState?: () => string;
   task?: () => FakeTask;
   taskReadable?: () => boolean;
+  /** Reject PUT /worker/task with a 409, as blueapi does for a non-idle worker. */
+  conflictOnStart?: () => boolean;
 };
 
 /** Stand in for blueapi: /plans, /worker/state, task submission, and task follow-up. */
@@ -78,6 +80,7 @@ function mockBlueapi(options: BlueapiMockOptions = {}) {
   const workerState = options.workerState ?? (() => "IDLE");
   const task = options.task ?? (() => RUNNING_TASK);
   const taskReadable = options.taskReadable ?? (() => true);
+  const conflictOnStart = options.conflictOnStart ?? (() => false);
   const fetchMock = vi.fn((url: string, init?: RequestInit) => {
     const method = init?.method ?? "GET";
     if (url.endsWith("/plans")) {
@@ -90,7 +93,9 @@ function mockBlueapi(options: BlueapiMockOptions = {}) {
       return jsonResponse({ task_id: TASK_ID });
     }
     if (url.endsWith("/worker/task") && method === "PUT") {
-      return jsonResponse({ task_id: TASK_ID });
+      return conflictOnStart()
+        ? errorResponse(409, "Conflict")
+        : jsonResponse({ task_id: TASK_ID });
     }
     if (url.endsWith(`/tasks/${TASK_ID}`)) {
       return taskReadable()
@@ -203,6 +208,73 @@ describe("RunPlanButton while a plan is running", () => {
     await waitFor(() => expect(darksButton()).toBeDisabled());
     state = "IDLE";
     await waitFor(() => expect(darksButton()).toBeEnabled(), { timeout: 3000 });
+  });
+});
+
+describe("RunPlanButton when blueapi refuses to start the plan", () => {
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+    vi.clearAllMocks();
+  });
+
+  /** A plan started elsewhere between the readiness poll and the press: the worker is
+   * busy and the start is refused, both for the same reason. */
+  function mockBeatenToIt() {
+    let state = "IDLE";
+    return mockBlueapi({
+      workerState: () => state,
+      conflictOnStart: () => {
+        state = "RUNNING";
+        return true;
+      },
+    });
+  }
+
+  it("says another plan is running rather than pointing at the logs", async () => {
+    mockBeatenToIt();
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          "Cannot run do_pedestal_darks: a plan is already running",
+        ),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it("re-reads the worker state at once instead of waiting for the idle poll", async () => {
+    // The refusal proves the cached IDLE is wrong. Without an immediate re-read the
+    // button stays enabled for a whole idle interval, and every further press leaves
+    // another orphan task in blueapi's store.
+    mockBeatenToIt();
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() => expect(darksButton()).toBeDisabled(), {
+      timeout: 2000,
+    });
+  });
+
+  it("does not follow a task that was never started", async () => {
+    const fetchMock = mockBeatenToIt();
+    renderButton();
+    await waitFor(() => expect(darksButton()).toBeEnabled());
+
+    await userEvent.click(darksButton());
+    await waitFor(() =>
+      expect(screen.getByText(/a plan is already running/)).toBeInTheDocument(),
+    );
+    // No task id was kept, so nothing should be polling /tasks/<id> for an outcome.
+    expect(
+      fetchMock.mock.calls.filter(([url]) =>
+        String(url).endsWith(`/tasks/${TASK_ID}`),
+      ),
+    ).toHaveLength(0);
   });
 });
 

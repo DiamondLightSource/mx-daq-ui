@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from "react-query";
+import { useQuery, useQueryClient, UseQueryResult } from "react-query";
 
 const BLUEAPI_SOCKET: string = "/api"; // import.meta.env.VITE_BLUEAPI_SOCKET;
 
@@ -114,6 +114,16 @@ export function useWorkerState(
         : WORKER_STATE_IDLE_POLL_MILLIS,
   });
   return status === "success" ? data : undefined;
+}
+
+/** Ask for the worker state now instead of waiting for the next poll.
+ *
+ * Worth calling whenever blueapi contradicts what the frontend believed, so a slow idle
+ * poll cannot leave a button enabled that blueapi has just refused.
+ */
+export function useRefreshWorkerState(): () => void {
+  const queryClient = useQueryClient();
+  return () => void queryClient.invalidateQueries(WORKER_STATE_QUERY_KEY);
 }
 
 export function isWorkerBusy(state: BlueApiWorkerState | undefined): boolean {
@@ -324,8 +334,22 @@ function submitTask(request: BlueApiRequestBody): Promise<string> {
   });
 }
 
+/** blueapi accepted the task but refused to start it because the worker is not idle. */
+export class WorkerBusyError extends Error {
+  constructor() {
+    super("The blueapi worker is already running a plan");
+    this.name = "WorkerBusyError";
+  }
+}
+
 function runTask(taskId: string): Promise<void> {
   return blueApiCall("/worker/task", "PUT", { task_id: taskId }).then((res) => {
+    // A 409 is the one failure the frontend can explain in full, and the likely one:
+    // the readiness check runs off a poll, so a plan started elsewhere in the meantime
+    // is invisible until the next one lands.
+    if (res.status === 409) {
+      throw new WorkerBusyError();
+    }
     if (!res.ok) {
       throw new Error(
         `Unable to run task, response error ${res.status} ${res.statusText}`,
