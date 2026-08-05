@@ -62,7 +62,7 @@ export function CollectionSetupJf() {
         <Typography
           variant="h2"
           sx={{
-            color: theme.palette.primary.contrastText,
+            color: theme.palette.text.primary,
             fontSize: 24,
             fontWeight: "fontWeightBold",
           }}
