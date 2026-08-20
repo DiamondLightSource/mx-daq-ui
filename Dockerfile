@@ -11,7 +11,7 @@ FROM base AS deps
 # ARG FOO=BAR
 # ENV REACT_APP_FOO=${FOO}
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+COPY package.json yarn.lock* pnpm-workspace.yaml package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
 # Uncomment the next line if you're not using Classic Yarn
 #COPY ./.yarn ./.yarn
