@@ -51,5 +51,15 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy your custom nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# The OAV stream proxy, whose upstream the entrypoint fills in from the environment at
+# start up. Set OAV_STREAM_SERVER on the container to proxy somewhere other than i24's
+# MJPG server; the filter keeps envsubst off nginx's own $variables.
+# The proxy resolves that server per request, from the resolvers the entrypoint reads
+# out of /etc/resolv.conf, so that a server which is down does not stop nginx starting.
+COPY oav-stream.conf.template /etc/nginx/templates/oav-stream.conf.template
+ENV OAV_STREAM_SERVER=http://bl24i-di-serv-01.diamond.ac.uk:8080
+ENV NGINX_ENTRYPOINT_LOCAL_RESOLVERS=1
+ENV NGINX_ENVSUBST_FILTER=^(OAV_STREAM_SERVER|NGINX_LOCAL_RESOLVERS)$
+
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
