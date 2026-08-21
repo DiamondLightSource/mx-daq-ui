@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React, { useEffect } from "react";
-import { useContainerDimensions } from "./OavVideoStreamHelper";
+import { oavStreamUrl, useContainerDimensions } from "./OavVideoStreamHelper";
 import { PvComponent } from "#/pv/PvComponent.tsx";
 import { PvDescription, PvItem } from "#/pv/types.ts";
 import {
@@ -46,11 +46,13 @@ export function OavVideoStream(
     label: props.label,
     render: (props: PvItem) => {
       const value = props.value ? props.value : "undefined";
-      if (
-        !streamUrl.startsWith("http") &&
-        value.toString().startsWith("http")
-      ) {
-        setStreamUrl(value.toString());
+      if (value.toString().startsWith("http")) {
+        // Not the URL the IOC gives, which is an http one this page may not be allowed
+        // to load; the one on this origin that proxies to it.
+        const url = oavStreamUrl(value.toString());
+        if (url !== streamUrl) {
+          setStreamUrl(url);
+        }
       }
       return (
         <Box sx={{ padding: 0 }}>

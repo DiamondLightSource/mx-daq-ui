@@ -1,0 +1,30 @@
+# The /oav-stream location, templated so the MJPG server it proxies to is a deployment
+# setting rather than a compiled-in one. The nginx entrypoint runs envsubst over
+# /etc/nginx/templates/*.template at container start, writing the result into
+# /etc/nginx/conf.d/, which nginx.conf includes; OAV_STREAM_SERVER has a default in the
+# Dockerfile, so it only has to be set to point somewhere other than i24's server.
+#
+# NGINX_ENVSUBST_FILTER (also set in the Dockerfile) keeps envsubst to the two names
+# below, so that nginx's own $variables survive being templated.
+#
+# Setting OAV_STREAM_SERVER to nothing, or unsetting it, leaves nginx refusing to start
+# rather than quietly serving a stream from nowhere.
+location /oav-stream/ {
+  # Look the MJPG server up per request, so that this app still starts when the server
+  # is down or its name does not resolve: naming it in a variable is what defers the
+  # lookup, where a literal proxy_pass is resolved as the configuration is read and
+  # refuses to start if that fails. The resolvers are the container's own, from
+  # /etc/resolv.conf - but nginx does not use the search domains from there, so
+  # OAV_STREAM_SERVER has to be a fully qualified name.
+  resolver ${NGINX_LOCAL_RESOLVERS} valid=30s ipv6=off;
+  set $oav_stream_server "${OAV_STREAM_SERVER}";
+  # A proxy_pass with a variable in it passes the request URI on untouched, so the
+  # prefix this location is mounted at has to be taken off by hand.
+  rewrite ^/oav-stream/(.*)$ /$1 break;
+  proxy_pass $oav_stream_server;
+  proxy_http_version 1.1;
+  # An MJPG stream is one multipart response that never ends, so there is nothing to
+  # buffer up and no request that completes inside a read timeout.
+  proxy_buffering off;
+  proxy_read_timeout 24h;
+}

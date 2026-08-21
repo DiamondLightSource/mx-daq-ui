@@ -25,15 +25,40 @@ pnpm install
 
 To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk`, we take advantage of the [cs-web-lib]https://github.com/DiamondLightSource/cs-web-lib) package - the current stable version being `0.9.10`. PVWS is now configured by setting up the parameters in a JSON config file which is loaded at runtime. The `pvwsconfig.json` is located in the `/public` directory to make it always accessible at runtime.
 
+### OAV video stream
+
+The OAV IOC advertises its MJPG stream over http, which a browser will not load into a
+page served over https - it blocks it as mixed content, so the stream comes up blank
+wherever the app is deployed behind TLS. The app therefore asks for the stream at
+`/oav-stream` on its own origin, and that is proxied on to the MJPG server: by nginx in
+the built image, and by the dev server otherwise. Which stream is shown still comes from
+the IOC's `MJPG_URL_RBV`; only which server it is fetched from is set here, and in both
+cases the environment sets it:
+
+|             | Proxy                                                    | Which server                 | Default                 |
+| ----------- | -------------------------------------------------------- | ---------------------------- | ----------------------- |
+| Built image | `oav-stream.conf.template`, filled in at container start | `OAV_STREAM_SERVER`          | set in the `Dockerfile` |
+| `pnpm dev`  | `vite.config.ts`                                         | `VITE_OAV_STREAM_SOCKET_DEV` | set in `.env`           |
+
+Set `OAV_STREAM_SERVER` on the container to proxy a different MJPG server; leaving it
+empty leaves nginx refusing to start rather than quietly serving nothing.
+
+The MJPG server is looked up per request, so the app starts, and serves everything else,
+whether or not that server is up: while it is down the stream is a broken image and a
+502 in the nginx log, and it starts working again when the server does, with no restart.
+The cost is that the lookup is DNS only - `OAV_STREAM_SERVER` must be a fully qualified
+name, since nginx's resolver reads neither `/etc/hosts` nor the search domains.
+
 ### Environment variables
 
 `.env` holds the URLs the app talks to:
 
-| Variable                  | Read by                             | What it does                       |
-| ------------------------- | ----------------------------------- | ---------------------------------- |
-| `VITE_CONFIG_SOCKET`      | `src/config_server/configServer.ts` | the daq-config server              |
-| `VITE_BLUEAPI_SOCKET_DEV` | `vite.config.ts`                    | where `pnpm dev` proxies `/api` to |
-| `VITE_BLUEAPI_SOCKET`     | nothing, currently                  | see below                          |
+| Variable                     | Read by                             | What it does                              |
+| ---------------------------- | ----------------------------------- | ----------------------------------------- |
+| `VITE_CONFIG_SOCKET`         | `src/config_server/configServer.ts` | the daq-config server                     |
+| `VITE_BLUEAPI_SOCKET_DEV`    | `vite.config.ts`                    | where `pnpm dev` proxies `/api` to        |
+| `VITE_BLUEAPI_SOCKET`        | nothing, currently                  | see below                                 |
+| `VITE_OAV_STREAM_SOCKET_DEV` | `vite.config.ts`                    | where `pnpm dev` proxies `/oav-stream` to |
 
 blueapi is addressed as the origin-relative `/api` (`src/blueapi/blueapi.ts`), so in a
 deployment whatever sits in front of the app routes that on, and `VITE_BLUEAPI_SOCKET` is
