@@ -68,14 +68,14 @@ export function RunPlanButton(props: RunPlanButtonProps) {
         setMsg(
           `Failed to run plan ${props.planName}, see console and logs for full error`,
         );
-        console.log(`${msg}. Reason: ${error}`);
+        console.error(`${msg}. Reason: ${error}`);
       });
     } catch (error) {
       setSeverity("error");
       setMsg(
         `Failed to run plan ${props.planName}, please check visit PV is set.`,
       );
-      console.log(`An error occurred ${error}`);
+      console.error(`An error occurred ${error}`);
     }
   };
 
