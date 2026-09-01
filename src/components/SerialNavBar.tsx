@@ -6,7 +6,6 @@ import {
 } from "@diamondlightsource/sci-react-ui";
 import { Link } from "react-router-dom";
 import i24ssx from "#/assets/i24ssx.svg";
-import { version } from "../../package.json";
 import { Tooltip } from "@mui/material";
 
 const ssxLogo: ImageColourSchemeSwitchType = {
@@ -15,6 +14,7 @@ const ssxLogo: ImageColourSchemeSwitchType = {
   alt: "i24 ssx",
   width: "100",
 };
+const version = import.meta.env.VITE_APP_VERSION ?? "Dev Mode";
 
 export function SerialNavBar() {
   return (
