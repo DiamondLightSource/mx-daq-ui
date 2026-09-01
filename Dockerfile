@@ -28,6 +28,10 @@ RUN \
 # 2) Run the build
 FROM base AS builder
 
+# Version passed in from CI (GitHub release tag), exposed to Vite at build time
+ARG APP_VERSION=dev
+ENV VITE_APP_VERSION=${APP_VERSION}
+
 # Copy installed dependencies
 COPY --from=deps /app/node_modules ./node_modules
 
