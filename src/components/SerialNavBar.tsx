@@ -6,6 +6,8 @@ import {
 } from "@diamondlightsource/sci-react-ui";
 import { Link } from "react-router-dom";
 import i24ssx from "#/assets/i24ssx.svg";
+import { version } from "../../package.json";
+import { Tooltip } from "@mui/material";
 
 const ssxLogo: ImageColourSchemeSwitchType = {
   src: i24ssx,
@@ -16,7 +18,16 @@ const ssxLogo: ImageColourSchemeSwitchType = {
 
 export function SerialNavBar() {
   return (
-    <Navbar logo={ssxLogo} containerWidth={false} linkComponent={Link}>
+    <Navbar
+      logo={ssxLogo}
+      containerWidth={false}
+      linkComponent={Link}
+      rightSlot={
+        <Tooltip title="Version">
+          <span>{version}</span>
+        </Tooltip>
+      }
+    >
       <NavLinks>
         <NavLink linkComponent={Link} to="/">
           Home
