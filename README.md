@@ -23,7 +23,7 @@ pnpm install
 
 ### PVWS
 
-To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk`, we take advantage of the [cs-web-lib]https://github.com/DiamondLightSource/cs-web-lib) package - the current stable version being `0.9.10`. PVWS is now configured by setting up the parameters in a JSON config file which is loaded at runtime. The `pvwsconfig.json` is located in the `/public` directory to make it always accessible at runtime.
+To connect to the Diamond PVWS instance at `pvws.diamond.ac.uk`, we take advantage of the [cs-web-lib](https://github.com/DiamondLightSource/cs-web-lib) package - the current stable version being `0.9.10`. PVWS is now configured by setting up the parameters in a JSON config file which is loaded at runtime. The `pvwsconfig.json` is located in the `/public` directory to make it always accessible at runtime.
 
 ### OAV video stream
 
@@ -68,7 +68,7 @@ in front of it, so it proxies `/api` itself, to `VITE_BLUEAPI_SOCKET_DEV`.
 ### BlueAPI config
 
 Settings for connecting to BlueAPI should also be in the .env file.
-For I23, there is a branch on mx-bluesky https://github.com/DiamondLightSource/mx-bluesky/tree/i23_and_ui_testing which has some test devices and plans. This UI expects to connect to a local instance of BlueAPI with those plans and devices loaded. You can use the config
+For I23, there is a branch on mx-bluesky [i23_and_ui_testing](https://github.com/DiamondLightSource/mx-bluesky/tree/i23_and_ui_testing) which has some test devices and plans. This UI expects to connect to a local instance of BlueAPI with those plans and devices loaded. You can use the config
 
 ```yaml
 env:
@@ -87,7 +87,7 @@ stomp:
     password: guest
 ```
 
-For I24 instead, The first few plans are in the branch https://github.com/DiamondLightSource/mx-bluesky/tree/151_web-ui-first-plans and there is already a BlueAPI configuration defined in https://github.com/DiamondLightSource/mx-bluesky/blob/main/src/mx_bluesky/beamlines/i24/serial/blueapi_config.yaml that can be used for testing.
+For I24 instead, The first few plans are in the branch [151_web-ui-first-plans](https://github.com/DiamondLightSource/mx-bluesky/tree/151_web-ui-first-plans) and there is already a BlueAPI configuration defined in [blueapi_config](https://github.com/DiamondLightSource/mx-bluesky/blob/main/src/mx_bluesky/beamlines/i24/serial/blueapi_config.yaml) that can be used for testing.
 
 ### PNPM Audits
 
@@ -115,3 +115,5 @@ inside the repository and clicking on the link.
 Make a release from the github `Releases` page and point it to either a tag or a branch.
 There is a workflow job that will then build the app and publish a docker image - which is necessary
 for deployment.
+
+Also update the [I24-services](https://gitlab.diamond.ac.uk/controls/containers/beamline/i24-services/-/blob/main/services/i24-daq-ui/Chart.yaml?ref_type=heads) chart to the same version. That will trigger Kubernetes to set the production version.
