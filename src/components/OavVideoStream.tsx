@@ -38,7 +38,6 @@ export function OavVideoStream(
       transformValue: parseNumericPv,
     }),
   );
-  console.log(`original stream size ${[xDim, yDim]}`);
   const [streamUrl, setStreamUrl] = React.useState<string>("not connected");
 
   return PvComponent({
@@ -117,8 +116,6 @@ function VideoBoxWithOverlay(props: {
   useEffect(() => {
     drawCanvas(canvasRef, props.crosshairX, props.crosshairY);
   }, [props.crosshairX, props.crosshairY, width, height]);
-
-  console.info();
 
   return (
     <Box position={"relative"} padding={0} ref={videoBoxRef}>

@@ -51,7 +51,7 @@ export function OavMover() {
       planParams: { position: [x, y] },
       instrumentSession: parseInstrumentSession(fullVisit),
     }).catch((error) => {
-      console.log(
+      console.error(
         `Failed to run plan , see console and logs for full error. Reason: ${error}`,
       );
     });

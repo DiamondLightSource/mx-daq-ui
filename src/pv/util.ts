@@ -87,8 +87,5 @@ export function useParsedPvConnection(props: ParsePvProps): number | string {
     returnValue = returnValue.toString();
   }
 
-  console.log(
-    `fetched parsed value ${returnValue} for PV: ${props.pv} labeled ${props.label}`,
-  );
   return returnValue;
 }

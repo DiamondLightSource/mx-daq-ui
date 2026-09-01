@@ -22,7 +22,6 @@ export function SelectionWithPlanRunner(props: SelectionProps) {
       transformValue: forceString,
     }),
   );
-  console.log(`${props.id} current value: ${currentValue}`);
   const [_, updateVal] = React.useState<string>(currentValue.toString());
 
   // FIXME, temporary - will be fixed by using context everywhere

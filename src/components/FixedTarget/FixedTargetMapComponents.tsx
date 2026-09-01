@@ -321,11 +321,9 @@ export function MapView({
           setChipMap={setChipFormat}
         />
       );
-      console.log(chipFormat);
       return component;
     case "Custom":
       component = <CustomMapComponent setChipFormat={setChipFormat} />;
-      console.log(chipFormat);
       return component;
     default:
       return null;

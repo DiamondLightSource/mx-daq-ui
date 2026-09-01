@@ -24,7 +24,6 @@ function RunButtons({ currentVisit }: { currentVisit: string }): JSX.Element {
     transFract,
     sampleId,
   } = useContext(JungfrauRotationContext);
-  console.log(transFract);
   return (
     <React.Fragment>
       <Stack direction={"row"} spacing={4} justifyContent={"center"}>
