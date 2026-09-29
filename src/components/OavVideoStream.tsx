@@ -3,11 +3,7 @@ import React, { useEffect } from "react";
 import { oavStreamUrl, useContainerDimensions } from "./OavVideoStreamHelper";
 import { PvComponent } from "#/pv/PvComponent.tsx";
 import { PvDescription, PvItem } from "#/pv/types.ts";
-import {
-  useParsedPvConnection,
-  parseNumericPv,
-  pvIntArrayToString,
-} from "#/pv/util.ts";
+import { pvIntArrayToString } from "#/pv/util.ts";
 
 /*
  * A viewer which allows overlaying a crosshair (takes numbers which could be the values from a react useState hook)
@@ -23,21 +19,6 @@ export function OavVideoStream(
   const [crosshairX, crosshairY] = [props.crosshairX, props.crosshairY];
   const onCoordClick = props.onCoordClick;
   const streamPv = props.pv + "MJPG:MJPG_URL_RBV";
-
-  const xDim = Number(
-    useParsedPvConnection({
-      pv: props.pv + "MJPG:ArraySize1_RBV",
-      label: "OAV MJPG stream x size",
-      transformValue: parseNumericPv,
-    }),
-  );
-  const yDim = Number(
-    useParsedPvConnection({
-      pv: props.pv + "MJPG:ArraySize2_RBV",
-      label: "OAV MJPG stream x size",
-      transformValue: parseNumericPv,
-    }),
-  );
   const [streamUrl, setStreamUrl] = React.useState<string>("not connected");
 
   return PvComponent({
@@ -60,7 +41,6 @@ export function OavVideoStream(
             crosshairX={crosshairX}
             crosshairY={crosshairY}
             onCoordClick={onCoordClick}
-            originalDims={{ width: xDim, height: yDim }}
           ></VideoBoxWithOverlay>
           {value.toString()}
         </Box>
@@ -75,24 +55,25 @@ function drawCanvas(
   crosshairX: number,
   crosshairY: number,
 ) {
-  const context = canvasRef.current?.getContext("2d");
-  if (context) {
-    context.clearRect(
-      0,
-      0,
-      canvasRef.current?.width as number,
-      canvasRef.current?.height as number,
-    );
-    context.strokeStyle = "red";
-    context.font = "50px sans-serif";
-    context.beginPath();
-    context.arc(crosshairX, crosshairY, 10, 0, 2 * Math.PI);
-    context.moveTo(crosshairX - 15, crosshairY);
-    context.lineTo(crosshairX + 15, crosshairY);
-    context.moveTo(crosshairX, crosshairY - 15);
-    context.lineTo(crosshairX, crosshairY + 15);
-    context.stroke();
+  const canvas = canvasRef.current;
+  const context = canvas?.getContext("2d");
+
+  if (!canvas || !context) {
+    return;
   }
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.strokeStyle = "red";
+  context.lineWidth = 2;
+  context.beginPath();
+  const canvasX = canvas.width / 2 + crosshairX;
+  const canvasY = canvas.height / 2 + crosshairY;
+  context.arc(canvasX, canvasY, 10, 0, 2 * Math.PI);
+  context.moveTo(crosshairX - 15, crosshairY);
+  context.lineTo(crosshairX + 15, crosshairY);
+  context.moveTo(crosshairX, crosshairY - 15);
+  context.lineTo(crosshairX, crosshairY + 15);
+  context.stroke();
 }
 
 /*
@@ -105,7 +86,6 @@ function VideoBoxWithOverlay(props: {
   crosshairX: number;
   crosshairY: number;
   onCoordClick?: (x: number, y: number) => void;
-  originalDims?: { width: number; height: number };
 }) {
   // TODO: wait until the video URL is correct once then stop updating it
   // may need a new kind of PV component for that
@@ -136,7 +116,17 @@ function VideoBoxWithOverlay(props: {
             const canvas = canvasRef.current;
             if (canvas) {
               const rect = canvas.getBoundingClientRect();
-              const [x, y] = [e.clientX - rect.left, e.clientY - rect.top];
+
+              const [displayX, displayY] = [
+                e.clientX - rect.left,
+                e.clientY - rect.top,
+              ];
+
+              const [x, y] = [
+                Math.floor(displayX - rect.width / 2),
+                Math.floor(displayY - rect.height / 2),
+              ];
+
               props.onCoordClick(x, y);
             }
           }

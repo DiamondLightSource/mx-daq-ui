@@ -1,4 +1,6 @@
 import { RunPlanButton } from "#/blueapi/BlueapiComponents.tsx";
+import { PvComponent } from "#/pv/PvComponent.tsx";
+import { parseNumericPv } from "#/pv/util.ts";
 import {
   KeyboardDoubleArrowUp,
   KeyboardArrowUp,
@@ -296,6 +298,33 @@ export function MoveArrows() {
       <WindowMove value={value} index={1} />
       <BlockMove value={value} index={2} />
       <FocusMove value={value} index={3} />
+      <Box
+        style={{
+          marginTop: 20,
+          display: "flex",
+          justifyContent: "center",
+          gap: 50,
+        }}
+      >
+        <PvComponent
+          label="Stage X"
+          pv="ca://BL24I-MO-CHIP-01:X.RBV"
+          transformValue={parseNumericPv}
+          decimals={4}
+        />
+        <PvComponent
+          label="Stage Y"
+          pv="ca://BL24I-MO-CHIP-01:Y.RBV"
+          transformValue={parseNumericPv}
+          decimals={4}
+        />
+        <PvComponent
+          label="Stage Z"
+          pv="ca://BL24I-MO-CHIP-01:Z.RBV"
+          transformValue={parseNumericPv}
+          decimals={4}
+        />
+      </Box>
     </Box>
   );
 }
