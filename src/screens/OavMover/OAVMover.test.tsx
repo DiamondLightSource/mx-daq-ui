@@ -13,6 +13,14 @@ vi.mock("#/blueapi/BlueapiComponents.tsx", () => {
   };
 });
 
+vi.mock("#/pv/PvComponent.tsx", () => {
+  return {
+    PvComponent: vi.fn((props: { label: string }) => (
+      <div data-testid={`pv-${props.label}`}>{props.label}</div>
+    )),
+  };
+});
+
 vi.mock("./OAVDeviceSettings", () => {
   return {
     ZoomControl: vi.fn((props: { label: string }) => {
