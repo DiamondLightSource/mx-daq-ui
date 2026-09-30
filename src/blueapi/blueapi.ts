@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from "react-query";
 
-const BLUEAPI_SOCKET: string = import.meta.env.VITE_BLUEAPI_SOCKET;
+const BLUEAPI_SOCKET: string = "/api"; // import.meta.env.VITE_BLUEAPI_SOCKET;
 
 type BlueApiRequestBody = {
   planName: string;
