@@ -88,7 +88,7 @@ export function CollectDarksPanel() {
               planName="do_pedestal_darks"
               planParams={{
                 exp_time_s: expTime,
-                pedestal_frame: pedestalFrames,
+                pedestal_frames: pedestalFrames,
                 pedestal_loops: pedestalLoops,
                 filename: filename,
               }}
