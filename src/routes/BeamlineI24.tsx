@@ -1,3 +1,4 @@
+import { useLayoutContext } from "#/context/LayoutContext.ts";
 import { BeamlineStatsTabPanel } from "#/screens/BeamlineStats.tsx";
 import { DetectorMotionTabPanel } from "#/screens/DetectorMotion.tsx";
 import { FallbackScreen } from "#/screens/FallbackScreen.tsx";
@@ -37,10 +38,10 @@ function CustomTabPanel(props: TabPanelProps) {
 
 export function BeamlineI24() {
   const theme = useTheme();
-  const [tab, setTab] = React.useState(0);
+  const { beamlineTab, setBeamlineTab } = useLayoutContext();
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
-    setTab(newTab);
+    setBeamlineTab(newTab);
   };
 
   return (
@@ -55,7 +56,7 @@ export function BeamlineI24() {
           }}
         >
           <Tabs
-            value={tab}
+            value={beamlineTab}
             onChange={handleChange}
             aria-label="basic tabs example"
             textColor="secondary"
@@ -66,13 +67,13 @@ export function BeamlineI24() {
             <Tab label="OAV view" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        <CustomTabPanel value={tab} index={0}>
+        <CustomTabPanel value={beamlineTab} index={0}>
           <BeamlineStatsTabPanel />
         </CustomTabPanel>
-        <CustomTabPanel value={tab} index={1}>
+        <CustomTabPanel value={beamlineTab} index={1}>
           <DetectorMotionTabPanel />
         </CustomTabPanel>
-        <CustomTabPanel value={tab} index={2}>
+        <CustomTabPanel value={beamlineTab} index={2}>
           <OavMover />
         </CustomTabPanel>
       </Box>
