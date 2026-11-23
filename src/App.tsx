@@ -13,6 +13,7 @@ import { BeamlineI24 } from "./routes/BeamlineI24.tsx";
 import { Extruder } from "./routes/Extruder.tsx";
 import { FixedTarget } from "./routes/FixedTarget.tsx";
 import { JfRotation } from "./routes/JungfrauRotation.tsx";
+import type { LayoutContext } from "./context/LayoutContext.ts";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,8 @@ const router = createBrowserRouter([
 
 function AppLayout() {
   const theme = useTheme();
+  const [beamlineTab, setBeamlineTab] = useState(0);
+
   return (
     <Box
       sx={{
@@ -55,7 +58,9 @@ function AppLayout() {
       }}
     >
       <SerialNavBar />
-      <Outlet />
+      <Outlet
+        context={{ beamlineTab, setBeamlineTab } satisfies LayoutContext}
+      />
       <Footer
         logo={theme.logos?.short}
         color={theme.palette.primary.main}
