@@ -1,20 +1,10 @@
-import { useBlueApiCall, processUseBlueApiCall } from "#/blueapi/blueapi.ts";
+import { useWorkerState } from "#/blueapi/blueapi.ts";
 import { Grid2, Stack, Typography } from "@mui/material";
 
-import { useState } from "react";
-
 export function WorkerStatus() {
-  const [currentState, setCurrentState] = useState<string>("UNKNOWN");
-  const workerStateInfo = useBlueApiCall("/worker/state");
-
-  const readCurrentState = () => {
-    return processUseBlueApiCall(workerStateInfo, (res) => {
-      if (!res.bodyUsed) {
-        res.json().then((text) => setCurrentState(text));
-      }
-      return currentState;
-    });
-  };
+  // Shares the query the run buttons already poll, so displaying the status costs no
+  // extra requests, and it speeds up on its own while the worker is doing something.
+  const workerState = useWorkerState();
 
   return (
     <Grid2 size={12}>
@@ -22,7 +12,7 @@ export function WorkerStatus() {
         <Typography variant="body1" fontWeight={"bold"}>
           BlueAPI worker status:
         </Typography>
-        <Typography variant="body1">{readCurrentState()}</Typography>
+        <Typography variant="body1">{workerState ?? "UNKNOWN"}</Typography>
       </Stack>
     </Grid2>
   );
